@@ -10,25 +10,28 @@ function table.copy(t)
   return t2
 end
 
--- recursively updates alpha on every element involved
-function rset_attrs(r,opts)
+-- recursively updates an attribute on every element involved
+function RSetAttrs(r,opts)
   for i,v in pairs({r:Children()}) do
-    rset_attrs(v,opts)
+    RSetAttrs(v,opts)
   end
-  set_attrs(r,opts)
+  SetAttrs(r,opts)
 end
 
 -- require a file using urMus-style. If includes 'var', then 
 -- the file's content will be assigned to that global var and not required again. 
--- req('underscore','_')
-function req(name,var)
+-- Req('underscore','_')
+function Req(name,var)
   if not var then return dofile(SystemPath(name..".lua")) end
   if not _G[var] then _G[var] = dofile(SystemPath(name..".lua")); return _G[var]; end
 end
 
-req('underscore','_')
+Req('underscore','_')
 
-function set_attrs(r,opts)
+-- use shorthand notation to set a number of attributes in the urMus api. 
+-- supported attributes include: input, layer, width, height,
+-- x,y, img, color, gradient, alpha, rotate
+function SetAttrs(r,opts)
   local set = function(r)
     for k,fn in pairs({input='EnableInput',layer='SetLayer',w='SetWidth',h='SetHeight'}) do
       if opts[k] then r[fn](r,opts[k]) end
@@ -46,11 +49,11 @@ function set_attrs(r,opts)
       r.t:SetTexture(opts['img'])
       r.t:SetTexCoord(0,0.63,0.94,0.0)
     end
-    if opts['color'] then r.t:SetTexture(unpack(parse_color(opts['color']))) end
+    if opts['color'] then r.t:SetTexture(unpack(ParseColor(opts['color']))) end
     if opts['gradient'] then
       local g = {opts['gradient'][1]}
-      g[2] = parse_color(opts['gradient'][2]); g[2][4] = g[2][4] or 255; -- add alpha 
-      g[3] = parse_color(opts['gradient'][3]); g[3][4] = g[3][4] or 255
+      g[2] = ParseColor(opts['gradient'][2]); g[2][4] = g[2][4] or 255; -- add alpha 
+      g[3] = ParseColor(opts['gradient'][3]); g[3][4] = g[3][4] or 255
       r.t:SetGradientColor(unpack(_.flatten(g)))
     end
     if opts['alpha'] then r:SetAlpha(opts['alpha']) end
@@ -64,19 +67,19 @@ function set_attrs(r,opts)
   end
 end
 -- Make an image:
--- r = make_region({w=100, h=200, img='thing.jpg'})
+-- r = MakeRegion({w=100, h=200, img='thing.jpg'})
 -- Make a black box:
--- r = make_region({w=100, h=100, color={0,0,0}})
+-- r = MakeRegion({w=100, h=100, color={0,0,0}})
 -- Make a label attached to a :
--- r = make_region({w=300, h=100, 
+-- r = MakeRegion({w=300, h=100, 
 --                  color={255,255,255}, 
 --                  label={text="Test",
 --                         color={0,0,0},
 --                         shadow={0,0,0,190,2,-3,6}}})
-function make_region(opts)
+function MakeRegion(opts)
   opts = opts or {}
   local parent = opts['parent'] or UIParent
-  local r = Region('region','make_region region',parent)
+  local r = Region('region','MakeRegion region',parent)
   r:SetParent(parent)
   opts['input'] = opts['input'] or true
   opts['layer'] = opts['layer'] or 'MEDIUM'
@@ -86,7 +89,7 @@ function make_region(opts)
   r.t = r:Texture()
   r.t:SetBlendMode(opts['blend'] or 'BLEND')
   -- do a bunch of attribute setting
-  set_attrs(r,opts)
+  SetAttrs(r,opts)
 
   if opts['label'] then
     local l = opts['label']
@@ -105,7 +108,7 @@ function make_region(opts)
       if type(l['color']) == 'table' then
         for i,v in pairs(l['color']) do color[i] = v end -- copy our colors over
       elseif type(l['color']) == 'string' then 
-        color = parse_color(l['color'])
+        color = ParseColor(l['color'])
         color[4] = 255
       end
     end  
@@ -133,7 +136,8 @@ function make_region(opts)
 end
 
 -- adds or updates an event for a given object
-function add_event(obj,e_name,fn)
+-- Operates similarly to addEventListener() in JS
+function AddEvent(obj,e_name,fn)
   if not obj.events then obj.events = {} end
   local e = obj.events
   if not e[e_name] then e[e_name] = {} end
@@ -145,8 +149,9 @@ function add_event(obj,e_name,fn)
   end)
 end
 
--- removes a given event handler for an obj
-function remove_event(obj,e_name,fn)
+-- removes a given event handler for an obj.
+-- Operates similarly to removeEventListener() in JS
+function RemoveEvent(obj,e_name,fn)
   if not obj.events then return end
   local e = obj.events
   if not e[e_name] then return end
@@ -158,8 +163,9 @@ function remove_event(obj,e_name,fn)
   if #obj.events[e_name] == 0 then obj:Handle(e_name,nil) end -- remove handler if none left
 end
 
--- uses a table to find color values
-function parse_color(c)
+-- uses a table to find color values; this fn can be called as {r,g,b} or {'colorname'}
+-- and is based on CSS color table values
+function ParseColor(c)
   local colors = {aliceblue={240,248,255},
     antiquewhite={250,235,215},
     aqua={0,255,255},

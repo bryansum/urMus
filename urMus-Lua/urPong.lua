@@ -14,7 +14,7 @@ local function ReInit(self)
 end
 
 -- Instantiating our pong background
-pongBGRegion = make_region({width:ScreenWidth(), height:ScreenHeight(), layer:"BACKGROUND", 
+pongBGRegion = MakeRegion({width:ScreenWidth(), height:ScreenHeight(), layer:"BACKGROUND", 
   x:0,y:0, img:"PongBG.png"})
 pongBGRegion:Handle("OnPageEntered", ReInit)
 pongBGRegion:Handle("OnPageLeft", Shutdown)
@@ -50,7 +50,7 @@ function ShowPopup(note)
 	popuptextregion:Show()
 end
 
-popuptextregion = make_region({width:ScreenWidth(), height: 48*2, layer:'TOOLTIP',
+popuptextregion = MakeRegion({width:ScreenWidth(), height: 48*2, layer:'TOOLTIP',
   x:0,y:ScreenHeight()/2-24,label:{color:{0,0,60,190},size: 48}})
 popuptextregion:EnableClamping(true)
 popuptextregion:Show()

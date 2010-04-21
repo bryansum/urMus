@@ -2,7 +2,7 @@ dofile(SystemPath("helpers.lua"))
 
 req('Animate')
 
-local bg = make_region({w=320,h=480,img='cloud_bg.jpg',layer='BACKGROUND',input=false})
+local bg = MakeRegion({w=320,h=480,img='cloud_bg.jpg',layer='BACKGROUND',input=false})
 
 -- where the drops should stop and start, respectively
 local bottom_x = 62
@@ -47,7 +47,7 @@ sound1 = make_fb("Plick")
 function make_drop(y)
   local r = math.random(3)
   local dim = {{33,27},{34,19},{26,19}} -- dimensions of the three cloud images
-  return make_region({w=dim[r][1],h=dim[r][2],img='cloud-drop'..r..'.png',x=top_x,y=y})
+  return MakeRegion({w=dim[r][1],h=dim[r][2],img='cloud-drop'..r..'.png',x=top_x,y=y})
 end
 
 looper = _G["FBLoopRhythm"]
@@ -68,7 +68,7 @@ sound1 = make_fb("Plick")
 --     d:SetAlpha(1)
 --     local anim = Animate.start({
 --       duration=2,
---       cb=function(pos) set_attrs(d,{x=Animate.interpolate(top_x,bottom_x,pos)}) end,
+--       cb=function(pos) SetAttrs(d,{x=Animate.interpolate(top_x,bottom_x,pos)}) end,
 --       after=function() 
 --         d:SetAlpha(0) 
 --         sound1:Play() -- Play

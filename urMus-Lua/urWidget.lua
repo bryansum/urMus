@@ -27,23 +27,23 @@ Widget.ContextMenu = function(items,opts)
   local rel_x = opts['x'] or 0
   local rel_y = opts['y'] or 0
   
-  local m = make_region({w=width+(2*border.size), h=height,
+  local m = MakeRegion({w=width+(2*border.size), h=height,
                          x=0,y=-height,
-                         color=parse_color(border.color),
+                         color=ParseColor(border.color),
                          parent=parent})
 
   for i,el in pairs(items) do
-    local r = make_region({w=width, h=el_height, 
+    local r = MakeRegion({w=width, h=el_height, 
                            x=rel_x+border.size, y=(#items*(el_height+spacing))-((el_height+spacing)*i)+border.size+rel_y,
                            parent=m,
-                           color=parse_color(color), 
-                           label={text=el[1], size=fs, color=parse_color(tcolor), shadow={0,0,0,190,2,-3,6}}})
-    add_event(r,"OnTouchDown",el[2])
+                           color=ParseColor(color), 
+                           label={text=el[1], size=fs, color=ParseColor(tcolor), shadow={0,0,0,190,2,-3,6}}})
+    AddEvent(r,"OnTouchDown",el[2])
     r:EnableInput(false)
   end
   
   -- set alpha to zero initially (for child elements too)
-  rset_attrs(m,{alpha=0})
+  RSetAttrs(m,{alpha=0})
   -- add animation settings
   local anim = nil; local open = false
   local enterFn = function()
@@ -53,7 +53,7 @@ Widget.ContextMenu = function(items,opts)
         cb=function(pos)
           local from = m:GetAlpha()
           local to = open and 0 or 1
-          rset_attrs(m,{alpha=Animate.interpolate(from,to,pos)})
+          RSetAttrs(m,{alpha=Animate.interpolate(from,to,pos)})
         end,
         after=function() 
           anim = nil; open = not open
@@ -62,11 +62,11 @@ Widget.ContextMenu = function(items,opts)
           end)
         end})
   end
-  add_event(parent,"OnTouchDown",enterFn)  
+  AddEvent(parent,"OnTouchDown",enterFn)  
 
   function m:Cancel()
     if anim then anim:Cancel() end
-    remove_event(parent,"OnTouchDown",enterFn)
+    RemoveEvent(parent,"OnTouchDown",enterFn)
   end
 
   return m
@@ -79,7 +79,7 @@ Widget.Tooltip= function(text, opts)
   local fs = opts['fsize'] or 12
   local height = opts['h'] or fs*2
   local parent = opts['parent'] or UIParent
-  local tt = make_region({h=height, w=180,
+  local tt = MakeRegion({h=height, w=180,
                           color=opts['bg_color'] or 'white',
                           alpha=0,
                           label={text=text,color=opts['text_color'] or 'grey'}}) 
@@ -118,15 +118,15 @@ Widget.Tooltip= function(text, opts)
   
   -- enable input if it wasn't already in the parent, else no events
   parent:EnableInput(true)
-  add_event(parent,"OnTouchDown",enterFn)
-  add_event(parent,"OnEnter",enterFn)  
-  add_event(parent,"OnLeave",removeFn)
+  AddEvent(parent,"OnTouchDown",enterFn)
+  AddEvent(parent,"OnEnter",enterFn)  
+  AddEvent(parent,"OnLeave",removeFn)
   
   function tt:Cancel()
     if anim then anim:Cancel() end
-    remove_event(parent,"OnTouchDown",enterFn)
-    remove_event(parent,"OnEnter",enterFn)
-    remove_event(parent,"OnLeave",removeFn)
+    RemoveEvent(parent,"OnTouchDown",enterFn)
+    RemoveEvent(parent,"OnEnter",enterFn)
+    RemoveEvent(parent,"OnLeave",removeFn)
   end
   
   return tt
