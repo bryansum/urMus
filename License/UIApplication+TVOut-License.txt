@@ -1,0 +1,9 @@
+UIApplication+TVOut.m License
+
+//  UIApplication+TVOut.m
+//  MediaMotion2
+//
+//  Created by Rob Terrell on 5/15/09 
+//  Copyright 2009 Stinkbot LLC. All rights reserved.
+
+Redistributed with urMus with permission by the copyright holder.

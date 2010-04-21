@@ -1,0 +1,32 @@
+Ideas:
+
+*) Config arrangment of flowboxes in selector tabs.
+
+*) Move regions between pages.
+
+
+Possible bugs (check):
+
+*) Is OnDragEnds triggered if one sets EnableInout(false)?
+
+Notes:
+
+
+Possible Changes:
+Move Strata/Layer stuff off strings onto numeric indizies.
+
+SetVertexColor -> SetTextureColor
+
+Rotation:
+
+Check:
+What happens if string gets new properties (SetFont,...) is it correctly updated?
+
+Texture:SetVertexColor
+----------------------
+TODO: should be more indicative of it being a solid color? Consider getting rid of,
+as VertexColor and SetTexture duplicate functionality. 
+
+Note: I agree with this but don't want to rework this just now. The "right" thing is to have
+a simple wrapper like SetColor() that sets color of all 4 points. Make empty texture Texture() default to be plain.
+Also simplify the Gradient calls to calls that allow to set colors at each vertex. For a future revision I'd say.

@@ -1,0 +1,209 @@
+urMus API - version 0.0.1 (skeletor)
+
+Author: Georg Essl
+Document Created: 1/17/2010
+Document Last changed: 1/18/2010
+
+Global API
+
+	
+Debug Printing API
+
+DPrint()
+RunScript()
+
+Timing API
+
+GetTime() -- Time() done
+
+urSound FlowBox API
+
+PauseAudio()
+StartAudio()
+
+CreateFlowBox() -- FlowBox() done
+
+GetUrOuts() (defunct) GONE
+GetUrIns() (defunct) GONE
+NumUrOuts() (defunct) GONE
+NumUrIns() (defunct) GONE
+
+GetSinkObjects() -- SinkNames() done
+GetManipulatorObjects() -- ManipulatorNames() done
+GetSourceObjects() -- SourceNames() done
+
+File system helper API
+
+DocumentPath()
+SystemPath()
+
+2D Interface and Interaction API (aka urLook)
+
+urMus_SetFPS() - SetFrameRate() done
+
+Page()
+SetPage()
+NumMaxPages() (may become defunct soon)
+
+GetNumFrames() -- NumRegions() done
+
+CreateFrame() -- Region() done
+
+GetScreenWidth() -- ScreenWidth() done
+GetScreenHeight() -- ScreenHeight() done
+GetCursorPosition() -- InputPosition() done
+MouseIsOver() -- HasInput() done
+GetMouseFocus() -- InputFocus() done
+
+Frame Object API -- Region API
+
+	SetMovable() -- EnableMoving() done
+	SetResizable() -- EnableResizing() done
+	SetScript() -- Handle() done
+	SetHeight()
+	SetWidth()
+	Show()
+	Hide()
+	EnableMouse() -- EnableInput() done
+	EnableHorizontalScroll()
+	EnableVerticalScroll()
+	StopMovingOrSizing() -- (defunc?) unused so defunc it! GONE
+	SetPoint() -- SetAnchor() done
+	SetFrameStrata() -- SetLayer() done  
+	GetParent() -- Parent() done
+	GetChildren() -- Children() done
+	GetName() -- Name() done
+	ClearAllPoints() -- ClearAllAnchors (defunc?) GONE
+	GetBottom() -- Bottom() done
+	GetCenter() -- Center() done
+	GetHeight() -- Height() done
+	GetLeft() -- Left() done
+	GetNumPoints() -- NumAnchors() done
+	GetPoint() -- Anchor() done
+	GetRight() -- Right() done
+	GetTop() -- Top() done
+	GetWidth() -- Width() done
+	IsDragging() -- unused so defunc it! GONE
+	IsShown()
+	IsVisible()
+	SetAllPoints() -- SetAllAnchors ?? unused so defunc it GONE
+	SetParent()
+	SetAlpha()
+	GetAlpha() -- Alpha()
+	GetEffectiveAlpha() -- unused so defunc it GONE
+	GetFrameStrata() -- Layer() done
+	CreateTexture() -- Texture() done
+	CreateFontString() -- TextLabel() done
+	Lower()
+	Raise()
+	IsToplevel()
+	SetToplevel() -- MoveToTop() done
+	SetClampedToScreen() -- EnableClamping() done
+	FrameOverlap() -- RegionOverlap() done
+	UseAsBrush()
+	EnableClipping()
+	SetClipRegion()
+	GetClipRegion() -- ClipRegion() done
+
+FontString Object API -- Label
+
+	GetFont() -- Font() done
+	GetJustifyH() -- HorizontalAlign() done
+	GetJustifyV() -- VerticalAlign() done
+	GetShadowColor() -- ShadowColor() NYI done
+	GetShadowOffset() -- ShadowOffset() NYI done
+	GetSpacing() -- Spacing() unused
+	GetTextColor() -- Color()
+	SetFont() --
+	SetJustifyH() -- SetHorizontalAlign()
+	SetJustifyV() -- SetVerticalAlign()
+	SetShadowColor() -- unused
+	SetShadowOffset() -- unused
+	SetSpacing() -- unused
+	SetTextColor() -- or SetColor()
+	CanNonSpaceWrap() -- unused
+	GetStringHeight() -- Height()
+	GetStringWidth() -- Width()
+	GetText() -- Label()
+	SetFormattedText() -- unused
+	SetNonSpaceWrap() -- unused
+	SetText() -- SetLabel() done
+	SetTextHeight() -- SetLabelHeight() done
+
+
+Texture Object API
+
+	SetTexture()
+	SetGradient()
+	SetGradientAlpha()
+	GetTexture() -- Texture() unused  done
+	SetVertexColor()
+	GetVertexColor() -- VertexColor() done
+	SetTexCoord()
+	GetTexCoord() -- TexCoord() done
+	SetRotation()
+	SetTexCoordModifiesRect() -- unused
+	GetTexCoordModifiesRect() -- unused
+	SetDesaturated() -- unused
+	IsDesaturated() -- unused
+	SetBlendMode()
+	GetBlendMode() -- BlendMode()
+
+
+
+	Line()
+	Point()
+	Clear()
+	SetBrushSize()
+	GetBrushSize() -- BrushSize()
+
+Multi-rate patching dataflow API (aka urSound)
+
+GetName() -- Name() done
+NumIns()
+NumOuts()
+GetIns() -- Ins() done
+GetOuts() -- Outs() done
+SetPushLink()
+SetPullLink()
+RemovePushLink()
+RemovePullLink()
+IsPushed()
+IsPulled()
+Release()
+Push()
+IsInstantiable()
+GetInstanceNumber() -- InstanceNumber() done
+NumberInstances()
+GetCouple() -- Couple() done
+IsCoupled()
+
+Global Namespace Data:
+
+urLook
+
+UIParent -- 
+
+urSound
+
+FB..
+
+
+
+Optional 
+
+urSoundData
+  type - table of numbers
+  content - audio sample to send to DAC of the urSound pipeline.
+
+  Contains the data of the next audio buffer to be played. Only active if complied to operate with it. This is additive to any currently running urSound data flow. Currently mono only. Currently lua is too slow to be sensibly used as a synthesis language hence disabled by default.
+
+urMicData
+  type - table of numbers
+  content - audio samples last read from the microphone through the urSound pipeline.
+  
+  Contains the data of the latest audio buffer received from the microphone. Currently mono only. Currently lua is too slow to be sensibly used as a synthesis language hence disabled by default.
+  
+  
+  
+  

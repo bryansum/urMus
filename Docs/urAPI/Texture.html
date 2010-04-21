@@ -1,0 +1,320 @@
+<h1>Texture API</h1>
+
+<p>These functions are member functions of a created texture.</p>
+
+<h2>Texture:SetTexture</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>texture:SetTexture("imageName.ext")
+texture:SetTexture(r,g,b,a)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the texture style for a given texture. If colors are specified a plain color empty texture will be assumed and existing textures will be removed.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>imageName.ext</code> (String)
+Sets the texture to the specified image. This should be present within the 
+system's images folder.</li>
+<li>r (Number)
+A number [0,255] describing the intensity of red in the texture color. </li>
+<li>g (Number)
+A number [0,255] describing the intensity of green in the texture color. </li>
+<li>b (Number)
+A number [0,255] describing the intensity of blue in the texture color. </li>
+<li>a (Number)
+A number [0,255] describing the alpha transparency of the texture. 0 is fully
+transparent, 255 is opaque.</li>
+</ul>
+
+<h2>Texture:SetGradient</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>texture:SetGradient("orientation", minR, minG, minB, maxR, maxG, maxB)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the texture to be a linear gradient in the given orientation. The texture
+will start at minRGB and end at maxRGB, with the linear interpolation between.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>orientation</code> (String)
+The orientation of the linear gradient. This should be one of "HORIZONTAL",
+"VERTICAL", "TOP", "BOTTOM"</li>
+<li>minR (Number)
+A number [0,255] describing the intensity of red in the minimum texture color. </li>
+<li>minG (Number)
+A number [0,255] describing the intensity of green in the minimum texture color. </li>
+<li>minB (Number)
+A number [0,255] describing the intensity of blue in the minimum texture color. </li>
+<li>maxR (Number)
+A number [0,255] describing the intensity of red in the maximum texture color. </li>
+<li>maxG (Number)
+A number [0,255] describing the intensity of green in the maximum texture color. </li>
+<li>maxB (Number)
+A number [0,255] describing the intensity of blue in the maximum texture color. </li>
+</ul>
+
+<h2>Texture:SetGradientAlpha</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>texture:SetGradientAlpha("orientation", minR, minG, minB, minA, maxR, maxG, maxB, maxA)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Same as <code>Texture:SetGradient</code>, but adds alpha transparency.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>orientation</code> (String)
+The orientation of the linear gradient. This should be one of "HORIZONTAL",
+"VERTICAL", "TOP", "BOTTOM"</li>
+<li>minR (Number)
+A number [0,255] describing the intensity of red in the minimum texture color. </li>
+<li>minG (Number)
+A number [0,255] describing the intensity of green in the minimum texture color. </li>
+<li>minB (Number)
+A number [0,255] describing the intensity of blue in the minimum texture color. </li>
+<li>minA (Number)
+A number [0,255] describing the alpha transparency of the minimum texture color. 0 is fully
+transparent, 255 is opaque.</li>
+<li>maxR (Number)
+A number [0,255] describing the intensity of red in the maximum texture color. </li>
+<li>maxG (Number)
+A number [0,255] describing the intensity of green in the maximum texture color. </li>
+<li>maxB (Number)
+A number [0,255] describing the intensity of blue in the maximum texture color. </li>
+<li>maxA (Number)
+A number [0,255] describing the alpha transparency of the maximum texture color. 0 is fully
+transparent, 255 is opaque.</li>
+</ul>
+
+<h2>Texture:SetVertexColor</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>texture:SetVertexColor(r,g,b[,a])
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the color of a texture to a solid color specified by the RGBA values. </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>r (Number)
+A number [0,255] describing the intensity of red in the texture color. </li>
+<li>g (Number)
+A number [0,255] describing the intensity of green in the texture color. </li>
+<li>b (Number)
+A number [0,255] describing the intensity of blue in the texture color. </li>
+<li>a (Number)
+A number [0,255] describing the alpha transparency of the texture. 0 is fully
+transparent, 255 is opaque.</li>
+</ul>
+
+<h2>Texture:VertexColor</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>r, g, b, a = texture:VertexColor()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li>r (Number)
+A number [0,255] describing the intensity of red in the texture color. </li>
+<li>g (Number)
+A number [0,255] describing the intensity of green in the texture color. </li>
+<li>b (Number)
+A number [0,255] describing the intensity of blue in the texture color. </li>
+<li>a (Number)
+A number [0,255] describing the alpha transparency of the texture. 0 is fully
+transparent, 255 is opaque.</li>
+</ul>
+
+<h2>Texture:SetTexCoord</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>texture:SetTexCoord(left%,right%,top%,bottom%)
+texture:SetTexCoord(ULx%, ULy%, URx%, URy%, BLx%, BLy%, BRx%, BRy%)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the texture coordinates for a given shape. If the first form is specified,
+the texture will be place in a rectangular space specified by [left%, right%, top%, bottom%].
+Otherwise it will be placed within a polygon give by the second form.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>left%, right%, top%, bottom%</code> (Number) 
+The percentage of the page [0..1] from either the left, right, top, or bottom, 
+respectively, to put that side of the texture. </li>
+<li><code>ULx%, ULy%, URx%, URy%, BLx%, BLy%, BRx%, BRy%</code> (Number)
+The percentage [0..1] of from its respective corner of the page to its respective edge
+of the texture.</li>
+</ul>
+
+<h2>Texture:TexCoord</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>ULx%, ULy%, URx%, URy%, BLx%, BLy%, BRx%, BRy% = texture:TexCoord()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>The coordinates of the texture. Defaults to (0,1,1,1,0,0,1,0)</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>ULx%, ULy%, URx%, URy%, BLx%, BLy%, BRx%, BRy%</code> (Number)
+The percentage [0..1] of from its respective corner of the page to its respective edge
+of the texture.</li>
+</ul>
+
+<h2>Texture:SetRotation</h2>
+
+<h3>Synopsis</h3>
+
+<p>texture:SetRotation(angle)</p>
+
+<h3>Description</h3>
+
+<p>Rotates the texture. This modifies the texture coordinates.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>angle</code> (Number)
+Set the angle of rotation in radians.</li>
+</ul>
+
+<h2>Texture:BlendMode</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>mode = texture:BlendMode()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>mode</code> (String)
+Returns the blend mode for this texture. Defaults to "DISABLED" </li>
+</ul>
+
+<h2>Texture:SetBlendMode</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>texture:SetBlendMode(mode)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the blend mode for this texture. Defaults to "DISABLED". </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>mode</code> (String)
+Sets the blend mode for this texture. Can be "DISABLED", "BLEND", "ALPHAKEY",
+"ADD", "MOD", or "SUB".</li>
+</ul>
+
+<h2>Texture:Line</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>texture:Line(startX, startY, endX, endY)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>If the region is enabled with Region:UseAsBrush(), draws a line of width 1 from 
+[startX,startY] to [endX,endY].</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>startX, startY, endX, endY</code> (Number)
+The starting and ending coordinates of the line to be drawn on this texture. </li>
+</ul>
+
+<h2>Texture:Point</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>texture:Point(x,y)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>If the region is enabled with Region:UseAsBrush(), draws a point at [x,y].</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>x, y</code> (Number)
+Draws a point at coordinates x,y. </li>
+</ul>
+
+<h2>Texture:Clear</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>texture:Clear()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>If the region is enabled with Region:UseAsBrush(), clears any brush strokes currently
+on the texture.</p>
+
+<h2>Texture:BrushSize</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>brushSizePx = texture:BrushSize()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>brushSizePx</code> (Number)
+Size of the brush in pixels. Defaults to 1</li>
+</ul>
+
+<h2>Texture:SetBrushSize</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>texture:SetBrushSize(brushSizePx)
+</code></pre>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>brushSizePx</code> (Number)
+Size of the brush in pixels. Defaults to 1</li>
+</ul>
+
+<p><a href="overview.html">urMus API Overview</a></p>

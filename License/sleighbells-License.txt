@@ -1,0 +1,7 @@
+SleighBells.jpg license
+
+Source: http://en.wikipedia.org/wiki/File:SleighBells.jpg
+
+GNU Free Documentation License, Version 1.2 or any later.
+ 
+Can be found here: http://commons.wikimedia.org/wiki/Commons:GNU_Free_Documentation_License

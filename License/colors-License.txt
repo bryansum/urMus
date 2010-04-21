@@ -1,0 +1,7 @@
+Color Wave License
+
+Red-Mono, Orange-Mono, Yellow-Mono, Green-Mono, Cyan-Mono, Blue-Mono, Pink-Mono, White-Mono wave files
+
+Copyright (c) 2009 Devin Kerr. All Rights Reserved.
+
+urMus License applies. Redistributed with permission.

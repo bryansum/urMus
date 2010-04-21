@@ -1,0 +1,441 @@
+<h1>TextLabel API</h1>
+
+<p>These functions are member functions of a TextLabel.</p>
+
+<h2>TextLabel:Font</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>fontFace = textlabel:Font()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the name of the typeface for the given font. Defaults to "Helvetica".</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>fontFace (String)
+The face name of the current textlabel's font.</li>
+</ul>
+
+<h2>TextLabel:SetFont</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>textlabel:SetFont("fontName")
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Changes the given font for a textlabel.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>fontName (String)
+A valid system font to change the textlabel's font to.</li>
+</ul>
+
+<h2>TextLabel:HorizontalAlign</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>hJustificationStatus = textlabel:HorizontalAlign()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the horizontal justification of a given textlabel.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>hJustificationStatus (String)
+The horizontal justification of the the textlabel. One of "LEFT", "CENTER",
+"RIGHT".</li>
+</ul>
+
+<h2>TextLabel:SetHorizontalAlign</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>textlabel:SetHorizontalAlign("justifyH")
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Set the horizontal justification of a given textlabel.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>justifyH (String)
+The desired horizontal justification for the textlabel. One of "LEFT",
+"CENTER", "RIGHT".</li>
+</ul>
+
+<h2>TextLabel:VerticalAlign</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>vJustificationStatus = textlabel:VerticalAlign()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the vertical justification of a given textlabel.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>vJustificationStatus (String)
+The vertical justification of the the textlabel. One of "TOP", "MIDDLE", 
+"BOTTOM".</li>
+</ul>
+
+<h2>TextLabel:SetVerticalAlign</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>textlabel:SetVerticalAlign("vAlign")
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Set the horizontal justification of a given textlabel.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>vAlign (String)
+The desired horizontal justification for the textlabel. The string must be 
+one of "TOP", "MIDDLE", or "BOTTOM" to have any effect.</li>
+</ul>
+
+<h2>TextLabel:ShadowColor</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>r, g, b, a = textlabel:ShadowColor()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the RGBA values for the given textlabel's shadow. Defaults to (0,0,0,128)</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>r (Number)
+A number [0,255] describing the intensity of red in the shadow color. </li>
+<li>g (Number)
+A number [0,255] describing the intensity of green in the shadow color. </li>
+<li>b (Number)
+A number [0,255] describing the intensity of blue in the shadow color. </li>
+<li>a (Number)
+A number [0,255] describing the alpha transparency of the shadow. 0 is fully
+transparent, 255 is opaque.</li>
+</ul>
+
+<h2>TextLabel:SetShadowColor</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>textlabel:SetShadowColor()
+textlabel:SetShadowColor(r,g,b,a)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the RGBA values for the given textlabel shadow. If no argument is provided, this disables the shadow.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>r (Number)
+A number [0,255] describing the intensity of red in the shadow color. </li>
+<li>g (Number)
+A number [0,255] describing the intensity of green in the shadow color. </li>
+<li>b (Number)
+A number [0,255] describing the intensity of blue in the shadow color. </li>
+<li>a (Number)
+A number [0,255] describing the alpha transparency of the shadow. 0 is fully
+transparent, 255 is opaque.</li>
+</ul>
+
+<h2>TextLabel:ShadowOffset</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>x, y = textlabel:ShadowOffset()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the distance in pixels the textlabel's shadow deviates from the main 
+textlabel body. Positive x is the to right of the textlabel while positive y 
+is below. A textlabel defaults to a value is 0,0.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>x (Number)
+Horizontal shadow offset in pixels from the main textlabel. </li>
+<li>y (Number)
+Vertical shadow offset in pixels from the main textlabel. </li>
+</ul>
+
+<h2>TextLabel:SetShadowOffset</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>textlabel:SetShadowOffset(x,y)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the distance in pixels the textlabel's shadow deviates from the main 
+textlabel body. Positive x is the to right of the textlabel while positive y 
+is below.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>x (Number)
+Horizontal shadow offset in pixels from the main textlabel. </li>
+<li>y (Number)
+Vertical shadow offset in pixels from the main textlabel. </li>
+</ul>
+
+<h2>TextLabel:ShadowBlur</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>blur = textlabel:ShadowBlur()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Return the blur factor used for the text shadow.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>blur (Number)
+Blur of the shadow in pixels.</li>
+</ul>
+
+<h2>TextLabel:SetShadowBlur</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>textlabel:SetShadowBlur(blur)
+</code></pre>
+
+<h3>Arguments</h3>
+
+<p>Sets the blur factor to be used with the shadow. 0.0 means no blur, and the blur increases with size, roughly corresponding to pixel range.</p>
+
+<h2>TextLabel:Spacing</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>lineSpacing = textlabel:Spacing()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the line spacing in pixels between each successive line in a paragraph. 
+of text. </p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>lineSpacing (Number)
+Returns the distance between each successive line in a paragraph of text. </li>
+</ul>
+
+<h2>TextLabel:SetSpacing</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>textlabel:SetSpacing()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the line spacing distance in pixels between successive lines in a paragraph.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>lineSpacing (Number)
+Returns the distance in pixels between each successive line in a paragraph of text. </li>
+</ul>
+
+<h2>TextLabel:Color</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>r, g, b, a = textlabel:Color()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the RGBA values for the given textlabel text color. Defaults to (255,255,255,255).</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>r (Number)
+A number [0,255] describing the intensity of red in the textlabel. </li>
+<li>g (Number)
+A number [0,255] describing the intensity of green in the textlabel. </li>
+<li>b (Number)
+A number [0,255] describing the intensity of blue in the textlabel. </li>
+<li>a (Number)
+A number [0,255] describing the alpha transparency of the textlabel. 0 is fully
+transparent, 255 is opaque.</li>
+</ul>
+
+<h2>TextLabel:SetColor</h2>
+
+<h3>Description</h3>
+
+<p>See TextLabel:SetTextColor</p>
+
+<h2>TextLabel:SetTextColor</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>textlabel:SetTextColor(r,g,b,a)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the RGBA values for the given textlabel.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>r (Number)
+A number [0,255] describing the intensity of red in the textlabel. </li>
+<li>g (Number)
+A number [0,255] describing the intensity of green in the textlabel. </li>
+<li>b (Number)
+A number [0,255] describing the intensity of blue in the textlabel. </li>
+<li>a (Number)
+A number [0,255] describing the alpha transparency of the textlabel. 0 is fully
+transparent, 255 is opaque.</li>
+</ul>
+
+<h2>TextLabel:Wrap</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>wrap = textlabel:Wrap()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Describes how textlabel that exceeds the width of a region will be line-broken. Can be WORD, CHAR, or CLIP.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>wrap (String)
+Returns the current line breaking mode.</li>
+</ul>
+
+<h2>TextLabel:SetWrap</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>textlabel:SetWrap(wrap)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Set the current line breaking mode for text lines that exceed the width of the region.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>wrap (String)
+String describing how lines will be broken. One of "WORD",
+"CHAR", "CLIP". "WORD" will break at spaces only. "CHAR" will break after any character. "CLIP" will clip.</li>
+</ul>
+
+<h2>TextLabel:Height</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>heightInPx = textlabel:Height()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the height of the given textlabel in pixels. </p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>heightInPx (Number)
+Returns the height of the given font in px.</li>
+</ul>
+
+<h2>TextLabel:SetLabelHeight</h2>
+
+<h2>TextLabel:Width</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>widthInPx = textlabel:Width()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li>widthInPx (Number)
+The width of a given textlabel in px.</li>
+</ul>
+
+<h2>TextLabel:Label</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>text = textlabel:Label()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the current text value for this given textlabel.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>text (String)
+The value of the current text string.</li>
+</ul>
+
+<h2>TextLabel:SetLabel</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>textlabel:SetLabel("text")
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the current text value for the given textlabel.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>text (String)
+The desired text value for the label.</li>
+</ul>
+
+<p><a href="overview.html">urMus API Overview</a></p>

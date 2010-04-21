@@ -1,0 +1,19 @@
+build/*
+
+*.pbxuser
+*.mode1v3
+*.perspective
+*.perspectivev3
+*.mode1v3
+*.move2v3
+*~.nib
+*.swp
+*.o
+
+
+# old skool
+.svn
+
+# osx noise
+.DS_Store
+profile

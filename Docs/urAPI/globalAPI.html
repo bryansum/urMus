@@ -1,0 +1,453 @@
+<h1>Global API functions</h1>
+
+<p>This page documents functions and variables that can be found in the global name space.</p>
+
+<h1>Debug Printing API</h1>
+
+<h2>DPrint </h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>DPrint("output")
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Debug print a give string in the center of the screen. This will also be used
+for system errors and should not be used for normal user interactions.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>output (String)
+The string to print to the debug console.</li>
+</ul>
+
+<h2>RunScript</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>RunScript("script")
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Execute a string as Lua code.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>script (String)
+The lua code which is to be executed.</li>
+</ul>
+
+<h1>Timing API</h1>
+
+<h2>GetTime</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>seconds = GetTime()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the system uptime of the host machine in seconds, with millisecond precision.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>seconds (Number)
+The current system uptime in seconds. </li>
+</ul>
+
+<h1>urSound FlowBox API</h1>
+
+<h2>StartAudio</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>StartAudio()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Starts the audio engine. Audio-related events will start working.</p>
+
+<h2>PauseAudio</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>PauseAudio()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Pauses the audio engine. Audio-related events will not work while paused.</p>
+
+<h2>FlowBox</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>flowbox = FlowBox("type", "name", inheritedFlowbox)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Creates a new instance of a specified flowbox. To seed cloning use global
+instances of flowboxes via <code>_G["FB"..objectname]</code>.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>type (String) [unused]
+String identifying the opject type.</li>
+<li>name (String) [unused]
+  User-specified name of the object.</li>
+<li>inheritedFlowbox (Flowbox)
+  The parent flowbox to inherit from. If specified, this creates a deep-copy of the 
+parent.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li>flowbox (Flowbox)
+A new instance of the given flowbox.</li>
+</ul>
+
+<h2>SourceNames</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>source1, source2, ... = SourceNames()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the names of all source objects offered by the urSound engine. Related
+flowbox variables can be accessed via _G["FB"..object1].</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>source1, source2, ... (String list)
+  A list of the names describing all urSound sources.</li>
+</ul>
+
+<h2>ManipulatorNames</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>manipName1, manipName2, ... = ManipulatorNames()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the names of all manipulator objects offered by the urSound engine.
+Related flowbox variables can be accessed via <code>_G["FB"..manipName]</code>.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>manipName1, manipName2, ... (List<String>)
+A list of names describing all urSound manipulators.</li>
+</ul>
+
+<h2>SinkNames</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>sinkName1, sinkName2, ... = SinkNames()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the names of all sink objects offered by the urSound engine. Related
+flowbox variables can be accessed via <code>_G["FB"..sinkName]</code>.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>sinkName1, sinkName2, ... (List<String>)
+Names describing all urSound sinks.</li>
+</ul>
+
+<h1>File system helper API</h1>
+
+<h2>DocumentPath</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>documentPath = DocumentPath("filename")
+</code></pre>
+
+<h3>Description</h3>
+
+<p>If the file exists in the document path, returns the absolute path to the given file.
+If the file doesn't exist, throws an error.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>filename (String)
+Name of the file in the system's Documents folder.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li>documentPath (String)
+Absolute path of the found file.</li>
+</ul>
+
+<h2>SystemPath</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>systemfilename = SystemPath("filename")
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Converts a relative filename to include an iPhone-project's resource path.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>filename (String)
+File linked with the urMus project.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li>systemfilename (String)
+Absolute path of the file in the resources folder.</li>
+</ul>
+
+<h1>2D Interface and Interaction API (aka urLook)</h1>
+
+<h2>SetFrameRate</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>SetFrameRate(fps)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the maximum frames per second. Effective FPS may be lower if load is high.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>fps (Number)
+Desired target frames per second.</li>
+</ul>
+
+<h2>Page</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>page = Page()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the number index of the currently active page.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>page (Number)
+Index of currently active page.</li>
+</ul>
+
+<h2>SetPage</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>SetPage(pageIndex)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the currently active page. Only frames created within an active page will
+be rendered. This allows for multiple mutually exclusive pages to be prepared
+and selectively rendered. Mouse events and other interface actions and events
+will only work for the currently active page.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>pageIndex (Number)
+Index of the page to be made active. Side-effects: Deactivates all other pages.</li>
+</ul>
+
+<h2>NumMaxPages</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>maxpages = NumMaxPages()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Maximum number of pages supported by the current urMus built.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>maxpages (Number)
+Maximum number of pages supported.</li>
+</ul>
+
+<h2>Region</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>newFrame = Region("frameType"[, "frameName"[, parentFrame[, "inheritsFrame"]]])
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Creates a rectangular region.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>frameType (String)
+Type of the frame to be created (XML tag name): "Frame", "Button", etc. </li>
+<li>frameName (String)
+Name of the newly created frame. If nil, no frame name is assigned. 
+The function will also set a global variable of this name to point to newly created frame. </li>
+<li>parentFrame (Frame)
+The frame object that will be used as the created Frame's parent
+(cannot be a string!) Does not default to UIParent if given nil.</li>
+<li>inheritsFrame (String)
+A comma-delimited list of names of virtual frames to inherit
+from (the same as in XML). If nil, no frames will be inherited. These
+frames cannot be frames that were created using this function, they must
+be created using XML with virtual="true" in the tag. </li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li>newFrame (Frame)
+A reference to the newly created frame. </li>
+</ul>
+
+<h2>NumRegions</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>num = NumRegions()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the current number of regions inside of the current page. </p>
+
+<h2>InputFocus</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region = InputFocus()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the region that is currently receiving input events. The frame must have EnableInput(true).</p>
+
+<h2>HasInput</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>isOver = HasInput(frame, [topOffset, bottomOffset, leftOffset, rightOffset])
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Determines whether or not the input is over the specified region. </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li>frame (Frame)
+The frame (or frame-derived object such as Buttons, etc) to test with </li>
+<li>topOffset (Number, optional)
+The distance from the top to include in calculations </li>
+<li>bottomOffset (Number, optional) 
+The distance from the bottom to include in calculations </li>
+<li>leftOffset (Number, optional) 
+The distance from the left to include in calculations </li>
+<li>rightOffset (Number, optional) 
+The distance from the right to include in calculations.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li>isOver (Boolean) 
+True if mouse is over the frame (with optional offsets), false otherwise. </li>
+</ul>
+
+<h2>InputPosition</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>x, y = InputPosition()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the input device's position on the screen.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>x (Number)
+The input device's x-position on the screen. </li>
+<li>y (Number)
+The input device's y-position on the screen. </li>
+</ul>
+
+<h2>ScreenHeight</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>screenHeight = ScreenHeight()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the height of the window in pixels. For an iPhone this is 480.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>screenHeight (Number)
+Height of window in pixels. </li>
+</ul>
+
+<h2>ScreenWidth</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>screenWidth = ScreenWidth()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the width of the window in pixels. For an iPhone this is 320.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>screenWidth (Number)
+Width of window in pixels</li>
+</ul>
+
+<p><a href="overview.html">urMus API Overview</a></p>

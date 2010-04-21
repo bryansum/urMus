@@ -1,0 +1,9 @@
+./Markdown.pl Flowbox.md > Flowbox.html
+./Markdown.pl TextLabel.md > TextLabel.html
+./Markdown.pl Texture.md > Texture.html
+./Markdown.pl Region.md > Region.html
+./Markdown.pl globalAPI.md > globalAPI.html
+./Markdown.pl overview.md > overview.html
+./Markdown.pl Credits.md > Credits.html
+
+

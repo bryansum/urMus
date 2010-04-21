@@ -1,0 +1,883 @@
+<h1>Region API</h1>
+
+<p>These functions are members of any created region.</p>
+
+<h2>Region:Handle</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:Handle("handler", function)
+region:Handle("handler", nil)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the action handler callback function for this given region. The function called
+should be of the function(region, ...), with extra arguments depending on the event
+type. If nil is passed for the function parameter, the current handler will be removed. </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>handler</code> (String)
+A string of the event type we're looking to handle events for. Should be an
+event string of the kind "OnDragStart", "OnDragEnd", etc. See Overview for 
+possible event handler types.</li>
+<li><code>function</code> (Function)
+The function to call for the given handler. If nil, the current handler 
+will be removed. </li>
+</ul>
+
+<h2>Region:SetHeight</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:SetHeight(heightInPx)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the height of the region in pixels. Will reflow children if this affects
+their positioning.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>heightInPx</code> (Number)
+The desired height of the region in pixels.</li>
+</ul>
+
+<h2>Region:SetWidth</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:SetWidth(widthInPx)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the width of the region in pixels. Will reflow children if this affects
+their positioning.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>widthInPx</code> (Number)
+The desired width of the region in pixels.</li>
+</ul>
+
+<h2>Region:Show</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:Show()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Makes the given region visible. Note that this is still subject to its parent's 
+visibility.</p>
+
+<h2>Region:Hide</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:Hide()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Makes the given region hidden. </p>
+
+<h2>Region:EnableInput</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:EnableInput(doEnable)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Enables or disables OnInput events for the given region. This allows regions
+which would normally receive events to in effect "bubble up" their events to 
+parent regions. Defaults to no.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>doEnable</code> (Boolean)
+Whether to enable OnInput events for this region.</li>
+</ul>
+
+<h2>Region:EnableHorizontalScroll</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:EnableHorizontalScroll(doEnable)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Enables or disables horizontal scrolling for the given region. If enabled and
+triggered, the region will send out OnHorizontalScroll events its handlers and 
+physically scroll itself on the page.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>doEnable</code> (Boolean)
+Whether to enable OnHorizontalScroll events and the ability to 
+horizontally scroll for this region.</li>
+</ul>
+
+<h2>Region:EnableVerticalScroll</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:EnableVerticalScroll(doEnable)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Enables or disables vertical scrolling for the sgiven region. If enabled and triggered, the
+region will send out OnVerticalScroll events its handlers and physically scroll
+itself on the page. </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>doEnable</code> (Boolean)
+Whether to enable OnVerticalScroll events and the ability to vertically 
+scroll for this region.</li>
+</ul>
+
+<h2>Region:EnableMoving</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:EnableMoving(doEnableMoving)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Set whether to enable/disable moving for this region. Defaults to no.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>doEnableMoving</code> (Boolean)
+Set whether to enable or disable moving for this region.  </li>
+</ul>
+
+<h2>Region:EnableResizing</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:EnableResizing(doEnableResizing)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Set whether to enable or disable resizing for this region. Defaults to no. If enabled,
+pinch zoom gestures will scale the object.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>doEnableResizing</code> (Boolean)
+Set whether to enable or disable resizing for this region.</li>
+</ul>
+
+<h2>Region:SetAnchor</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:SetAnchor("anchorLocation")
+region:SetAnchor("anchorLocation", relativeRegion)
+region:SetAnchor("anchorLocation", relativeRegion, "relativeAnchorLocation")
+region:SetAnchor("anchorLocation", relativeRegion, "relativeAnchorLocation", offsetX, offsetY)
+region:SetAnchor("anchorLocation", offsetX, offsetY)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Allows the region object to "attach" itself to a given point location on a parent
+or relative region. In this way, changing a parent object will move its children 
+in a well-specified way. If offsetX is given, offsetY must also be given. Otherwise
+they default to (0,0). </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>anchorLocation</code> (String)
+The location in which this region will attach itself to the parent or relative
+object. There are nine valid values: 
+<ul>
+<li>"TOP", "RIGHT", "BOTTOM", "LEFT": attach to center points of each respective side.</li>
+<li>"TOPRIGHT", "TOPLEFT", "BOTTOMLEFT", "BOTTOMRIGHT": attach to corners of 
+the parent region.</li>
+<li>"CENTER": attach to the center point of the parent/relative region.</li>
+</ul></li>
+<li><code>relativeRegion</code> (Region, optional)
+The region object to attach to. If nil is specified, this region will attach
+itself to its parent region by default.</li>
+<li><code>relativeAnchorLocation</code> (String, optional)
+The location which this region's anchorLocation will attach itself to on the 
+relativeRegion's location. Think of this as where the "anchorLocation" will be
+placed on the relativeRegion. If nil, this defaults to <code>BOTTOMLEFT</code>. 
+There are ten valid values: 
+<ul>
+<li>"TOP", "RIGHT", "BOTTOM", "LEFT": attach to center points of each respective side.</li>
+<li>"TOPRIGHT", "TOPLEFT", "BOTTOMLEFT", "BOTTOMRIGHT": attach to corners of 
+the parent region.</li>
+<li>"CENTER": attach to the center point of the parent/relative region.</li>
+<li>"ALL": the region will scale with its parent/relative region.</li>
+</ul></li>
+<li><code>offsetX</code> (Number, optional)
+The X offset of anchorLocation from relativeAnchorLocation. Negative values mean
+to the left, positive means to the right. Defaults to 0. </li>
+<li><code>offsetY</code> (Number, optional)
+The Y offset of anchorLocation from relativeAnchorLocation. Negative values mean
+down, positive means up. Defaults to 0.</li>
+</ul>
+
+<h2>Region:Layer</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>"layerName" = region:Layer()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>layerName</code> (String)
+  Returns the human-readable name of the layer. Could be "PARENT",
+  "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", 
+  "FULLSCREEN_DIALOG", or "TOOLTIP", in ascending order of visibility.</li>
+</ul>
+
+<h2>Region:SetLayer</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:SetLayer("layerName")
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Changes the z-index of the region. </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>strataName</code> (String)
+The layer name which this region should reside on. Could be "PARENT",
+"BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", 
+"FULLSCREEN_DIALOG", or "TOOLTIP", in ascending order of visibility. </li>
+</ul>
+
+<h2>Region:Parent</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>parent = region:Parent()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns a reference to the parent region. </p>
+
+<h2>Region:SetParent</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:SetParent(parent)
+</code></pre>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>parent</code> (Region)
+Sets the parent of this region to <code>parent</code>.</li>
+</ul>
+
+<h2>Region:Children</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>child1, child2, ... = region:Children()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li>child1, child2, ... childrenN (List<String>)
+A list of refrences to this region's children elements.</li>
+</ul>
+
+<h2>Region:Name</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>rName = region:Name()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>rName</code> (String)
+The name of this region.</li>
+</ul>
+
+<h2>Region:Bottom</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>bottomY = region:Bottom()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Gets the Y coordinate of bottom of the region, offset from the side of the screen.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>bottomY</code> (Number)
+The Y coordinate of the bottom of the region in pixels.</li>
+</ul>
+
+<h2>Region:Center</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>centerX, centerY = region:Center()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Gets the center X and Y coordinates for the region.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>centerX</code> (Number)
+The X coordinate of the center of the region in pixels offset from the top
+of the page. </li>
+</ul>
+
+<h2>Region:Height</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>heightInPx = region:Height()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>heightInPx</code> (Number)
+The height of the region in pixels.</li>
+</ul>
+
+<h2>Region:Left</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>leftX = region:Left()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>leftX</code> (Number)
+The left X coordinate offset of the region in pixels with respect to the page.</li>
+</ul>
+
+<h2>Region:Right</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>rightX = region:Right()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>rightX</code> (Number)
+The right X coordinate offset of the region in pixels with respect to the page.</li>
+</ul>
+
+<h2>Region:Top</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>topY = region:Top()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>topY</code> (Number)
+The top Y coordinate offset of the region in pixels with respect to the page.</li>
+</ul>
+
+<h2>Region:Width</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>widthInPx = region:Width()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>widthInPx</code> (Number)
+The width of the current region in pixels.</li>
+</ul>
+
+<h2>Region:Anchor</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>anchorLocation, relativeToRegion, relativeAnchorLocation, offsetX, offsetY = region:Anchor()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns information about the current anchor point settings for this region.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>anchorLocation</code> (String)
+The location in which this region has attached itself to the parent or relative
+object. There are nine valid values: 
+<ul>
+<li>"TOP", "RIGHT", "BOTTOM", "LEFT": attached to center points of each respective side.</li>
+<li>"TOPRIGHT", "TOPLEFT", "BOTTOMLEFT", "BOTTOMRIGHT": attached to corners of 
+the parent region.</li>
+<li>"CENTER": attached to the center point of the parent/relative region.</li>
+</ul></li>
+<li><code>relativeToRegion</code> (Region)
+The region object this region is attached to.</li>
+<li><code>relativeAnchorLocation</code> (String)
+The location which the region's anchorLocation is attached to on the <code>relativeToRegion</code>.
+There are ten valid values: 
+<ul>
+<li>"TOP", "RIGHT", "BOTTOM", "LEFT": attach to center points of each respective side.</li>
+<li>"TOPRIGHT", "TOPLEFT", "BOTTOMLEFT", "BOTTOMRIGHT": attach to corners of 
+the parent region.</li>
+<li>"CENTER": attach to the center point of the parent/relative region.</li>
+<li>"ALL": the region will scale with its parent/relative region.</li>
+</ul></li>
+<li><code>offsetX</code> (Number)
+The X offset of anchorLocation from relativeAnchorLocation. Negative values mean
+to the left, positive means to the right.</li>
+<li><code>offsetY</code> (Number)
+The Y offset of anchorLocation from relativeAnchorLocation. Negative values mean
+down, positive means up.</li>
+</ul>
+
+<h2>Region:IsShown</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>isShown = region:IsShown()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li>isShown (Boolean)
+Whether the current region's shown property is true or false. Note that this
+doesn't necessarily guarantee that the object is visible (if the parent is
+hidden, this one will be as well).</li>
+</ul>
+
+<h2>Region:IsVisible</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>isVisible = region:IsVisible()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li>isVisible (Boolean)
+Whether the current region is visible on-screen. A region is only visible if all its parents are visible. This is separate from Show() which enables that a region becomes visible if all parents are visible.</li>
+</ul>
+
+<h2>Region:SortStrata</h2>
+
+<h2>Region:Alpha</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>opacity = region:Alpha()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Gets the alpha opacity of this region. </p>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>opacity</code> (Number)
+Opacity [0,1], with 0 being transparent and 1 being opaque. </li>
+</ul>
+
+<h2>Region:SetAlpha</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:SetAlpha(opacity)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Set the alpha opacity of this region. </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>opacity</code> (Number)
+Opacity [0,1], with 0 being transparent and 1 being opaque. </li>
+</ul>
+
+<h2>Region:Texture</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:Texture()
+region:Texture("imageName.ext")
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Instantiates and sets a new texture object which is tied to this region. </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>imageName.ext</code> (String, optional)
+Optionally takes an image name of an image available in the system resources
+folder.</li>
+</ul>
+
+<h2>Region:TextLabel</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:TextLabel()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Instantiates and sets a name text label object inside of this region.</p>
+
+<h2>Region:Lower</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:Lower()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Lower this region on the viewing hierarchy. This is useful if two regions have the 
+same visibility and they should be higher / lower than another.</p>
+
+<h2>Region:Raise</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:Raise()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Raise this region in the viewing hierachy. See Lower()</p>
+
+<h2>Region:IsTopLevel</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>isTopLevel = region:IsTopLevel()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>isTopLevel</code> (Boolean)
+  True or false if the region is the highest for the given page.</li>
+</ul>
+
+<h2>Region:MoveToTop</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:MoveToTop()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Moves this region to the top of the page viewing hierarchy.</p>
+
+<h2>Region:EnableClamping</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:EnableClamping(doEnableClamping)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>If enabled, the region can never be dragged outside of the screen boundaries. </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>doEnableClamping</code> (Boolean)
+Whether to enable clamping or not.</li>
+</ul>
+
+<h2>Region:RegionOverlap</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>isOverlapping = region:RegionOverlap(otherRegion)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Helper function to check whether two regions are overlapping eachother. </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>otherRegion</code> (Region)
+The region to compare against to see if the two are overlapping eachother.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>isOverlapping</code> (Boolean)
+Whether the regions are overlapping.</li>
+</ul>
+
+<h2>Region:UseAsBrush</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:UseAsBrush()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Given a region, use this as a draggable "brush" object to paint to. If a texture
+hasn't been instantiated for this region already, it will give it a default one.</p>
+
+<h2>Region:EnableClipping</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:EnableClipping(doEnable)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Enables or disables clipping for the region. In other words, clipping enabled
+means that only parts of the region that are within the current clip region will
+be viewable on screen</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>doEnable</code> (Boolean)
+Whether to enable clipping for this region.</li>
+</ul>
+
+<h2>Region:ClipRegion</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>leftX, bottomY, width, height = region:ClipRegion
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Gets the current clip region's bounding box.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>leftX</code> (Number)
+The left X pixel offset from the containing page.</li>
+<li><code>bottomY</code> (Number)
+The bottom Y pixel offset from the containing page.</li>
+<li><code>width</code> (Number)
+The width of the clipping region in pixels.</li>
+<li><code>height</code> (Number)
+The height of the clipping region in pixels.</li>
+</ul>
+
+<h2>Region:SetClipRegion</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>region:SetClipRegion(leftX, bottomY, width, height)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Sets the current clip region's bounding box.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>leftX</code> (Number)
+The left X pixel offset from the containing page.</li>
+<li><code>bottomY</code> (Number)
+The bottom Y pixel offset from the containing page.</li>
+<li><code>width</code> (Number)
+The width of the clipping region in pixels.</li>
+<li><code>height</code> (Number)
+The height of the clipping region in pixels.</li>
+</ul>
+
+<h1>Event handling</h1>
+
+<h2>OnDragStart</h2>
+
+<h3>Description</h3>
+
+<p>Fires when a region starts being dragged. This is requires that the region has been made movable via EnableMoving().</p>
+
+<h2>OnDragStop</h2>
+
+<h3>Description</h3>
+
+<p>Fires when a region stops being dragged. </p>
+
+<h2>OnEnter</h2>
+
+<h3>Description</h3>
+
+<p>Fires when it has been detected that an input device has entered a given region.</p>
+
+<h2>OnLeave</h2>
+
+<h3>Description</h3>
+
+<p>Fires when it has been detected that an input device has left a given region.</p>
+
+<h2>OnTouchDown</h2>
+
+<h3>Description</h3>
+
+<p>Fires when a touch event happens inside a region that takes input. This must be enabled via EnableInput(). This will only be triggered for the topmost region that takes input.</p>
+
+<h2>OnTouchUp</h2>
+
+<h3>Description</h3>
+
+<p>Fires when a touch event is released while inside a region that takes input. THis must be enabled via EnableInput(). This will only be triggered for the topmost region that takes input.</p>
+
+<h2>OnDoubleTap</h2>
+
+<h3>Description</h3>
+
+<p>Fires when a double-tap touch event is performed while inside a region that takes input. This must be enabled via EnableInput(). This will only be triggered for the topmost region that takes input.</p>
+
+<h2>OnHide</h2>
+
+<h3>Description</h3>
+
+<p>Fires when an object has been hidden.</p>
+
+<h2>OnShow</h2>
+
+<h3>Description</h3>
+
+<p>Fires when an object is made to be shown. Note that this is different from being
+visible; if the parent object is still invisible then this will still fire; however
+the object itself will not be actually visible on screen.</p>
+
+<h2>OnAccelerate</h2>
+
+<h3>Handler Synopsis</h3>
+
+<pre><code>function(region,x, y, z)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Fires when an acceleration event is detected. No guarantees are made about the frequency
+of its updates. </p>
+
+<h2>OnHeading</h2>
+
+<h3>Handler Synopsis</h3>
+
+<pre><code>function(region,x,y, z, north)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Fires when the heading for the given device changes. Note that this is only possible
+if the device supports compass directions.</p>
+
+<h2>OnLocation</h2>
+
+<h3>Handler Synopsis</h3>
+
+<pre><code>function(region,latitude, longitude)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Fires when the location of the given device changes. Note this is only possible 
+with a device which supports GPS coordinate finding.</p>
+
+<h2>OnHorizontalScroll</h2>
+
+<h3>Handler Synopsis</h3>
+
+<pre><code>function(region, scrollspeedX)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Fires when a given region is scrolled horizontally. This handler returns scrollspeedX,
+the velocity of the current scroll.</p>
+
+<h2>OnVerticalScroll</h2>
+
+<h3>Handler Synopsis</h3>
+
+<pre><code>function(region, scrollspeedY)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Fires when a given region is scrolled vertically. This handler returns scrollspeedY,
+the velocity of the current scroll.</p>
+
+<h2>OnPageEntered</h2>
+
+<h3>Description</h3>
+
+<p>Fires when the page that the region belongs to has been entered into.</p>
+
+<h2>OnPageLeft</h2>
+
+<h3>Description</h3>
+
+<p>Fires when the page that the region belongs to is left. </p>
+
+<p><a href="overview.html">urMus API Overview</a></p>

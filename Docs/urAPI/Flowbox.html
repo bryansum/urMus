@@ -1,0 +1,415 @@
+<h1>Flowbox API</h1>
+
+<p>These functions are members of any created Flowbox.</p>
+
+<h2>Flowbox:Name</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>flowboxName = flowbox:Name()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the name of the <code>flowbox</code> given as input</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>flowboxName (String)
+The name of the flowbox</li>
+</ul>
+
+<h2>Flowbox:NumIns</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>numIns = flowbox:NumIns()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the number of inlets for this given flowbox.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>numIns (String)
+The number of inlets for this flowbox.</li>
+</ul>
+
+<h2>Flowbox:NumOuts</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>numOuts = flowbox:NumOuts()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the number of outlets for this given flowbox.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>numOuts (String)
+The number of outlets for this flowbox.</li>
+</ul>
+
+<h2>Flowbox:Ins</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>insName1, insName2, ... insNameN = flowbox:Ins()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the names of N flowbox inputs.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>insName1 .. insNameN</code> (String)
+Name of the input flowboxes. </li>
+</ul>
+
+<h2>Flowbox:Outs</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>outName1, outName2, ... = flowbox:Outs()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>outName1, outName2, ...</code> (String)
+Returns the anems of the flowbox outputs.</li>
+</ul>
+
+<h2>Flowbox:SetPushLink</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>didLink = flowbox:SetPushLink(outIndex, targetObject, targetInIndex)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Adds a link between the this flowbox's outIndex to the targetObject's inIndex.
+In other words, updates from this flowbox's output will be sent to the target 
+object's input. </p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>outIndex</code> (Number)
+Index number with which we desire to connect our flowbox outwards.</li>
+<li><code>targetObject</code> (Flowbox)</li>
+<li><code>targetInIndex</code> (Number)
+The input index number of the target which we desire to link up to.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>didLink</code> (Boolean)
+True if a push link was successfully created between the two; false if an error
+occurred. This would happen if the outIndex for this flowbox was invalid or 
+the in index for the target was invalid. </li>
+</ul>
+
+<h2>Flowbox:SetPullLink</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>didLink = flowbox:SetPullLink(inIndex, targetObject, targetOutIndex)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Adds a pull link between the this flowbox's input index to the targetObject's output
+index.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>inIndex</code> (Number)
+Index number for this flowbox to receive pull events from.</li>
+<li><code>targetObject</code> (Flowbox)</li>
+<li><code>targetOutIndex</code> (Number)
+The output index number of the target which will send out pull events.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>didLink</code> (Boolean)
+True if a pull link was successfully created between the two; false if an error
+occurred. This would happen if the inIndex for this flowbox was invalid or 
+the outIndex for the target was invalid. </li>
+</ul>
+
+<h2>Flowbox:RemovePushLink</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>didRemoveLink = flowbox:RemovePushLink(outIndex, targetObject, targetInIndex)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Removes a link between the this flowbox's outIndex to the targetObject's inIndex.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>outIndex</code> (Number)
+Output index of our connected link for this flowbox.</li>
+<li><code>targetObject</code> (Flowbox)</li>
+<li><code>targetInIndex</code> (Number)
+The input index number of the target which is linked up to.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>didRemoveLink</code> (Boolean)
+True if a push link was successfully removed; false if an error
+occurred. This would happen if the outIndex for this flowbox was invalid or 
+the in index for the target was invalid.</li>
+</ul>
+
+<h2>Flowbox:RemovePullLink</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>didRemoveLink = flowbox:SetPullLink(inIndex, targetObject, targetOutIndex)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Removes a pull link between the this flowbox's input index to the targetObject's output
+index.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>inIndex</code> (Number)
+Index number for this flowbox to receive pull events from.</li>
+<li><code>targetObject</code> (Flowbox)</li>
+<li><code>targetOutIndex</code> (Number)
+The output index number of the target which will send out pull events.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>didRemoveLink</code> (Boolean)
+True if a pull link was successfully removed; false if an error
+occurred. This would happen if the inIndex for this flowbox was invalid or 
+the outIndex for the target was invalid.</li>
+</ul>
+
+<h2>Flowbox:IsPushed</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>isPushed = flowbox:IsPushed(outIndex, targetObject, targetInIndex)
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>isPushed</code> (Boolean)
+Returns whether the given tuple of (outIndex, target, and targetInIndex) is currently
+being pushed or not.</li>
+</ul>
+
+<h2>Flowbox:IsPulled</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>isPulled = flowbox:IsPulled(inIndex, targetObject, targetOutIndex)
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>isPulled</code> (Boolean)
+Returns whether the given tuple of (inIndex, targetObject, targetOutIndex) is currently
+being pushed or not.</li>
+</ul>
+
+<h2>Flowbox:IsPushing</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>isPushing = flowbox:IsPushing(index)
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>isPushing</code> (Boolean)
+Whether the given flowbox is pushing out of the given index.</li>
+</ul>
+
+<h2>Flowbox:IsPulling</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>isPulling = flowbox:IsPulling(index)
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>isPulling</code> (Boolean)
+Whether the given flowbox is currently pulling into the given index.</li>
+</ul>
+
+<h2>Flowbox:Push</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>flowbox:Push(data)
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Pushes out a given value to all the flowbox's outs. Currently only well defined for the Push flowbox.</p>
+
+<h3>Arguments</h3>
+
+<ul>
+<li><code>data</code> (Number)
+The data to be output to the given flowbox.</li>
+</ul>
+
+<h2>Flowbox:Get</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>data = flowbox:Get()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Gets the latest data received from a self-clocking sink. Currenly only well defined for the Vis flowbox.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>data</code> (Number)
+The last data entry pulled by the flowbox.</li>
+</ul>
+
+<h2>Flowbox:Pull</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>data = flowbox:Pull()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Pulls the dataflow and returns the data received. Currenly only well defined for the Pull flowbox.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>data</code> (Number)
+The data entry pulled by the flowbox.</li>
+</ul>
+
+<h2>Flowbox:IsInstantiable</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>isInstantiable = flowbox:IsInstantiable()
+</code></pre>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>isInstantiable</code> (Boolean)
+Whether this flowbox type can be instantiated or not.</li>
+</ul>
+
+<h2>Flowbox:InstanceNumber</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>number = flowbox:InstanceNumber()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns the instance number of the flowbox. This is a monotonically increasing 
+number assigned to each instantiated flowbox, and can be used to uniquely 
+identify itself.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>number</code> (Number) 
+This flowbox's unique identifier.</li>
+</ul>
+
+<h2>Flowbox:NumberInstances</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>numInstances = flowbox:NumberInstances()
+</code></pre>
+
+<h3>Description</h3>
+
+<h3>Returns</h3>
+
+<ul>
+<li><code>numInstances</code> (Number)
+The total number of instances instantiated for this flowbox. </li>
+</ul>
+
+<h2>Flowbox:Couple</h2>
+
+<h3>Synopsis</h3>
+
+<pre><code>in, out = flowbox:Couple()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns which in and out index are coupled (that is will propagate frame rates.) Returns nil if no couple exists.</p>
+
+<h3>Return</h3>
+
+<ul>
+<li><code>in</code> (Number)
+The index of the inlet which is coupled to the outlet.</li>
+<li><code>out</code> (Number)
+The index of the outlet which is coupled to the inlet.</li>
+</ul>
+
+<h2>Flowbox:IsCoupled</h2>
+
+<h1>Synopsis</h1>
+
+<pre><code>iscoupled = flowbox:Couple()
+</code></pre>
+
+<h3>Description</h3>
+
+<p>Returns if the flowbox has a coupled pair (i.e. an inlet/outlet pair which will propagate frame rates).</p>
+
+<h3>Return</h3>
+
+<ul>
+<li><code>iscoupled</code> (Boolean)
+Returns true if there exists an inlet/outlet pair which is coupled.</li>
+</ul>
+
+<p><a href="overview.html">urMus API Overview</a></p>
