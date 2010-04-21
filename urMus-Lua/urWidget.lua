@@ -1,5 +1,11 @@
-dofile(SystemPath("helpers.lua"))
-req("Animate")
+-- urWidget.lua
+-- Simple interaction GUI wigets
+-- Current support: Tooltip, ContextMenu
+-- Created by Bryan Summersett on 3/28/2010
+-- Minor modifications by Georg Essl on 4/4/2010
+
+dofile(SystemPath("urHelpers.lua"))
+req("urAnimate")
 
 if not Widget then Widget = {} end
 
@@ -73,16 +79,30 @@ Widget.Tooltip= function(text, opts)
   local fs = opts['fsize'] or 12
   local height = opts['h'] or fs*2
   local parent = opts['parent'] or UIParent
-  local tt = make_region({h=height,
+  local tt = make_region({h=height, w=180,
                           color=opts['bg_color'] or 'white',
                           alpha=0,
-                          label={text=text,color=opts['text_color'] or 'grey'}})  
+                          label={text=text,color=opts['text_color'] or 'grey'}}) 
+  tt:SetLayer("TOOLTIP")
+  tt.tl:SetHorizontalAlign("CENTER")
   local anim = nil
   local enterFn = function(self) 
       -- get mouse input position and set anchor at
-      -- BOTTOMLEFT UIParent inputx, inputy
+      -- ypos..xpos UIParent inputx, inputy
       local x,y = InputPosition()
-      tt:SetAnchor('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', x, y)
+	  local xpos
+	  local ypos
+	  if x<ScreenWidth()/2 then -- Figure out smart positioning of tooltip so it is inside the screen.
+		xpos = "LEFT"
+	  else
+	    xpos = "RIGHT"
+	  end
+	  if y<ScreenHeight()/2 then
+		ypos = "BOTTOM"
+	  else
+	    ypos = "TOP"
+	  end
+	  tt:SetAnchor(ypos..xpos, UIParent, 'BOTTOMLEFT', x, y)
 
       if anim then anim:Cancel() end
       anim = Timer.start(0.25,function()

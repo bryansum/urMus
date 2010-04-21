@@ -6,7 +6,6 @@
 -- timer = Timer.create(5, callbackfn)
 -- timer:Start()
 -- or timer = Timer.start(5,callbackfn)
-dofile(SystemPath("helpers.lua"))
 
 if not Timer then Timer = {
   create = function(dur,callback)
@@ -16,8 +15,8 @@ if not Timer then Timer = {
       remaining = remaining - elapsed
       if remaining < 0 then el:Cancel(); callback() end
     end
-    function el:Start() remaining = dur; add_event(el, "OnUpdate", interval) end
-    function el:Cancel() remove_event(el, "OnUpdate", interval) end
+    function el:Start() remaining = dur; el:Handle("OnUpdate", interval) end
+    function el:Cancel() el:Handle("OnUpdate", nil) end
     return el
   end,
 
@@ -39,7 +38,7 @@ if not Animate then Animate = {
     end,
 
     updateAlpha = function(el,to,from)
-      from = from or el:GetAlpha()
+      from = from or el:Alpha()
       return function(p)el:SetAlpha(Animate.interpolate(from,to,p)) end
     end,
     
@@ -67,7 +66,7 @@ if not Animate then Animate = {
       local cb = opts.cb or nil -- function callback
       local after = opts.after or nil
       local remaining = dur
-      local el = Region('region', 'anim', UIParent)
+      local el = Region('region', 'timer', UIParent)
       local function interval(el, elapsed)
           remaining = remaining - elapsed
           local pos = (dur-remaining)/dur; if pos > 1 then pos = 1 end
@@ -77,9 +76,9 @@ if not Animate then Animate = {
               if after then after(el) end
           end
       end
-
-      function el:Start() remaining = dur; add_event(el, "OnUpdate", interval) end      
-      function el:Cancel() remove_event(el, "OnUpdate", interval) end
+      
+      function el:Cancel() el:Handle("OnUpdate", nil) end
+      function el:Start() remaining = dur; el:Handle("OnUpdate", interval) end
       
       return el
     end,

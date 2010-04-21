@@ -1,3 +1,6 @@
+-- urHelpers.lua
+-- Set of helper functions and commonly used functions wrapped into single calls
+-- Created by Bryan Summersett on 3/28/2010
 
 function table.copy(t)
   local t2 = {}
