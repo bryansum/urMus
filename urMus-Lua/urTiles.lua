@@ -1,15 +1,19 @@
+local dopaint = false
 
 local random = math.random
 function Paint(self)
+	if not dopaint then return end
 	local x,y = InputPosition()
+	x = x*320.0/ScreenWidth() -- Converting texture to screen coordinates (requires for iPad as they mismatch there)
+	y = y*480.0/ScreenHeight()
 	local x2,y2
 	
-	x2 = x - self:Left()
-	y2 = y - self:Bottom()
+	x2 = x - self:Left()*320.0/ScreenWidth()
+	y2 = y - self:Bottom()*480.0/ScreenHeight()
 	x2 = 2*x2
 	y2 = 2*y2
 
-	if not self.moving and x >= self:Left() and x < self:Right() and y >= self:Bottom() and y < self:Top()  then
+	if not self.moving and x >= self:Left()*320.0/ScreenWidth() and x < self:Right()*320.0/ScreenWidth() and y >= self:Bottom()*480.0/ScreenHeight() and y < self:Top()*480.0/ScreenHeight()  then
 		if x2 ~= self.fingerposx or y2 ~= self.fingerposy then
 --			brush1.t:SetBrushSize(32);
 --			self.texture:SetBrushColor(255,127,0,30)
@@ -18,6 +22,30 @@ function Paint(self)
 	end
 
 	self.fingerposx, self.fingerposy = x2, y2
+	DPrint(x2.." "..y2)
+end
+
+function BrushDown(self)
+	dopaint = true
+	for y=1,2 do
+		for x=1,2 do
+			local i = (x-1)*2+y
+			local x1,y1 = InputPosition()
+			x1 = x1*320.0/ScreenWidth() -- Converting texture to screen coordinates (requires for iPad as they mismatch there)
+			y1 = y1*480.0/ScreenHeight()
+			local x2,y2
+
+			x2 = x1 - tilebackdropregion[i]:Left()*320.0/ScreenWidth()
+			y2 = y1 - tilebackdropregion[i]:Bottom()*480.0/ScreenHeight()
+			x2 = 2*x2
+			y2 = 2*y2
+			tilebackdropregion[i].fingerposx, tilebackdropregion[i].fingerposy = x2,y2
+		end
+	end
+end
+
+function BrushUp(self)
+	dopaint = false
 end
 
 function Clear(self)
@@ -53,10 +81,15 @@ for y=1,2 do
 		tilebackdropregion[i].texture:SetTexCoord(0,0.63,0.94,0.0);
 		tilebackdropregion[i]:Handle("OnUpdate", Paint);
 		tilebackdropregion[i]:Handle("OnDoubleTap", ToggleMovable);
+		tilebackdropregion[i]:Handle("OnTouchDown", BrushDown)
+		tilebackdropregion[i]:Handle("OnTouchUp", BrushUp)
 		tilebackdropregion[i]:EnableInput(true);
 		tilebackdropregion[i]:Show();
 		tilebackdropregion[i].texture:SetBrushColor(255,127,0,30)
 		tilebackdropregion[i].fingerposx, tilebackdropregion[i].fingerposy = InputPosition()
+		tilebackdropregion[i].fingerposx = tilebackdropregion[i].fingerposx*320.0/ScreenWidth() -- Converting texture to screen coordinates (requires for iPad as they mismatch there)
+		tilebackdropregion[i].fingerposy = tilebackdropregion[i].fingerposy*480.0/ScreenHeight()
+		tilebackdropregion[i].texture:Clear(1,1,1)
 	end
 end
 --tilebackdropregion[i].texture:Clear(0.8,0.8,0.8);

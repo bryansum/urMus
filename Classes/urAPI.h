@@ -164,6 +164,7 @@ typedef struct urAPI_Region
 		int OnDoubleTap; // (UR!)
 		// All UR!
 		int OnAccelerate;
+		int OnNetIn;
 #ifdef SANDWICH_SUPPORT
 		int OnPressure;
 #endif
@@ -190,6 +191,7 @@ urAPI_Region_t* findRegionXScrolled(float x, float y, float dx);
 urAPI_Region_t* findRegionYScrolled(float x, float y, float dy);
 bool callAllOnUpdate(float time);
 bool callAllOnAccelerate(float x, float y, float z);
+bool callAllOnNetIn(float a);
 #ifdef SANDWICH_SUPPORT
 bool callAllOnPressure(float p);
 #endif

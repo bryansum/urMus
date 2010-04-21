@@ -194,27 +194,21 @@ Maximum number of pages supported by the current urMus built.
 Region
 -----------
 ### Synopsis
-    newFrame = Region("frameType"[, "frameName"[, parentFrame[, "inheritsFrame"]]])
+    newRegion = Region(["regionType", "regionName", parentRegion])
 ### Description
 Creates a rectangular region.
 ### Arguments
 - frameType (String)
-    Type of the frame to be created (XML tag name): "Frame", "Button", etc. 
+    Type of the region to be created. Currently unused. 
 - frameName (String)
-    Name of the newly created frame. If nil, no frame name is assigned. 
-    The function will also set a global variable of this name to point to newly created frame. 
-- parentFrame (Frame)
-    The frame object that will be used as the created Frame's parent
+    Name of the newly created frame. If nil, no frame name is assigned. This helps to debug frames by being able to identify them by custom names.
+- parentRegion (Region)
+    The region object that will be used as the created Region's parent
     (cannot be a string!) Does not default to UIParent if given nil.
-- inheritsFrame (String)
-    A comma-delimited list of names of virtual frames to inherit
-    from (the same as in XML). If nil, no frames will be inherited. These
-    frames cannot be frames that were created using this function, they must
-    be created using XML with virtual="true" in the tag. 
 
 ### Returns
-  - newFrame (Frame)
-    A reference to the newly created frame. 
+  - newRegion (Region)
+    A reference to the newly created region. 
 
 NumRegions
 ------------
@@ -228,17 +222,17 @@ InputFocus
 ### Synopsis
     region = InputFocus()
 ### Description
-Returns the region that is currently receiving input events. The frame must have EnableInput(true).
+Returns the region that is currently receiving input events. The region must have EnableInput(true).
 
 HasInput
 -----------
 ### Synopsis
-    isOver = HasInput(frame, [topOffset, bottomOffset, leftOffset, rightOffset])
+    isOver = HasInput(region, [topOffset, bottomOffset, leftOffset, rightOffset])
 ### Description
 Determines whether or not the input is over the specified region. 
 ### Arguments
-- frame (Frame)
-    The frame (or frame-derived object such as Buttons, etc) to test with 
+- region (Region)
+    The region (or region-derived object such as Buttons, etc) to test with 
 - topOffset (Number, optional)
     The distance from the top to include in calculations 
 - bottomOffset (Number, optional) 
@@ -250,7 +244,7 @@ Determines whether or not the input is over the specified region.
 
 ### Returns
 - isOver (Boolean) 
-    True if mouse is over the frame (with optional offsets), false otherwise. 
+    True if mouse is over the region (with optional offsets), false otherwise. 
 
 InputPosition
 -----------------

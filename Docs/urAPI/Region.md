@@ -1,6 +1,6 @@
 Region API
 =========
-These functions are members of any created region.
+These functions are members of any created region. Some aspects of urMus Regions are inspired by the concept of a frame in the WoW addon API. For example arguments to region creation or layering are compatible.
 
 Region:Handle
 ---------

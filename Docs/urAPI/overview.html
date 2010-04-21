@@ -1,4 +1,30 @@
-<h1>urMus API Overview</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>urMus API Overview &laquo; urMus API</title>
+	<link rel="stylesheet" href="styles.css" type="text/css" media="screen" charset="utf-8">
+	<!-- Date: 2010-03-16 -->
+</head>
+<body>
+<body bgcolor=#ffffff text=#000000>
+<center>
+<font size="4" face="Trebuchet MS">ur<span
+style='color:#548DD4'>Mus</span></font><font size="4" face="Verdana"> - Audio and Media Interactions and Interfaces on Mobile Phones</font><br>
+<hr>
+<br>
+<img src="../images/urMusLogo.png" alt="urMus"><br>
+<br>
+<font size="4" face="Verdana"> API Documentation </font>
+<br>
+<hr width="350">
+  <ul class="navigation">
+  <li><a href="../documentation.html">Main documentation</a></li>
+  <li><a href="overview.html">urMus API overview</a></li>
+</ul>
+
+</center>
+  <h1>urMus API Overview</h1>
 
 <p>This document provides a high-level overview of the different objects present
 in the urMus system. Currently the API is alpha grade. This means that any aspect of it is subject to change in future revisions. However large parts of the API are designed as intended and we expect good parts of it to remain stable. Aspects that are replaced or extended will likely have functionaly equivalent ways to achieve what the current API offers.</p>
@@ -9,7 +35,7 @@ in the urMus system. Currently the API is alpha grade. This means that any aspec
 
 <h3>Authors</h3>
 
-<p>This documentation was written by Bryan Summersett and Georg Essl.</p>
+<p>This documentation was written by Bryan Summersett and Georg Essl. Thanks to <a href="Credits.html">many many contributors</a>!</p>
 
 <h1>2D Interface and Interaction API</h1>
 
@@ -18,7 +44,7 @@ in the urMus system. Currently the API is alpha grade. This means that any aspec
 <p>A <a href="Region.html">Region</a> is the visual and multi-touch interaction unit of urMus. It serves as the basic unit for mapping
 graphic objects onto the display as well as the recipient of multi-touch and other interaction events. It can serve as a parent object for other regions,
 or as a container for a <a href="Texture.html">Texture</a> or a <a href="TextLabel.html">TextLabels</a>. The UIParent region is immutable and
-is created by the urMus system. </p>
+is created by the urMus system.</p>
 
 <h2><a href="Texture.html">Texture</a></h2>
 
@@ -32,9 +58,9 @@ is created by the urMus system. </p>
 
 <h2><a href="Flowbox.html">Flowbox</a></h2>
 
-<p>The <a href="Flowbox.html">Flowbox</a> is the fundamental unit of audio / data within urMus. This object can serve 
+<p>The <a href="Flowbox.html">Flowbox</a> is the fundamental unit of audio / data within urMus. This object can serve
 as a data source, a manipulator, or sink (outlet) and be connected vis push or pull
-links to other flowboxes, forming a graph of input -> output commands. </p>
+links to other flowboxes, forming a graph of input -> output commands.</p>
 
 <h1>Global API</h1>
 
@@ -43,3 +69,13 @@ links to other flowboxes, forming a graph of input -> output commands. </p>
 <p>The global API provides service functions or functions not associated with any instanciated object.</p>
 
 <p><a href="../documentation.html">urMus documentation</a></p>
+
+<center>
+  <ul class="navigation">
+  <li><a href="../documentation.html">Main documentation</a></li>
+  <li><a href="overview.html">urMus API overview</a></li>
+</ul>
+
+</center>
+</body>
+</html>

@@ -4,12 +4,21 @@ Credits
 ### Software Design and Code
 * Georg Essl
 
+### Lua support Code
+* Bryan Summersett
+* Georg Essl
+
 ### Interface Design
 * Georg Essl
 * Alexander Mueller
 
+### Sounds
+* Devin Kerr
+* Georg Essl
+
 ### Example faces
 * Alexander Mueller
+* Bryan Summersett
 * Devin Kerr
 * Eric Lapointe
 * Justin Crowell

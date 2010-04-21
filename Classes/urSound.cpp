@@ -69,6 +69,8 @@ ursSinkList urActiveDacArraySinkList;
 ursSinkList urActiveVisTickSinkList;
 ursSinkList urActiveDrainTickSinkList;
 ursSinkList urActiveDrainArraySinkList;
+ursSinkList urActiveNetTickSinkList;
+
 
 ursSinkList urActiveAudioFrameSinkList;
 
@@ -183,6 +185,21 @@ void urs_PullVis()
 	visoutdata = urs_PullActiveVisSinks();
 }
 
+double netindata = 0.0;
+double netoutdata = 0.0;
+
+double urs_PullActiveNetSinks()
+{
+	double res = netindata + urs_PullActiveSingleTickSinks(urActiveNetTickSinkList);
+	//	visindata = 0.0;
+	return res;
+}
+
+void urs_PullNet()
+{
+	netoutdata = urs_PullActiveNetSinks();
+}
+
 double pullindata = 0.0;
 
 double urs_PullActivePullSinks()
@@ -279,6 +296,26 @@ void callAllMicSingleTickSources(SInt16 data)
 	micobject->CallAllPushOuts(data/32768.0);
 }
 
+
+void callAllNetSingleTickSources(SInt16 data)
+{
+	netinobject->lastindata[0] = (float)data/128.0;//32768.0;
+	netinobject->CallAllPushOuts(data/128.0);//32768.0);
+}
+
+double NetIn_Tick(ursObject* gself)
+{
+	double res;
+	res = gself->lastindata[0];
+	
+	res += gself->CallAllPullIns();
+	return res;
+}
+
+double NetIn_Out(ursObject* gself)
+{
+	return gself->lastindata[0]+gself->CallAllPullIns();
+}
 
 
 
@@ -774,11 +811,13 @@ ursObject* compassobject;
 ursObject* locationobject;
 ursObject* touchobject;
 ursObject* micobject;
+ursObject* netinobject;
 ursObject* pushobject;
 ursObject* fileobject;
 
 ursObject* dacobject;
 ursObject* visobject;
+ursObject* netobject;
 ursObject* drainobject;
 ursObject* pullobject;
 
@@ -802,7 +841,7 @@ void urs_SetupObjects()
 	locationobject->AddOut("Lat", "TimeSeries", NULL, NULL, NULL); // Pushers cannot be ticked (oh the poetic justice)
 	locationobject->AddOut("Long", "TimeSeries", NULL, NULL, NULL); 
 	ursourceobjectlist.Append(locationobject);
-	touchobject = new ursObject("Touch", NULL, NULL, 0, 10, true);
+	touchobject = new ursObject("Touch", NULL, NULL, 0, 20, true);
 	touchobject->AddOut("X1", "TimeSeries", NULL, NULL, NULL); // Pushers cannot be ticked (oh the poetic justice)
 	touchobject->AddOut("Y1", "TimeSeries", NULL, NULL, NULL); 
 	touchobject->AddOut("X2", "TimeSeries", NULL, NULL, NULL); 
@@ -812,11 +851,24 @@ void urs_SetupObjects()
 	touchobject->AddOut("X4", "TimeSeries", NULL, NULL, NULL); 
 	touchobject->AddOut("Y4", "TimeSeries", NULL, NULL, NULL); 
 	touchobject->AddOut("X5", "TimeSeries", NULL, NULL, NULL);
-	touchobject->AddOut("Y5", "TimeSeries", NULL, NULL, NULL); 
+	touchobject->AddOut("Y5", "TimeSeries", NULL, NULL, NULL);
+	touchobject->AddOut("X6", "TimeSeries", NULL, NULL, NULL); // Pushers cannot be ticked (oh the poetic justice)
+	touchobject->AddOut("Y6", "TimeSeries", NULL, NULL, NULL); 
+	touchobject->AddOut("X7", "TimeSeries", NULL, NULL, NULL); 
+	touchobject->AddOut("Y7", "TimeSeries", NULL, NULL, NULL); 
+	touchobject->AddOut("X8", "TimeSeries", NULL, NULL, NULL); 
+	touchobject->AddOut("Y8", "TimeSeries", NULL, NULL, NULL); 
+	touchobject->AddOut("X9", "TimeSeries", NULL, NULL, NULL); 
+	touchobject->AddOut("Y9", "TimeSeries", NULL, NULL, NULL); 
+	touchobject->AddOut("X10", "TimeSeries", NULL, NULL, NULL);
+	touchobject->AddOut("Y10", "TimeSeries", NULL, NULL, NULL); 
 	ursourceobjectlist.Append(touchobject);
 	micobject = new ursObject("Mic", NULL, NULL, 0, 1, true);
 	micobject->AddOut("Out", "TimeSeries", NULL, NULL, NULL);
 	ursourceobjectlist.Append(micobject);
+	netinobject = new ursObject("NetIn", NULL, NULL, 0, 1, true);
+	netinobject->AddOut("Out", "Event", NetIn_Tick, NetIn_Out, NULL);
+	ursourceobjectlist.Append(netinobject);
 	pushobject = new ursObject("Push", NULL, NULL, 0, 1); // An event based source ("bang" in PD parlance)
 	pushobject->AddOut("Out", "Event", NULL, NULL, NULL);
 	ursourceobjectlist.Append(pushobject);
@@ -903,10 +955,11 @@ void urs_SetupObjects()
 	object->AddIn("Pos", "Time", Looper_Pos);
 	urmanipulatorobjectlist.Append(object);
 	
-	looprhythmobject = new ursObject("LoopRhythm", LoopRhythm_Constructor, LoopRhythm_Destructor,2,1);
+	looprhythmobject = new ursObject("LoopRhythm", LoopRhythm_Constructor, LoopRhythm_Destructor,3,1);
 	looprhythmobject->AddOut("Beats", "TimeSeries", LoopRhythm_Tick, LoopRhythm_Out, NULL);
 	looprhythmobject->AddIn("BMP", "Rate", LoopRhythm_SetHMP);
 	looprhythmobject->AddIn("Now", "Event", LoopRhythm_SetBeatNow);
+	looprhythmobject->AddIn("Pos", "Position", LoopRhythm_Pos);
 //	urmanipulatorobjectlist[lastmanipulatorobj++] = looprhythmobject;
 	urmanipulatorobjectlist.Append(looprhythmobject);
 	
@@ -927,7 +980,11 @@ void urs_SetupObjects()
 	visobject->AddIn("In", "TimeSeries", Vis_In);
 	ursinkobjectlist.Append(visobject);
 
-//	drainobject = new ursObject("Drain", NULL, NULL, 1, 0);
+	netobject = new ursObject("Net", NULL, NULL, 1, 0, true);
+	netobject->AddIn("In", "Event", Net_In);
+	ursinkobjectlist.Append(netobject);
+	
+	//	drainobject = new ursObject("Drain", NULL, NULL, 1, 0);
 //	drainobject->AddIn("In", "TimeSeries", Drain_In); // A rate based drain
 //	ursinkobjectlist.Append(drainobject);
 	
@@ -952,6 +1009,14 @@ void Dac_In(ursObject* gself, double in)
 void Vis_In(ursObject* gself, double in)
 {
 	visindata = in;
+}
+
+void Net_Send(float data);
+
+void Net_In(ursObject* gself, double in)
+{
+	netindata = in;
+	Net_Send(netindata);
 }
 
 void Drain_In(ursObject* gself, double in)
@@ -1237,7 +1302,7 @@ void OWF_SetPhase(ursObject* gself, double inphase)
 
 void* Sample_Constructor()
 {
-	UInt32 frate;
+//	UInt32 frate;
 	Sample_Data* self = new Sample_Data;
 	self->numsamples = 0;
 	self->activesample = 0;
@@ -1470,7 +1535,7 @@ void Sleigh_SetSleigh(ursObject* gself, double inSleigh)
 
 void* Looper_Constructor()
 {
-	UInt32 frate;
+//	UInt32 frate;
 	Looper_Data* self = new Looper_Data;
 	self->samplebuffer = new SInt16[MAX_LOOPER_DEFAULT];
 	self->len = 0;
@@ -1647,6 +1712,11 @@ void LoopRhythm_SetBeatNow(ursObject* gself, double indata)
 {
 	LoopRhythm_Data* self = (LoopRhythm_Data*)gself->objectdata;
 	self->loop->SetNow(norm2PositiveLinear(indata)); // No point in allowing negative beats.
+}
+
+void LoopRhythm_Pos(ursObject* gself, double indata)
+{
+	LoopRhythm_Data* self = (LoopRhythm_Data*)gself->objectdata;
 }
 
 // CircleMap

@@ -194,6 +194,16 @@ Pulls the dataflow and returns the data received. Currenly only well defined for
 - `data` (Number)
 	The data entry pulled by the flowbox.
 
+Flowbox:AddFile
+---------------
+### Synopsis
+	flowbox:AddFile(filename)
+### Description
+Adds a sound file to the file stack of a flowbox. Currently only well defined for the Sample flowbox.
+### Arguments
+- `filename` (String)
+	The filename of the sound file to be loaded.
+
 Flowbox:IsInstantiable
 ----------------------
 ### Synopsis

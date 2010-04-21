@@ -23,36 +23,13 @@ Sets the texture style for a given texture. If colors are specified a plain colo
     A number [0,255] describing the alpha transparency of the texture. 0 is fully
     transparent, 255 is opaque.
 
-Texture:SetGradient
--------------------
-### Synopsis
-    texture:SetGradient("orientation", minR, minG, minB, maxR, maxG, maxB)
-### Description
-Sets the texture to be a linear gradient in the given orientation. The texture
-will start at minRGB and end at maxRGB, with the linear interpolation between.
-### Arguments
-- `orientation` (String)
-    The orientation of the linear gradient. This should be one of "HORIZONTAL",
-    "VERTICAL", "TOP", "BOTTOM"
-- minR (Number)
-    A number [0,255] describing the intensity of red in the minimum texture color. 
-- minG (Number)
-    A number [0,255] describing the intensity of green in the minimum texture color. 
-- minB (Number)
-    A number [0,255] describing the intensity of blue in the minimum texture color. 
-- maxR (Number)
-    A number [0,255] describing the intensity of red in the maximum texture color. 
-- maxG (Number)
-    A number [0,255] describing the intensity of green in the maximum texture color. 
-- maxB (Number)
-    A number [0,255] describing the intensity of blue in the maximum texture color. 
-
-Texture:SetGradientAlpha
+Texture:SetGradientColor
 ------------------------
 ### Synopsis
-    texture:SetGradientAlpha("orientation", minR, minG, minB, minA, maxR, maxG, maxB, maxA)
+    texture:SetGradientColor("orientation", minR, minG, minB, minA, maxR, maxG, maxB, maxA)
 ### Description
-Same as `Texture:SetGradient`, but adds alpha transparency.
+Sets the texture to be a linear gradient in the given orientation. The texture
+will start at minRGBA and end at maxRGBA, with the linear interpolation between.
 ### Arguments
 - `orientation` (String)
     The orientation of the linear gradient. This should be one of "HORIZONTAL",
@@ -76,10 +53,10 @@ Same as `Texture:SetGradient`, but adds alpha transparency.
     A number [0,255] describing the alpha transparency of the maximum texture color. 0 is fully
     transparent, 255 is opaque.
 
-Texture:SetVertexColor
+Texture:SetSolidColor
 ----------------------
 ### Synopsis
-    texture:SetVertexColor(r,g,b[,a])
+    texture:SetSolidColor(r,g,b[,a])
 ### Description
 Sets the color of a texture to a solid color specified by the RGBA values. 
 ### Arguments
@@ -93,10 +70,10 @@ Sets the color of a texture to a solid color specified by the RGBA values.
     A number [0,255] describing the alpha transparency of the texture. 0 is fully
     transparent, 255 is opaque.
 
-Texture:VertexColor
+Texture:SolidColor
 ----------------------
 ### Synopsis
-    r, g, b, a = texture:VertexColor()
+    r, g, b, a = texture:SolidColor()
 ### Returns
 - r (Number)
     A number [0,255] describing the intensity of red in the texture color. 
@@ -165,26 +142,65 @@ Sets the blend mode for this texture. Defaults to "DISABLED".
     Sets the blend mode for this texture. Can be "DISABLED", "BLEND", "ALPHAKEY",
     "ADD", "MOD", or "SUB".
 
-Texture:Line
-------------
-### Synopsis
-    texture:Line(startX, startY, endX, endY)
-### Description
-If the region is enabled with Region:UseAsBrush(), draws a line of width 1 from 
-[startX,startY] to [endX,endY].
-### Arguments
-- `startX, startY, endX, endY` (Number)
-    The starting and ending coordinates of the line to be drawn on this texture. 
-
 Texture:Point
 -------------
 ### Synopsis
     texture:Point(x,y)
 ### Description
-If the region is enabled with Region:UseAsBrush(), draws a point at [x,y].
+Draws a point at [x,y]. If Region:UseAsBrush() is enabled, it uses the texture of that region as brush, else it draws a point of width set by Texture:SetBrushSize().
 ### Arguments
 - `x, y` (Number)
     Draws a point at coordinates x,y. 
+
+Texture:Line
+------------
+### Synopsis
+    texture:Line(startX, startY, endX, endY)
+### Description
+Draws a line of width set by SetBrushSize() from 
+[startX,startY] to [endX,endY].
+### Arguments
+- `startX, startY, endX, endY` (Number)
+    The starting and ending coordinates of the line to be drawn on this texture. 
+
+Texture:Ellipse
+---------------
+### Synopsis
+	texture:Ellipse(centerX, centerY. width, height)
+### Description
+Draws an ellipse at position [centerX,centerY] with a [width] and [height] into the current texture. If Region:UseAsBrush() is enabled, it uses the texture of that region as brush, else it draws a line of width set by Texture:SetBrushSize().
+### Arguments
+- `centerX, centerY, width, height` (Number)
+	The center, width and height of the ellipse to draw.
+
+Texture:Quad
+------------
+### Synopsis
+	texture:Quad(x1,y1,x2,y2,x3,y3,x4,y4)
+### Description
+Draws a closed quadrangle with corners [x1,y1], [x2,y2], [x3,y3], [x4,y4] into the current texture. If Region:UseASBrush() is enabled, it uses the teture of that region as brush, else it draws a line of width set by Texture:SertBrushSize().
+### Arguments
+- `x1, y1, x2, y2, x3, y3, x4, y4` (Number)
+	The coordiates of corners of a quadrangle to be drawn.
+
+Texture:Rect
+------------
+### Synopsis
+	texture:Rect(x,y,width ,height)
+### Description
+Draws a closed rectangle at position [x,y], with [width] and [height] into the current texture. If Region:UseASBrush() is enabled, it uses the teture of that region as brush, else it draws a line of width set by Texture:SertBrushSize().
+### Arguments
+- `x, y, width, height` (Number)
+	The coordiates and size of a rectangle to draw.
+
+Texture:SetFill
+---------------
+### Synopsis
+	texture:SetFill(fill)
+### Description
+Set if a close line drawing such as Quad, Rect or Ellipse is filled or not.
+### Arguments
+- `fill` (Boolean)
 
 Texture:Clear
 -------------
@@ -198,6 +214,8 @@ Texture:BrushSize
 -----------------
 ### Synopsis
     brushSizePx = texture:BrushSize()
+### Description
+Returns the current width of the brush used to draw with drawing functions such as Point, Line, Ellipse, Quad and Rect.
 ### Returns
 - `brushSizePx` (Number)
     Size of the brush in pixels. Defaults to 1
@@ -206,8 +224,21 @@ Texture:SetBrushSize
 --------------------
 ### Synopsis
     texture:SetBrushSize(brushSizePx)
+### Description
+Sets the width of the brush to be used by drawing functions such as Point, Line, Ellipse, Quad and Rect. Affects both texture brushes set with region:UseAsBrush() and pixel brushes.
 ### Arguments
 - `brushSizePx` (Number)
     Size of the brush in pixels. Defaults to 1
+
+Texture:SetBrushColor
+---------------------
+### Synopsis
+    texture:SetBrushColor(r,g,b,a)
+### Description
+Sets the color of the brush used for drawing functions such as Point, Line, Ellipse, Quad and Rect. Affects both texture brushes set with region:UseAsBrush() and pixel brushes.
+### Arguments
+- `r,g,b,a` (Number)
+    Color rgb components and alpha to be used by the brush.
+
 
 [urMus API Overview](overview.html)

@@ -14,14 +14,8 @@ local function ReInit(self)
 end
 
 -- Instantiating our pong background
-pongBGRegion = Region('Region', 'pongBGRegion', UIParent)
-pongBGRegion:SetWidth(ScreenWidth())
-pongBGRegion:SetHeight(ScreenHeight())
-pongBGRegion:SetLayer("BACKGROUND")
-pongBGRegion:SetAnchor('BOTTOMLEFT',0,0) -- why here?
-pongBGRegion.texture = pongBGRegion:Texture("PongBG.png")
-pongBGRegion.texture:SetTexCoord(0,0.63,0.94,0.0)
-pongBGRegion:Show()
+pongBGRegion = make_region({width:ScreenWidth(), height:ScreenHeight(), layer:"BACKGROUND", 
+  x:0,y:0, img:"PongBG.png"})
 pongBGRegion:Handle("OnPageEntered", ReInit)
 pongBGRegion:Handle("OnPageLeft", Shutdown)
 
@@ -56,21 +50,10 @@ function ShowPopup(note)
 	popuptextregion:Show()
 end
 
-popuptextregion=Region('region', 'popuptextregion', UIParent)
-popuptextregion:SetWidth(ScreenWidth())
-popuptextregion:SetHeight(48*2)
-popuptextregion:SetLayer("TOOLTIP")
-popuptextregion:SetAnchor('BOTTOMLEFT',0,ScreenHeight()/2-24) 
+popuptextregion = make_region({width:ScreenWidth(), height: 48*2, layer:'TOOLTIP',
+  x:0,y:ScreenHeight()/2-24,label:{color:{0,0,60,190},size: 48}})
 popuptextregion:EnableClamping(true)
 popuptextregion:Show()
-popuptextregion.textlabel=popuptextregion:TextLabel()
-popuptextregion.textlabel:SetFont("Trebuchet MS")
-popuptextregion.textlabel:SetHorizontalAlign("CENTER")
-popuptextregion.textlabel:SetLabelHeight(48)
-popuptextregion.textlabel:SetColor(0,0,60,190)
-popuptextregion.textlabel:SetShadowColor(0,0,0,190)
-popuptextregion.textlabel:SetShadowOffset(4,-6)
-popuptextregion.textlabel:SetShadowBlur(6.0)
 
 ShowPopup("urPong!")
 

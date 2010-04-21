@@ -27,6 +27,7 @@ double norm2PitchShift(double norm);
 void urs_PullActiveDacSinks(SInt16 *buff, UInt32 len);
 void urs_PullActiveAudioFrameSinks();
 double urs_PullActiveVisSinks();
+double urs_PullActiveNetSinks();
 void urs_PullActiveDrainSinks(UInt32 len);
 void urs_PullActiveDrainFrameSinks(UInt32 len);
 double urs_PullActiveDacSingleTickSinks();
@@ -304,6 +305,7 @@ private:
 
 void Dac_In(ursObject* gself, double in);
 void Vis_In(ursObject* gself, double in);
+void Net_In(ursObject* gself, double in);
 void Drain_In(ursObject* gself, double in);
 void Pull_In(ursObject* gself, double in);
 
@@ -392,6 +394,7 @@ double LoopRhythm_Out(ursObject* gself);
 void LoopRhythm_SetSampleRate(ursObject* gself, double indata);
 void LoopRhythm_SetHMP(ursObject* gself, double indata);
 void LoopRhythm_SetBeatNow(ursObject* gself, double indata);
+void LoopRhythm_Pos(ursObject* gself, double indata);
 
 void* CircleMap_Constructor();
 void CircleMap_Destructor(ursObject* gself);
@@ -418,9 +421,11 @@ void callAllLocationSources(double latitude, double longitude);
 void callAllTouchSources(double touch_x, double touch_y, int idx);
 void callAllMicSources(SInt16* buff, UInt32 len);
 void callAllMicSingleTickSources(SInt16 data);
+void callAllNetSingleTickSources(SInt16 data);
 void callAllPushSources(double indata);
 
 void urs_PullVis();
+void urs_PullNet();
 
 int urs_NumUrManipulatorObjects();
 const char* urs_GetManipulatorObjectName(int pos);
@@ -458,16 +463,19 @@ extern ursObject* compassobject;
 extern ursObject* locationobject;
 extern ursObject* touchobject;
 extern ursObject* micobject;
+extern ursObject* netinobject;
 extern ursObject* pushobject;
 extern ursObject* fileobject;
 
 extern ursObject* dacobject;
 extern ursObject* visobject;
+extern ursObject* netobject;
 extern ursObject* drainobject;
 extern ursObject* pullobject;
 
 extern ursSinkList urActiveDacTickSinkList;
 extern ursSinkList urActiveDacArraySinkList;
 extern ursSinkList urActiveVisTickSinkList;
+extern ursSinkList urActiveNetTickSinkList;
 
 #endif /* __URSOUND_H__ */

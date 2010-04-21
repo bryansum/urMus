@@ -13,7 +13,7 @@
 #include "lfs.h"
 
 // This enables video projector output. It's not official API hence not safe for app store.
-#define PROJECTOR_VIDEO
+//#define PROJECTOR_VIDEO
 
 #ifdef SANDWICH_SUPPORT
 #import "SandwichUpdateListener.h"
@@ -67,7 +67,7 @@ extern bool newerror;
 	
 	[glView startAnimation];
 
-	NSString *filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"urSleigh.lua"];
+	NSString *filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"urMus.lua"];
 	const char* filestr = [filePath UTF8String];
 	
 	if(luaL_dofile(lua, filestr)!=0)

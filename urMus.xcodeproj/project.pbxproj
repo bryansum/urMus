@@ -11,28 +11,18 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
-		233C91DA115EF9E200781595 /* Widget.lua in Resources */ = {isa = PBXBuildFile; fileRef = 233C91D9115EF9E200781595 /* Widget.lua */; };
-		233C9234115F1C5100781595 /* Cloud.lua in Resources */ = {isa = PBXBuildFile; fileRef = 233C9233115F1C5100781595 /* Cloud.lua */; };
-		233C923B115F1C5D00781595 /* cloud_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 233C9235115F1C5D00781595 /* cloud_bg.jpg */; };
-		233C923C115F1C5D00781595 /* cloud-drop3.png in Resources */ = {isa = PBXBuildFile; fileRef = 233C9236115F1C5D00781595 /* cloud-drop3.png */; };
-		233C923D115F1C5D00781595 /* cloud-drop2.png in Resources */ = {isa = PBXBuildFile; fileRef = 233C9237115F1C5D00781595 /* cloud-drop2.png */; };
-		233C923E115F1C5D00781595 /* cloud-drop1.png in Resources */ = {isa = PBXBuildFile; fileRef = 233C9238115F1C5D00781595 /* cloud-drop1.png */; };
-		233C923F115F1C5D00781595 /* cloud-rarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 233C9239115F1C5D00781595 /* cloud-rarrow.png */; };
-		233C9240115F1C5D00781595 /* cloud-larrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 233C923A115F1C5D00781595 /* cloud-larrow.png */; };
-		23BFB030115E9084007B4A51 /* helpers.lua in Resources */ = {isa = PBXBuildFile; fileRef = 23BFB02E115E9084007B4A51 /* helpers.lua */; };
-		23BFB031115E9084007B4A51 /* underscore.lua in Resources */ = {isa = PBXBuildFile; fileRef = 23BFB02F115E9084007B4A51 /* underscore.lua */; };
-		23C962021150836C00C30710 /* Animate.lua in Resources */ = {isa = PBXBuildFile; fileRef = 23C961FF1150836C00C30710 /* Animate.lua */; };
+		238E453A116CD9AC00647B8F /* cloud-drop1.png in Resources */ = {isa = PBXBuildFile; fileRef = 238E4533116CD9AC00647B8F /* cloud-drop1.png */; };
+		238E453B116CD9AC00647B8F /* cloud-drop2.png in Resources */ = {isa = PBXBuildFile; fileRef = 238E4534116CD9AC00647B8F /* cloud-drop2.png */; };
+		238E453C116CD9AC00647B8F /* cloud-drop3.png in Resources */ = {isa = PBXBuildFile; fileRef = 238E4535116CD9AC00647B8F /* cloud-drop3.png */; };
+		238E453D116CD9AC00647B8F /* cloud-larrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 238E4536116CD9AC00647B8F /* cloud-larrow.png */; };
+		238E453E116CD9AC00647B8F /* cloud-rarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 238E4537116CD9AC00647B8F /* cloud-rarrow.png */; };
+		238E453F116CD9AC00647B8F /* urCloud.lua in Resources */ = {isa = PBXBuildFile; fileRef = 238E4538116CD9AC00647B8F /* urCloud.lua */; };
+		238E4540116CD9AC00647B8F /* cloud_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 238E4539116CD9AC00647B8F /* cloud_bg.jpg */; };
 		28FD14FE0DC6FC130079059D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FD14FD0DC6FC130079059D /* EAGLView.mm */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		7700BFCD104AF4120025D43A /* connectarrow2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7700BFCC104AF4120025D43A /* connectarrow2.png */; };
 		7700C06B104B2DA70025D43A /* leftarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7700C069104B2DA70025D43A /* leftarrow.png */; };
 		7700C06C104B2DA70025D43A /* rightarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7700C06A104B2DA70025D43A /* rightarrow.png */; };
-		770391D510B4AA70005C4563 /* clock_sequencer.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 770391D310B4AA70005C4563 /* clock_sequencer.jpg */; };
-		770391D610B4AA70005C4563 /* cloud_sequencer.png in Resources */ = {isa = PBXBuildFile; fileRef = 770391D410B4AA70005C4563 /* cloud_sequencer.png */; };
-		770391D910B4AA98005C4563 /* urClockSeq.lua in Sources */ = {isa = PBXBuildFile; fileRef = 770391D810B4AA98005C4563 /* urClockSeq.lua */; };
-		770391DB10B4AAA6005C4563 /* urClouds.lua in Sources */ = {isa = PBXBuildFile; fileRef = 770391DA10B4AAA6005C4563 /* urClouds.lua */; };
-		770391DC10B4AAB3005C4563 /* urClockSeq.lua in Resources */ = {isa = PBXBuildFile; fileRef = 770391D810B4AA98005C4563 /* urClockSeq.lua */; };
-		770391DD10B4AAB3005C4563 /* urClouds.lua in Resources */ = {isa = PBXBuildFile; fileRef = 770391DA10B4AAA6005C4563 /* urClouds.lua */; };
 		7706EBAD1044E0E200E7D656 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7706EBAC1044E0E200E7D656 /* CoreLocation.framework */; };
 		770FD84B10AB51CF004B0967 /* flatbutton-64.png in Resources */ = {isa = PBXBuildFile; fileRef = 770FD84A10AB51CF004B0967 /* flatbutton-64.png */; };
 		770FD84D10AB51F5004B0967 /* urPads.lua in Sources */ = {isa = PBXBuildFile; fileRef = 770FD84C10AB51F5004B0967 /* urPads.lua */; };
@@ -44,6 +34,9 @@
 		7743E36710BAEE79005F36BF /* urScrollList.lua in Sources */ = {isa = PBXBuildFile; fileRef = 7743E36610BAEE79005F36BF /* urScrollList.lua */; };
 		7743E37D10BB0642005F36BF /* urScrollList.lua in Resources */ = {isa = PBXBuildFile; fileRef = 7743E36610BAEE79005F36BF /* urScrollList.lua */; };
 		7743E38F10BB147D005F36BF /* lfs.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7743E38E10BB147D005F36BF /* lfs.mm */; };
+		776D4CED115172E8007D4D9B /* urAnimate.lua in Sources */ = {isa = PBXBuildFile; fileRef = 776D4CEB115172E8007D4D9B /* urAnimate.lua */; };
+		776D4D1C11517428007D4D9B /* urAnimate.lua in Resources */ = {isa = PBXBuildFile; fileRef = 776D4CEB115172E8007D4D9B /* urAnimate.lua */; };
+		7777E3221165CC480013B337 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7777E3211165CC480013B337 /* MainWindow-iPad.xib */; };
 		7778B1EB0FED04AF00F491D3 /* lapi.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7778B1B40FED04AF00F491D3 /* lapi.mm */; };
 		7778B1EC0FED04AF00F491D3 /* lauxlib.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7778B1B60FED04AF00F491D3 /* lauxlib.mm */; };
 		7778B1ED0FED04AF00F491D3 /* lbaselib.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7778B1B80FED04AF00F491D3 /* lbaselib.mm */; };
@@ -95,6 +88,7 @@
 		77AC7A6D1081C37A0071ECDE /* beatbox-mono.wav in Resources */ = {isa = PBXBuildFile; fileRef = 77AC7A6C1081C37A0071ECDE /* beatbox-mono.wav */; };
 		77B354E310A8D197008924DC /* urPlayground.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B354E210A8D197008924DC /* urPlayground.lua */; };
 		77B354E410A8D1A0008924DC /* urPlayground.lua in Resources */ = {isa = PBXBuildFile; fileRef = 77B354E210A8D197008924DC /* urPlayground.lua */; };
+		77B3A84D114F056F0073CCCF /* TCPServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77B3A84C114F056F0073CCCF /* TCPServer.mm */; };
 		77B3D14B10C7192C00D5FB4B /* UIApplication+TVOut.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B3D14A10C7192C00D5FB4B /* UIApplication+TVOut.m */; };
 		77B3D17D10C7196000D5FB4B /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77B3D17C10C7196000D5FB4B /* MediaPlayer.framework */; };
 		77B56D5D10894E49008931AC /* SKINI-msg.h in Resources */ = {isa = PBXBuildFile; fileRef = 77B56CDD10894E48008931AC /* SKINI-msg.h */; };
@@ -204,6 +198,12 @@
 		77C479C7108EA54D00DC9920 /* urPiano.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77C479C6108EA54D00DC9920 /* urPiano.lua */; };
 		77C47A10108EAC5000DC9920 /* urPiano.lua in Resources */ = {isa = PBXBuildFile; fileRef = 77C479C6108EA54D00DC9920 /* urPiano.lua */; };
 		77C492FA105CAA1300B2BA88 /* urSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77C492F9105CAA1300B2BA88 /* urSound.cpp */; };
+		77D6049C116988CA00515900 /* underscore.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77D60499116988CA00515900 /* underscore.lua */; };
+		77D6049D116988CA00515900 /* urHelpers.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77D6049A116988CA00515900 /* urHelpers.lua */; };
+		77D6049E116988CA00515900 /* urWidget.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77D6049B116988CA00515900 /* urWidget.lua */; };
+		77D6049F116988E500515900 /* underscore.lua in Resources */ = {isa = PBXBuildFile; fileRef = 77D60499116988CA00515900 /* underscore.lua */; };
+		77D604A0116988E800515900 /* urHelpers.lua in Resources */ = {isa = PBXBuildFile; fileRef = 77D6049A116988CA00515900 /* urHelpers.lua */; };
+		77D604A1116988EB00515900 /* urWidget.lua in Resources */ = {isa = PBXBuildFile; fileRef = 77D6049B116988CA00515900 /* urWidget.lua */; };
 		77D61B4510C80C170091DE81 /* Green-Mono.wav in Resources */ = {isa = PBXBuildFile; fileRef = 77D61B3D10C80C170091DE81 /* Green-Mono.wav */; };
 		77D61B4610C80C170091DE81 /* Blue-Mono.wav in Resources */ = {isa = PBXBuildFile; fileRef = 77D61B3E10C80C170091DE81 /* Blue-Mono.wav */; };
 		77D61B4710C80C170091DE81 /* Cyan-Mono.wav in Resources */ = {isa = PBXBuildFile; fileRef = 77D61B3F10C80C170091DE81 /* Cyan-Mono.wav */; };
@@ -235,17 +235,13 @@
 		1D3623250D0F684500981E51 /* urMusAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = urMusAppDelegate.mm; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* urMus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = urMus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		233C91D9115EF9E200781595 /* Widget.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Widget.lua; path = "urMus-Lua/Widget.lua"; sourceTree = "<group>"; };
-		233C9233115F1C5100781595 /* Cloud.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Cloud.lua; path = "urMus-Lua/cloud/Cloud.lua"; sourceTree = "<group>"; };
-		233C9235115F1C5D00781595 /* cloud_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = cloud_bg.jpg; path = "urMus-Lua/cloud/cloud_bg.jpg"; sourceTree = "<group>"; };
-		233C9236115F1C5D00781595 /* cloud-drop3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cloud-drop3.png"; path = "urMus-Lua/cloud/cloud-drop3.png"; sourceTree = "<group>"; };
-		233C9237115F1C5D00781595 /* cloud-drop2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cloud-drop2.png"; path = "urMus-Lua/cloud/cloud-drop2.png"; sourceTree = "<group>"; };
-		233C9238115F1C5D00781595 /* cloud-drop1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cloud-drop1.png"; path = "urMus-Lua/cloud/cloud-drop1.png"; sourceTree = "<group>"; };
-		233C9239115F1C5D00781595 /* cloud-rarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cloud-rarrow.png"; path = "urMus-Lua/cloud/cloud-rarrow.png"; sourceTree = "<group>"; };
-		233C923A115F1C5D00781595 /* cloud-larrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cloud-larrow.png"; path = "urMus-Lua/cloud/cloud-larrow.png"; sourceTree = "<group>"; };
-		23BFB02E115E9084007B4A51 /* helpers.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = helpers.lua; path = "urMus-Lua/helpers.lua"; sourceTree = "<group>"; };
-		23BFB02F115E9084007B4A51 /* underscore.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = underscore.lua; path = "urMus-Lua/underscore.lua"; sourceTree = "<group>"; };
-		23C961FF1150836C00C30710 /* Animate.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Animate.lua; path = "urMus-Lua/Animate.lua"; sourceTree = "<group>"; };
+		238E4533116CD9AC00647B8F /* cloud-drop1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cloud-drop1.png"; sourceTree = "<group>"; };
+		238E4534116CD9AC00647B8F /* cloud-drop2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cloud-drop2.png"; sourceTree = "<group>"; };
+		238E4535116CD9AC00647B8F /* cloud-drop3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cloud-drop3.png"; sourceTree = "<group>"; };
+		238E4536116CD9AC00647B8F /* cloud-larrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cloud-larrow.png"; sourceTree = "<group>"; };
+		238E4537116CD9AC00647B8F /* cloud-rarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cloud-rarrow.png"; sourceTree = "<group>"; };
+		238E4538116CD9AC00647B8F /* urCloud.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = urCloud.lua; sourceTree = "<group>"; };
+		238E4539116CD9AC00647B8F /* cloud_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cloud_bg.jpg; sourceTree = "<group>"; };
 		28FD14FC0DC6FC130079059D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		28FD14FD0DC6FC130079059D /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -254,10 +250,6 @@
 		7700BFCC104AF4120025D43A /* connectarrow2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = connectarrow2.png; path = Textures/connectarrow2.png; sourceTree = "<group>"; };
 		7700C069104B2DA70025D43A /* leftarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = leftarrow.png; path = Textures/leftarrow.png; sourceTree = "<group>"; };
 		7700C06A104B2DA70025D43A /* rightarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rightarrow.png; path = Textures/rightarrow.png; sourceTree = "<group>"; };
-		770391D310B4AA70005C4563 /* clock_sequencer.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = clock_sequencer.jpg; path = Textures/clock_sequencer.jpg; sourceTree = "<group>"; };
-		770391D410B4AA70005C4563 /* cloud_sequencer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cloud_sequencer.png; path = Textures/cloud_sequencer.png; sourceTree = "<group>"; };
-		770391D810B4AA98005C4563 /* urClockSeq.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urClockSeq.lua; path = "urMus-Lua/urClockSeq.lua"; sourceTree = "<group>"; };
-		770391DA10B4AAA6005C4563 /* urClouds.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urClouds.lua; path = "urMus-Lua/urClouds.lua"; sourceTree = "<group>"; };
 		7706EBAC1044E0E200E7D656 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		770FD84A10AB51CF004B0967 /* flatbutton-64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "flatbutton-64.png"; path = "Textures/flatbutton-64.png"; sourceTree = "<group>"; };
 		770FD84C10AB51F5004B0967 /* urPads.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urPads.lua; path = "urMus-Lua/urPads.lua"; sourceTree = "<group>"; };
@@ -269,6 +261,8 @@
 		7743E36610BAEE79005F36BF /* urScrollList.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urScrollList.lua; path = "urMus-Lua/urScrollList.lua"; sourceTree = "<group>"; };
 		7743E38D10BB147D005F36BF /* lfs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lfs.h; path = "Classes/lua-5.1.4/src/lfs.h"; sourceTree = "<group>"; };
 		7743E38E10BB147D005F36BF /* lfs.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = lfs.mm; path = "Classes/lua-5.1.4/src/lfs.mm"; sourceTree = "<group>"; };
+		776D4CEB115172E8007D4D9B /* urAnimate.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urAnimate.lua; path = "urMus-Lua/urAnimate.lua"; sourceTree = "<group>"; };
+		7777E3211165CC480013B337 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		7778B1B40FED04AF00F491D3 /* lapi.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = lapi.mm; path = "Classes/lua-5.1.4/src/lapi.mm"; sourceTree = "<group>"; };
 		7778B1B50FED04AF00F491D3 /* lapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lapi.h; path = "Classes/lua-5.1.4/src/lapi.h"; sourceTree = "<group>"; };
 		7778B1B60FED04AF00F491D3 /* lauxlib.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = lauxlib.mm; path = "Classes/lua-5.1.4/src/lauxlib.mm"; sourceTree = "<group>"; };
@@ -346,6 +340,8 @@
 		77ABBE491125E4CC00EB080C /* Plick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Plick.wav; path = Sounds/Plick.wav; sourceTree = "<group>"; };
 		77AC7A6C1081C37A0071ECDE /* beatbox-mono.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "beatbox-mono.wav"; path = "Sounds/beatbox-mono.wav"; sourceTree = "<group>"; };
 		77B354E210A8D197008924DC /* urPlayground.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urPlayground.lua; path = "urMus-Lua/urPlayground.lua"; sourceTree = "<group>"; };
+		77B3A84B114F056F0073CCCF /* TCPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPServer.h; sourceTree = "<group>"; };
+		77B3A84C114F056F0073CCCF /* TCPServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TCPServer.mm; sourceTree = "<group>"; };
 		77B3D14A10C7192C00D5FB4B /* UIApplication+TVOut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+TVOut.m"; sourceTree = "<group>"; };
 		77B3D17C10C7196000D5FB4B /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		77B56C8E10894E48008931AC /* ADSR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADSR.h; sourceTree = "<group>"; };
@@ -529,6 +525,9 @@
 		77C479C6108EA54D00DC9920 /* urPiano.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urPiano.lua; path = "urMus-Lua/urPiano.lua"; sourceTree = "<group>"; };
 		77C492F8105CAA1300B2BA88 /* urSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = urSound.h; sourceTree = "<group>"; };
 		77C492F9105CAA1300B2BA88 /* urSound.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = urSound.cpp; sourceTree = "<group>"; };
+		77D60499116988CA00515900 /* underscore.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = underscore.lua; path = "urMus-Lua/underscore.lua"; sourceTree = "<group>"; };
+		77D6049A116988CA00515900 /* urHelpers.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urHelpers.lua; path = "urMus-Lua/urHelpers.lua"; sourceTree = "<group>"; };
+		77D6049B116988CA00515900 /* urWidget.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urWidget.lua; path = "urMus-Lua/urWidget.lua"; sourceTree = "<group>"; };
 		77D61B3D10C80C170091DE81 /* Green-Mono.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "Green-Mono.wav"; path = "Sounds/Green-Mono.wav"; sourceTree = "<group>"; };
 		77D61B3E10C80C170091DE81 /* Blue-Mono.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "Blue-Mono.wav"; path = "Sounds/Blue-Mono.wav"; sourceTree = "<group>"; };
 		77D61B3F10C80C170091DE81 /* Cyan-Mono.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "Cyan-Mono.wav"; path = "Sounds/Cyan-Mono.wav"; sourceTree = "<group>"; };
@@ -545,6 +544,7 @@
 		77F01C14112508D9007FD520 /* urPong.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urPong.lua; path = "urMus-Lua/urPong.lua"; sourceTree = "<group>"; };
 		77F043811123BC0700CB8C95 /* urVisDemo.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = urVisDemo.lua; path = "urMus-Lua/urVisDemo.lua"; sourceTree = "<group>"; };
 		77F043D71123C28B00CB8C95 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		77F5958A116447600061AD22 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
 		77FB926B111BA8C30078AAC5 /* UdpServerSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UdpServerSocket.m; path = Classes/Sandwich/UdpServerSocket.m; sourceTree = "<group>"; };
 		77FB926C111BA8C30078AAC5 /* UdpServerSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpServerSocket.h; path = Classes/Sandwich/UdpServerSocket.h; sourceTree = "<group>"; };
 		77FB926D111BA8C30078AAC5 /* UdpClientSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UdpClientSocket.m; path = Classes/Sandwich/UdpClientSocket.m; sourceTree = "<group>"; };
@@ -610,9 +610,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		238E4532116CD9AC00647B8F /* cloud */ = {
+			isa = PBXGroup;
+			children = (
+				238E4533116CD9AC00647B8F /* cloud-drop1.png */,
+				238E4534116CD9AC00647B8F /* cloud-drop2.png */,
+				238E4535116CD9AC00647B8F /* cloud-drop3.png */,
+				238E4536116CD9AC00647B8F /* cloud-larrow.png */,
+				238E4537116CD9AC00647B8F /* cloud-rarrow.png */,
+				238E4538116CD9AC00647B8F /* urCloud.lua */,
+				238E4539116CD9AC00647B8F /* cloud_bg.jpg */,
+			);
+			name = cloud;
+			path = "urMus-Lua/cloud";
+			sourceTree = "<group>";
+		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				77B3A84A114F056F0073CCCF /* Networking */,
 				77F043951123BC5100CB8C95 /* Sounds */,
 				77F043941123BC3F00CB8C95 /* Textures */,
 				77F043931123BC1600CB8C95 /* urMus-lua */,
@@ -622,6 +638,7 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				7777E3201165CC470013B337 /* Resources-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -661,6 +678,14 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7777E3201165CC470013B337 /* Resources-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				7777E3211165CC480013B337 /* MainWindow-iPad.xib */,
+			);
+			name = "Resources-iPad";
 			sourceTree = "<group>";
 		};
 		7778B1B30FED043400F491D3 /* Lua */ = {
@@ -724,6 +749,17 @@
 				7778B1EA0FED04AF00F491D3 /* print.mm */,
 			);
 			name = Lua;
+			sourceTree = "<group>";
+		};
+		77B3A84A114F056F0073CCCF /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				77F5958A116447600061AD22 /* AsyncUdpSocket.h */,
+				77B3A84B114F056F0073CCCF /* TCPServer.h */,
+				77B3A84C114F056F0073CCCF /* TCPServer.mm */,
+			);
+			name = Networking;
+			path = Classes/Networking;
 			sourceTree = "<group>";
 		};
 		77B56C8C10894E48008931AC /* stk-4.4.1 */ = {
@@ -908,17 +944,11 @@
 		77F043931123BC1600CB8C95 /* urMus-lua */ = {
 			isa = PBXGroup;
 			children = (
-				233C9235115F1C5D00781595 /* cloud_bg.jpg */,
-				233C9236115F1C5D00781595 /* cloud-drop3.png */,
-				233C9237115F1C5D00781595 /* cloud-drop2.png */,
-				233C9238115F1C5D00781595 /* cloud-drop1.png */,
-				233C9239115F1C5D00781595 /* cloud-rarrow.png */,
-				233C923A115F1C5D00781595 /* cloud-larrow.png */,
-				233C9233115F1C5100781595 /* Cloud.lua */,
-				233C91D9115EF9E200781595 /* Widget.lua */,
-				23BFB02E115E9084007B4A51 /* helpers.lua */,
-				23BFB02F115E9084007B4A51 /* underscore.lua */,
-				23C961FF1150836C00C30710 /* Animate.lua */,
+				238E4532116CD9AC00647B8F /* cloud */,
+				77D60499116988CA00515900 /* underscore.lua */,
+				77D6049A116988CA00515900 /* urHelpers.lua */,
+				77D6049B116988CA00515900 /* urWidget.lua */,
+				776D4CEB115172E8007D4D9B /* urAnimate.lua */,
 				77F01C14112508D9007FD520 /* urPong.lua */,
 				777E101A0FF1A24C005882D0 /* urMus.lua */,
 				77C479C6108EA54D00DC9920 /* urPiano.lua */,
@@ -930,8 +960,6 @@
 				77B8C95510AC72E2002234FB /* urThumper.lua */,
 				77B8C95710AC7361002234FB /* urColors.lua */,
 				77B8C95910AC7371002234FB /* urSmudge.lua */,
-				770391D810B4AA98005C4563 /* urClockSeq.lua */,
-				770391DA10B4AAA6005C4563 /* urClouds.lua */,
 				7743E36610BAEE79005F36BF /* urScrollList.lua */,
 				77D61C0210C82C380091DE81 /* urRecorder.lua */,
 				77B6328310D151B100AACEE4 /* urSleigh.lua */,
@@ -961,8 +989,6 @@
 				77C0686810BC395900DF3592 /* railgradient-very-narrow-32.png */,
 				77C0686210BC38FF00DF3592 /* railgradient-narrow-32.png */,
 				77C0685410BC37A200DF3592 /* railgradient-32.png */,
-				770391D310B4AA70005C4563 /* clock_sequencer.jpg */,
-				770391D410B4AA70005C4563 /* cloud_sequencer.png */,
 				772CCAD0111F92C700E932EE /* Ornament1.png */,
 				77B6329510D152C200AACEE4 /* SleighBells.png */,
 				77A1A6D510ABC5C8004A7C47 /* pitcher.png */,
@@ -1055,6 +1081,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77D604A1116988EB00515900 /* urWidget.lua in Resources */,
+				77D604A0116988E800515900 /* urHelpers.lua in Resources */,
+				77D6049F116988E500515900 /* underscore.lua in Resources */,
+				776D4D1C11517428007D4D9B /* urAnimate.lua in Resources */,
 				77C054E21139A21F00B81AEC /* urVisGraph.lua in Resources */,
 				77C054871139697400B81AEC /* urTiles.lua in Resources */,
 				77F01C181125091F007FD520 /* urPong.lua in Resources */,
@@ -1062,8 +1092,6 @@
 				77B6329710D152C900AACEE4 /* urSleigh.lua in Resources */,
 				77D61C0410C82C3F0091DE81 /* urRecorder.lua in Resources */,
 				7743E37D10BB0642005F36BF /* urScrollList.lua in Resources */,
-				770391DC10B4AAB3005C4563 /* urClockSeq.lua in Resources */,
-				770391DD10B4AAB3005C4563 /* urClouds.lua in Resources */,
 				77B8C95B10AC7419002234FB /* urPitchWheel.lua in Resources */,
 				77B8C95C10AC7419002234FB /* urPitcher.lua in Resources */,
 				77B8C95D10AC7419002234FB /* urThumper.lua in Resources */,
@@ -1095,8 +1123,6 @@
 				77A1A6DA10ABC5C8004A7C47 /* thumper.png in Resources */,
 				77A1A6DD10ABD49D004A7C47 /* Icon.png in Resources */,
 				77A1A6DE10ABD49D004A7C47 /* Default.png in Resources */,
-				770391D510B4AA70005C4563 /* clock_sequencer.jpg in Resources */,
-				770391D610B4AA70005C4563 /* cloud_sequencer.png in Resources */,
 				77C0685510BC37A200DF3592 /* railgradient-32.png in Resources */,
 				77C0686310BC38FF00DF3592 /* railgradient-narrow-32.png in Resources */,
 				77C0686910BC395900DF3592 /* railgradient-very-narrow-32.png in Resources */,
@@ -1120,17 +1146,14 @@
 				77F01C12112508CB007FD520 /* ball.png in Resources */,
 				77F01C13112508CB007FD520 /* PongBG.png in Resources */,
 				77ABBE4A1125E4CC00EB080C /* Plick.wav in Resources */,
-				23C962021150836C00C30710 /* Animate.lua in Resources */,
-				23BFB030115E9084007B4A51 /* helpers.lua in Resources */,
-				23BFB031115E9084007B4A51 /* underscore.lua in Resources */,
-				233C91DA115EF9E200781595 /* Widget.lua in Resources */,
-				233C9234115F1C5100781595 /* Cloud.lua in Resources */,
-				233C923B115F1C5D00781595 /* cloud_bg.jpg in Resources */,
-				233C923C115F1C5D00781595 /* cloud-drop3.png in Resources */,
-				233C923D115F1C5D00781595 /* cloud-drop2.png in Resources */,
-				233C923E115F1C5D00781595 /* cloud-drop1.png in Resources */,
-				233C923F115F1C5D00781595 /* cloud-rarrow.png in Resources */,
-				233C9240115F1C5D00781595 /* cloud-larrow.png in Resources */,
+				7777E3221165CC480013B337 /* MainWindow-iPad.xib in Resources */,
+				238E453A116CD9AC00647B8F /* cloud-drop1.png in Resources */,
+				238E453B116CD9AC00647B8F /* cloud-drop2.png in Resources */,
+				238E453C116CD9AC00647B8F /* cloud-drop3.png in Resources */,
+				238E453D116CD9AC00647B8F /* cloud-larrow.png in Resources */,
+				238E453E116CD9AC00647B8F /* cloud-rarrow.png in Resources */,
+				238E453F116CD9AC00647B8F /* urCloud.lua in Resources */,
+				238E4540116CD9AC00647B8F /* cloud_bg.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1262,8 +1285,6 @@
 				77B8C95610AC72E2002234FB /* urThumper.lua in Sources */,
 				77B8C95810AC7361002234FB /* urColors.lua in Sources */,
 				77B8C95A10AC7371002234FB /* urSmudge.lua in Sources */,
-				770391D910B4AA98005C4563 /* urClockSeq.lua in Sources */,
-				770391DB10B4AAA6005C4563 /* urClouds.lua in Sources */,
 				7743E36710BAEE79005F36BF /* urScrollList.lua in Sources */,
 				7743E38F10BB147D005F36BF /* lfs.mm in Sources */,
 				77B3D14B10C7192C00D5FB4B /* UIApplication+TVOut.m in Sources */,
@@ -1277,6 +1298,11 @@
 				77F01C15112508D9007FD520 /* urPong.lua in Sources */,
 				77C054861139695500B81AEC /* urTiles.lua in Sources */,
 				77C054DF11399F3900B81AEC /* urVisGraph.lua in Sources */,
+				77B3A84D114F056F0073CCCF /* TCPServer.mm in Sources */,
+				776D4CED115172E8007D4D9B /* urAnimate.lua in Sources */,
+				77D6049C116988CA00515900 /* underscore.lua in Sources */,
+				77D6049D116988CA00515900 /* urHelpers.lua in Sources */,
+				77D6049E116988CA00515900 /* urWidget.lua in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1287,7 +1313,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Georg Essl (9ZMR5LARJ4)";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1295,9 +1322,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = urMus_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = urMus;
-				PROVISIONING_PROFILE = "4F0313B8-53F2-4C50-B639-663A0E3490D6";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1305,15 +1335,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Georg Essl (9ZMR5LARJ4)";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = urMus_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = urMus;
-				PROVISIONING_PROFILE = "4F0313B8-53F2-4C50-B639-663A0E3490D6";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1321,14 +1355,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Georg Essl (9ZMR5LARJ4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F0313B8-53F2-4C50-B639-663A0E3490D6";
-				SDKROOT = iphoneos3.0;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.2;
 			};
 			name = Debug;
 		};
@@ -1336,13 +1371,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Georg Essl (9ZMR5LARJ4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F0313B8-53F2-4C50-B639-663A0E3490D6";
-				SDKROOT = iphoneos3.0;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.2;
 			};
 			name = Release;
 		};

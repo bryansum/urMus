@@ -1,14 +1,18 @@
 -- urMus default interface
 -- by Georg Essl
 -- Started a long time ago as a first test case, still best and most complex test case!
--- Last modified: 02/08/2010
+-- Last modified: 04/04/2010
 -- Copyright (c) 2010 Georg Essl. All Rights Reserved. See LICENSE.txt for license conditions.
+
+dofile(SystemPath("urHelpers.lua"))
+req("urWidget")
 
 local sqrt = math.sqrt
 local PI = math.pi
 local min = math.min
 local sin = math.sin
 local cos = math.cos
+local ceil = math.ceil
 
 pagefile = {
 "urMus",
@@ -28,7 +32,8 @@ pagefile = {
 "urPong.lua",
 "urVisDemo.lua",
 "urTiles.lua",
-"urVisGraph.lua"
+"urVisGraph.lua",
+"urOsman.lua"
 }
 
 scrollpage = 29
@@ -47,7 +52,24 @@ pagersize = 32
 -- Load utility and library functions here
 dofile(SystemPath("urScrollList.lua"))
 
-local rowheight = 110 -- aka rawhide
+local titlebar = 28
+local selectorheight = 122
+local editheightmargins = titlebar + selectorheight
+local editwidthmargins = 0
+local editselwidthmargins = 68
+
+local minrow = ceil((ScreenHeight() - editheightmargins)/110)
+
+local mincol = ceil(ScreenWidth()/(320.0/3.0))
+local mineditcol = 3
+
+local maxselrows = minrow
+
+local rowheight = (ScreenHeight()-editheightmargins)/minrow -- 110 -- aka rawhide
+local protocellheight = 80 --ScreenHeight()/6
+local colwidth = (ScreenWidth()-editwidthmargins)/mincol
+local colselwidth = (ScreenWidth()-editselwidthmargins)/mincol
+local protocellwidth = 64 -- 78 --ScreenWidth()/5
 
 local maxrow = 0
 local currentrow = 1
@@ -114,7 +136,7 @@ end
 
 settingdata = {}
 settingdata.grid = {} -- rows
-for row = 1, 3 do
+for row = 1, minrow do
 	settingdata.grid[row] = {}
 end
 
@@ -182,7 +204,7 @@ function CreateSettings()
 		else
 			for col, v in pairs(settingdata.grid[row]) do
 				v = nil
-				if col > 3 then
+				if col > minrow then
 					settingdata.grid[row] = nil
 				end
 			end
@@ -352,7 +374,7 @@ function ActivateSettings()
 				thisregion.fbtype = fbtype
 				thisregion:SetAnchor('CENTER',activelock, 'CENTER', 0,0) 
 
-				thisregion:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+				thisregion:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 				thisregion:EnableClipping(true)
 
 				rowregions[row][col] = thisregion
@@ -421,7 +443,7 @@ function ClearSetup()
 	for row = maxrow,4,-1 do
 		RemoveRow(row)
 	end
-	maxrow = 3
+	maxrow = minrow
 	ShowNotification("Cleared")
 end
 
@@ -566,6 +588,11 @@ function FreeButton(button)
 	local bflowbox = _G["FB"..button.flowbox:Name()]
 	
 	local instances = bflowbox.instances
+	
+	if instances and not instances[button.flowbox:InstanceNumber()] then
+		table.insert(instances,button.flowbox)
+		instances[button.flowbox:InstanceNumber()].let = {}
+	end
 	if instances then
 		local let = instances[button.flowbox:InstanceNumber()].let
 		
@@ -642,8 +669,8 @@ function CreateButton(x,y,col,fbtype,label,flowbox,inidx, instance)
 		returnbutton:Show()
 	else
 		returnbutton=Region('region', 'sourcesel', UIParent)
-		returnbutton:SetWidth(ScreenWidth()/5)
-		returnbutton:SetHeight(ScreenHeight()/6)
+		returnbutton:SetWidth(protocellwidth)
+		returnbutton:SetHeight(protocellheight)
 		returnbutton:SetLayer("DIALOG")
 		returnbutton:SetAnchor('BOTTOMLEFT',switchbackdrop,'BOTTOMLEFT',x,y) 
 		returnbutton:EnableClamping(true)
@@ -860,7 +887,7 @@ function LockCursor(self)
 		thisregion:SetAnchor('CENTER',activelock, 'CENTER', 0,0) 
 		
 		
-		thisregion:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+		thisregion:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 		thisregion:EnableClipping(true)
 		rowregions[row][col] = thisregion
 
@@ -931,13 +958,13 @@ end
 function ScrollEnds(self)
 	local left = self:Left()
 	local div
-	div = left / (ScreenWidth()/3)
-	left = left % (ScreenWidth()/3)
+	div = left / (colwidth)
+	left = left % (colwidth)
 	
 	if left < ScreenWidth()/6 then
 		self:SetAnchor('BOTTOMLEFT', rowbackdropanchor, 'BOTTOMLEFT', self:Left()-left ,self:Bottom()-rowbackdropanchor:Bottom())
 	else
-		self:SetAnchor('BOTTOMLEFT', rowbackdropanchor, 'BOTTOMLEFT', self:Left()-left+ScreenWidth()/3 ,self:Bottom()-rowbackdropanchor:Bottom())
+		self:SetAnchor('BOTTOMLEFT', rowbackdropanchor, 'BOTTOMLEFT', self:Left()-left+colwidth ,self:Bottom()-rowbackdropanchor:Bottom())
 	end
 end
 
@@ -990,8 +1017,8 @@ function MergeArrow(self)
 	local col = self.column
 	local fbtype = 2
 
-	if backdrop.count > 3 then
-		backdrop:SetWidth(backdrop:Width()-ScreenWidth()/3)
+	if backdrop.count > mineditcol then
+		backdrop:SetWidth(backdrop:Width()-colwidth)
 		backdrop.count = backdrop.count - 1
 
 		RecycleCell(row, col)
@@ -1061,7 +1088,7 @@ function DisableRow(row)
 	end
 end
 
-local maxcellpos = 9 -- 3 for one row
+local maxcellpos = maxselrows*mincol -- 3 for one row
 local cellrows = 1
 
 local scrollposy = 0
@@ -1070,8 +1097,8 @@ function ScrollRowBackdrop(self, diff)
 
 	local bottom = self:Bottom()+diff
 	
-	if bottom < (122 + 3*rowheight) - self:Height() then
-		bottom = (122 + 3*rowheight) - self:Height()
+	if bottom < (selectorheight + minrow*rowheight) - self:Height() then
+		bottom = (selectorheight + minrow*rowheight) - self:Height()
 	end
 	
 	if bottom > switchbackdrop:Top() then
@@ -1083,7 +1110,7 @@ end
 
 -- Scroll action ended, check if we need to align
 function ScrollRowEnds(self)
-	local bottom = self:Bottom() - 122
+	local bottom = self:Bottom() - selectorheight
 	local div
 	div = bottom / rowheight
 	bottom = bottom % rowheight
@@ -1098,28 +1125,38 @@ function ScrollRowEnds(self)
 		self:SetAnchor('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', self:Left(), switchbackdrop:Top())
 	end
 
-	top = self:Top() - 122
+	top = self:Top() - selectorheight
 	div = top / rowheight
-	currentrow = div-2
+	currentrow = div-(minrow-1)
 	RefreshRowIndices(1)
 end
 
 
-rowbackdropanchor = Region('region', 'backdrop', UIParent)
+rowbackdropanchor = Region('region', 'rowbackdrop', UIParent)
 rowbackdropanchor:SetWidth(ScreenWidth())
 rowbackdropanchor:SetHeight(1 --[[ 3*rowheight --]]) -- Hacky, current engine doesn't allow regions of height 0 without issues
 rowbackdropanchor:SetLayer("LOW")
-rowbackdropanchor:SetAnchor('TOPLEFT',UIParent,'TOPLEFT',0,-28+rowheight) 
+rowbackdropanchor:SetAnchor('TOPLEFT',UIParent,'TOPLEFT',0,-titlebar+rowheight) 
 rowbackdropanchor:Handle("OnLeave", ScrollRowEnds)
 rowbackdropanchor:Handle("OnTouchUp", ScrollRowEnds)
 rowbackdropanchor:Handle("OnVerticalScroll",ScrollRowBackdrop)
 rowbackdropanchor:EnableVerticalScroll(true)
-rowbackdropanchor:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+rowbackdropanchor:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 rowbackdropanchor:EnableClipping(true)
 rowbackdropanchor:EnableInput(true)
 rowbackdropanchor.row = row
-rowbackdropanchor.count = 3
+rowbackdropanchor.count = mincol
 rowbackdropanchor:Show()
+
+function ColumnToFBType(col)
+	if col == 1 then
+		return 1
+	elseif col == mineditcol then
+		return 3
+	else
+		return 2
+	end
+end
 
 function RefreshRowIndices(row)
 	for r = row, maxrow do
@@ -1138,7 +1175,7 @@ function RefreshRowIndices(row)
 	end
 	
 	for r = 1, maxrow do
-		if r >= currentrow and r <= currentrow + 2 then
+		if r >= currentrow and r <= currentrow + minrow-1 then
 			EnableRow(r)
 		else
 			DisableRow(r)
@@ -1153,7 +1190,7 @@ function AddRow(row)
 
 	local newbackdropanchor
 	newbackdropanchor = Region('region', 'backdroprow'..row, UIParent)
-	newbackdropanchor:SetWidth(ScreenWidth())
+	newbackdropanchor:SetWidth(mineditcol*colwidth --[[ScreenWidth()--]])
 	newbackdropanchor:SetHeight(rowheight)
 	newbackdropanchor:SetLayer("LOW")
 	newbackdropanchor:SetAnchor('TOPLEFT',rowbackdropanchor,'TOPLEFT',0,-rowheight*(row-1))
@@ -1164,15 +1201,15 @@ function AddRow(row)
 	newbackdropanchor:EnableInput(true)
 	newbackdropanchor.row = row
 	newbackdropanchor.column = col
-	newbackdropanchor.count = 3
+	newbackdropanchor.count = mineditcol
 	newbackdropanchor:Show()
 
 	local newcellbackdrop = {}
 	local newcelllock = {}
 
-	for col = 1,3 do
+	for col = 1,mineditcol do
 		newcellbackdrop[col] = Region('region', 'cellbackdrop'..row.."."..col, UIParent)
-		newcellbackdrop[col]:SetWidth(ScreenWidth()/3)
+		newcellbackdrop[col]:SetWidth(colwidth)
 		newcellbackdrop[col]:SetHeight(rowheight)
 		newcellbackdrop[col]:SetLayer("LOW")
 		if col == 1 then
@@ -1182,24 +1219,24 @@ function AddRow(row)
 		end
 		newcellbackdrop[col]:Show()
 		newcellbackdrop[col].t = newcellbackdrop[col]:Texture("backdrop-edge-brighter-128.png")
-		SetTexturedFlowboxBackdropColor(newcellbackdrop[col].t, col)
+		SetTexturedFlowboxBackdropColor(newcellbackdrop[col].t, ColumnToFBType(col))
 		newcellbackdrop[col].row = row
 		newcellbackdrop[col].column = col
-		newcellbackdrop[col].fbtype = col
-		newcellbackdrop[col]:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+		newcellbackdrop[col].fbtype = ColumnToFBType(col)
+		newcellbackdrop[col]:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 		newcellbackdrop[col]:EnableClipping(true)
 
 		newcelllock[col]=Region('region', 'celllock'..row.."."..col, UIParent)
-		newcelllock[col]:SetWidth(ScreenWidth()/5)
-		newcelllock[col]:SetHeight(ScreenHeight()/6)
+		newcelllock[col]:SetWidth(protocellwidth)
+		newcelllock[col]:SetHeight(protocellheight)
 		newcelllock[col]:SetLayer("MEDIUM")
 		newcelllock[col]:SetAnchor('CENTER',newcellbackdrop[col],'CENTER',0,0)
 		newcelllock[col]:Show()
 		newcelllock[col].texture = newcelllock[col]:Texture()
-		SetFlowboxLockColor(newcelllock[col].texture,col)
+		SetFlowboxLockColor(newcelllock[col].texture,ColumnToFBType(col))
 		newcelllock[col]:Handle("OnEnter", RegisterLock)
 		newcelllock[col]:Handle("OnLeave", UnRegisterLock)
-		if col == 2 then
+		if col > 1 and col < mincol then
 			newcelllock[col]:Handle("OnDoubleTap", MergeArrow)
 			newcelllock[col].backdrop = newbackdropanchor
 			newcelllock[col].collapsable = true
@@ -1209,14 +1246,14 @@ function AddRow(row)
 		newcelllock[col]:EnableInput(true)
 		newcelllock[col].row = row
 		newcelllock[col].column = col
-		newcelllock[col].fbtype = col
-		newcelllock[col]:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+		newcelllock[col].fbtype = ColumnToFBType(col)
+		newcelllock[col]:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 		newcelllock[col]:EnableClipping(true)
 	end
 
 	local newfbconnect = {}
 
-	for col=1,2 do
+	for col=1,mineditcol-1 do
 		newfbconnect[col] = Region('region', 'fbconnect'..row.."."..col, UIParent)
 		newfbconnect[col]:SetWidth(65)
 		newfbconnect[col]:SetHeight(24)
@@ -1233,7 +1270,7 @@ function AddRow(row)
 		newfbconnect[col].backdrop = newbackdropanchor
 		newfbconnect[col]:Handle("OnDoubleTap",SplitArrow)
 		newfbconnect[col]:EnableInput(true)
-		newfbconnect[col]:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+		newfbconnect[col]:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 		newfbconnect[col]:EnableClipping(true)
 	end
 
@@ -1285,7 +1322,7 @@ function DeleteRow(self)
 end
 
 function RemoveRow(row)
-	if maxrow <= 3 then
+	if maxrow <= minrow then
 		return
 	end
 
@@ -1293,14 +1330,14 @@ function RemoveRow(row)
 	
 	backdropanchor[row]:Hide()
 	backdropanchor[row]:EnableInput(false)
-	for col=1,3 do
+	for col=1,mincol do
 		celllock[row][col]:Hide()
 		celllock[row][col]:EnableInput(false)
 		cellbackdrop[row][col]:Hide()
 		cellbackdrop[row][col]:EnableInput(false)
 	end
 
-	for col = 3,1,-1 do
+	for col = mincol,1,-1 do
 		RecycleCell(row, col)
 	end
 
@@ -1319,11 +1356,11 @@ function RemoveRow(row)
 	
 	local bottom = rowbackdropanchor:Bottom()
 	
-	if bottom < (122 + 3*rowheight) - rowbackdropanchor:Height() then
-		bottom = (122 + 3*rowheight) - rowbackdropanchor:Height()
+	if bottom < (selectorheight + minrow*rowheight) - rowbackdropanchor:Height() then
+		bottom = (selectorheight + minrow*rowheight) - rowbackdropanchor:Height()
 	end
-	if bottom > 122 then
-		bottom = 122
+	if bottom > selectorheight then
+		bottom = selectorheight
 	end
 	
 	rowbackdropanchor:SetAnchor('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', rowbackdropanchor:Left() ,bottom)
@@ -1338,7 +1375,7 @@ function SplitArrow(self)
 	local col = self.column+1
 	local fbtype = 2
 	
-	backdrop:SetWidth(backdrop:Width()+ScreenWidth()/3)
+	backdrop:SetWidth(backdrop:Width()+colwidth)
 	backdrop.count = backdrop.count + 1
 
 	UnlinkFlowboxes(row,col)
@@ -1346,22 +1383,22 @@ function SplitArrow(self)
 	local newcellbackdrop = {}
 	
 	newcellbackdrop = Region('region', 'newcellbackdrop'..row.."."..col, UIParent)
-	newcellbackdrop:SetWidth(ScreenWidth()/3)
+	newcellbackdrop:SetWidth(colwidth)
 	newcellbackdrop:SetHeight(rowheight)
 	newcellbackdrop:SetLayer("LOW")
 	newcellbackdrop:SetAnchor('LEFT',cellbackdrop[row][col-1],'RIGHT', 0,0)
 	newcellbackdrop:Show()
 	newcellbackdrop.t = newcellbackdrop:Texture("backdrop-edge-brighter-128.png")
 	SetTexturedFlowboxBackdropColor(newcellbackdrop.t, fbtype)
-	newcellbackdrop:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+	newcellbackdrop:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 	newcellbackdrop:EnableClipping(true)
 
 	local newcelllock = {}
 
 	newcelllock = {}
 	newcelllock=Region('region', 'filterlock'..row.."."..col, UIParent)
-	newcelllock:SetWidth(ScreenWidth()/5)
-	newcelllock:SetHeight(ScreenHeight()/6)
+	newcelllock:SetWidth(protocellwidth)
+	newcelllock:SetHeight(protocellheight)
 	newcelllock:SetLayer("MEDIUM")
 	newcelllock:SetAnchor('CENTER',newcellbackdrop,'CENTER',0,0) 
 	newcelllock:Show()
@@ -1376,7 +1413,7 @@ function SplitArrow(self)
 	newcelllock.row = row 
 	newcelllock.column = col
 	newcelllock.fbtype = 2
-	newcelllock:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+	newcelllock:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 	newcelllock:EnableClipping(true)
 
 	local newfbconnect = {}
@@ -1393,12 +1430,12 @@ function SplitArrow(self)
 	newfbconnect.t:SetGradientColor("TOP",180,180,180,255,180,180,180,255)
 	newfbconnect.t:SetGradientColor("BOTTOM",180,180,180,255,180,180,180,255)
 	newfbconnect.row = row
-	newfbconnect.column = col
+	newfbconnect.column = col-1
 	newfbconnect.backdrop = backdropanchor[row]
 	newfbconnect:Handle("OnDoubleTap",SplitArrow)
 	newfbconnect:EnableInput(true)
 	newfbconnect.fbtype = 2
-	newfbconnect:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+	newfbconnect:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 	newfbconnect:EnableClipping(true)
 
 	table.insert(cellbackdrop[row], col, newcellbackdrop)
@@ -1431,7 +1468,7 @@ function InsertRow(self)
 	AddRow(self.row+currentrow-1)
 end
 
-for row = 1, 3 do
+for row = 1, minrow do
 	AddRow(row)
 end
 
@@ -1475,8 +1512,8 @@ end
 
 switchbackdrop = Region('region', 'switchbackdrop', UIParent)
 switchbackdrop:SetWidth(ScreenWidth())
-switchbackdrop:SetHeight(90+32+2*rowheight)
-switchbackdrop:SetAnchor("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 0, -2*rowheight)
+switchbackdrop:SetHeight(90+32+(maxselrows-1)*rowheight)
+switchbackdrop:SetAnchor("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 0, -(maxselrows-1)*rowheight)
 switchbackdrop:SetLayer("LOW")
 switchbackdrop:Show()
 switchbackdrop:Handle("OnHorizontalScroll", ScrollSelector)
@@ -1494,7 +1531,14 @@ for fbtype=1,3 do
 	fbprotoselectionswitcher[fbtype]:SetWidth(64)
 	fbprotoselectionswitcher[fbtype]:SetHeight(64)
 	fbprotoselectionswitcher[fbtype]:SetLayer("HIGH")
-	fbprotoselectionswitcher[fbtype]:SetAnchor('CENTER', switchbackdrop, 'TOP', (fbtype-2)*ScreenWidth()/3, 0)
+--	fbprotoselectionswitcher[fbtype]:SetAnchor('CENTER', switchbackdrop, 'TOP', (fbtype-2)*ScreenWidth()/3, 0)
+	if fbtype == 1 then
+		fbprotoselectionswitcher[fbtype]:SetAnchor('CENTER', switchbackdrop, 'TOPLEFT', colwidth/2, -4)
+	elseif fbtype == 2 then
+		fbprotoselectionswitcher[fbtype]:SetAnchor('CENTER', switchbackdrop, 'TOP', 0, -4)
+	else
+		fbprotoselectionswitcher[fbtype]:SetAnchor('CENTER', switchbackdrop, 'TOPRIGHT', -colwidth/2, -4)
+	end
 	if fbtype == activefbtype then
 		fbprotoselectionswitcher[fbtype].texture = fbprotoselectionswitcher[fbtype]:Texture("doublearrow.png")
 		SetNavigationArrowSelectColor(fbprotoselectionswitcher[fbtype].texture,fbtype)
@@ -1508,18 +1552,17 @@ for fbtype=1,3 do
 end
 
 local pagepos = {1,1,1}
-local ceil = math.ceil
 function NarrowPageUpdate()
 	local sel = protofbcells[activefbtype]
 	local nrlabels = #fblabels[activefbtype]
 	local labels = fblabels[activefbtype]
 	local labelsperrow = ceil(nrlabels / cellrows)
-	if labelsperrow < 3 then
-		labelsperrow = 3
+	if labelsperrow < mincol then
+		labelsperrow = mincol
 	end
-	for i=1,3 do
+	for i=1,mincol do
 		for j=1,cellrows do
-			local cell = i+3*(j-1)
+			local cell = i+mincol*(j-1)
 			if pagepos[activefbtype]+i-1+(j-1)*labelsperrow <= nrlabels then
 				sel[cell].textlabel:SetLabel(labels[pagepos[activefbtype]+i-1+(j-1)*labelsperrow])
 				if activefbtype == 1 then
@@ -1626,17 +1669,17 @@ protofbcells[2] = {} -- filters
 protofbcells[3] = {} -- sinks
 
 for fbtype=1,3 do
-	for col = 1,3 do
-		for row = 1,3 do
-			cell = col+3*(row-1)
+	for col = 1,mincol do
+		for row = 1,maxselrows do
+			cell = col+mincol*(row-1)
 			protofbcells[fbtype][cell]=Region('region', 'protofbcells'..fbtype.."."..cell, UIParent)
-			protofbcells[fbtype][cell]:SetWidth(ScreenWidth()/5)
-			protofbcells[fbtype][cell]:SetHeight(ScreenHeight()/6)
+			protofbcells[fbtype][cell]:SetWidth(protocellwidth)
+			protofbcells[fbtype][cell]:SetHeight(protocellheight)
 			protofbcells[fbtype][cell]:SetLayer("DIALOG")
-			protofbcells[fbtype][cell]:SetAnchor('BOTTOMLEFT',switchbackdrop,'BOTTOMLEFT',(col-1)*78+34+18,10+(2-row+1)*rowheight) 
+			protofbcells[fbtype][cell]:SetAnchor('BOTTOMLEFT',switchbackdrop,'BOTTOMLEFT',(col-1)*colselwidth+34+18,10+(maxselrows-row)*rowheight) 
 			protofbcells[fbtype][cell]:EnableClamping(true)
-			protofbcells[fbtype][cell].lockposx = (col-1)*78+34+18
-			protofbcells[fbtype][cell].lockposy = 10+(2-row+1)*rowheight
+			protofbcells[fbtype][cell].lockposx = (col-1)*colselwidth+34+18
+			protofbcells[fbtype][cell].lockposy = 10+(maxselrows-row)*rowheight
 			protofbcells[fbtype][cell].fbtype = fbtype	
 			protofbcells[fbtype][cell]:Handle("OnTouchDown", UnlockCursor)
 	--		protofbcells[fbtype][cell]:Handle("OnDragStart", UnlockCursor)
@@ -1744,17 +1787,17 @@ function SwitchFBType(self)
 end
 
 function UpdateClipRegionHeights(bottom)
-	rowbackdropanchor:SetClipRegion(0,bottom,ScreenWidth(),rowheight*3-bottom+122)
+	rowbackdropanchor:SetClipRegion(0,bottom,ScreenWidth(),rowheight*minrow-bottom+selectorheight)
 	for row = 1, maxrow do
 		for col = 1,backdropanchor[row].count do
 			local region = rowregions[row][col]
 			if region then
-				region:SetClipRegion(0,bottom,ScreenWidth(),rowheight*3-bottom+122)
+				region:SetClipRegion(0,bottom,ScreenWidth(),rowheight*minrow-bottom+selectorheight)
 			end
-			celllock[row][col]:SetClipRegion(0,bottom,ScreenWidth(),rowheight*3-bottom+122)
-			cellbackdrop[row][col]:SetClipRegion(0,bottom,ScreenWidth(),rowheight*3-bottom+122)
+			celllock[row][col]:SetClipRegion(0,bottom,ScreenWidth(),rowheight*minrow-bottom+selectorheight)
+			cellbackdrop[row][col]:SetClipRegion(0,bottom,ScreenWidth(),rowheight*minrow-bottom+selectorheight)
 			if col > 1 then
-				fbconnect[row][col-1]:SetClipRegion(0,bottom,ScreenWidth(),rowheight*3-bottom+122)
+				fbconnect[row][col-1]:SetClipRegion(0,bottom,ScreenWidth(),rowheight*minrow-bottom+selectorheight)
 			end
 		end
 	end
@@ -1773,18 +1816,15 @@ function MoveSelector(self, diff)
 	if bottom > 0 then
 		bottom = 0
 	end
-	if bottom < -rowheight*2 then
-		bottom = -rowheight*2
+	if bottom < -rowheight*(maxselrows-1) then
+		bottom = -rowheight*(maxselrows-1)
 	end
 
-	if bottom > -rowheight then
-		cellrows = 3
-	elseif bottom > -2*rowheight then
-		cellrows = 2
-	else
-		cellrows = 1
-	end
-	
+	local div = bottom / rowheight
+
+	cellrows = ceil(maxselrows+div)
+	NarrowPageUpdate()
+
 	self:SetAnchor('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', self:Left() ,bottom)
 	if rowbackdropanchor:Bottom() > self:Top() then
 		rowbackdropanchor:SetAnchor('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', rowbackdropanchor:Left(), self:Top());
@@ -1819,13 +1859,9 @@ function MoveSelectorEnds(self)
 
 	bottom = self:Bottom()
 
-	if bottom > -rowheight then
-		cellrows = 3
-	elseif bottom > -2*rowheight then
-		cellrows = 2
-	else
-		cellrows = 1
-	end
+	div = bottom / rowheight
+
+	cellrows = maxselrows+div
 
 	local nrlabels = #fblabels[activefbtype]
 	local labelsperrow = ceil(nrlabels / cellrows)
@@ -1945,7 +1981,7 @@ sourcetitlelabel=Region('region', 'sourcetitlelabel', UIParent)
 sourcetitlelabel:SetWidth(ScreenWidth())
 sourcetitlelabel:SetHeight(16)
 sourcetitlelabel:SetLayer("TOOLTIP")
-sourcetitlelabel:SetAnchor('CENTER', backdropanchor[1], 'TOPLEFT', ScreenWidth()/6, -4)
+sourcetitlelabel:SetAnchor('CENTER', backdropanchor[1], 'TOPLEFT', colwidth/2, -4)
 sourcetitlelabel:Show()
 sourcetitlelabel.textlabel=sourcetitlelabel:TextLabel()
 sourcetitlelabel.textlabel:SetFont("Trebuchet MS")
@@ -1956,7 +1992,7 @@ sourcetitlelabel.textlabel:SetLabelHeight(16)
 sourcetitlelabel.textlabel:SetColor(255,255,255,255)
 sourcetitlelabel.textlabel:SetShadowColor(0,0,0,190)
 sourcetitlelabel.textlabel:SetShadowBlur(2.0)
-sourcetitlelabel:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+sourcetitlelabel:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 sourcetitlelabel:EnableClipping(true)
 
 filtertitlelabel=Region('region', 'filtertitlelabel', UIParent)
@@ -1974,14 +2010,14 @@ filtertitlelabel.textlabel:SetLabelHeight(16)
 filtertitlelabel.textlabel:SetColor(255,255,255,255)
 filtertitlelabel.textlabel:SetShadowColor(0,0,0,190)
 filtertitlelabel.textlabel:SetShadowBlur(2.0)
-filtertitlelabel:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+filtertitlelabel:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 filtertitlelabel:EnableClipping(true)
 
 sinktitlelabel=Region('region', 'sinktitlelabel', UIParent)
 sinktitlelabel:SetWidth(ScreenWidth())
 sinktitlelabel:SetHeight(16)
 sinktitlelabel:SetLayer("TOOLTIP")
-sinktitlelabel:SetAnchor('CENTER', backdropanchor[1], 'TOPRIGHT', -ScreenWidth()/6, -4)
+sinktitlelabel:SetAnchor('CENTER', backdropanchor[1], 'TOPRIGHT', -colwidth/2, -4)
 sinktitlelabel:Show()
 sinktitlelabel.textlabel=sinktitlelabel:TextLabel()
 sinktitlelabel.textlabel:SetFont("Trebuchet MS")
@@ -1992,7 +2028,7 @@ sinktitlelabel.textlabel:SetLabelHeight(16)
 sinktitlelabel.textlabel:SetColor(255,255,255,255)
 sinktitlelabel.textlabel:SetShadowColor(0,0,0,190)
 sinktitlelabel.textlabel:SetShadowBlur(2.0)
-sinktitlelabel:SetClipRegion(0,122,ScreenWidth(),rowheight*3)
+sinktitlelabel:SetClipRegion(0,selectorheight,ScreenWidth(),rowheight*minrow)
 sinktitlelabel:EnableClipping(true)
 
 
@@ -2105,3 +2141,8 @@ notificationregion.textlabel:SetColor(255,255,255,190)
 
 StartAudio()
 ShowNotification("urMus") -- Shame on me, pointless eye candy.
+
+Widget.Tooltip("Double-Tap to Clear", {parent=clearbutton})
+Widget.Tooltip("Double-Tap to Load", {parent=loadbutton})
+Widget.Tooltip("Double-Tap to Save", {parent=savebutton})
+Widget.Tooltip("Double-Tap for Faces", {parent=facebutton})

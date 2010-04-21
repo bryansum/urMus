@@ -1,4 +1,30 @@
-<h1>Global API functions</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Global API functions &laquo; urMus API</title>
+	<link rel="stylesheet" href="styles.css" type="text/css" media="screen" charset="utf-8">
+	<!-- Date: 2010-03-16 -->
+</head>
+<body>
+<body bgcolor=#ffffff text=#000000>
+<center>
+<font size="4" face="Trebuchet MS">ur<span
+style='color:#548DD4'>Mus</span></font><font size="4" face="Verdana"> - Audio and Media Interactions and Interfaces on Mobile Phones</font><br>
+<hr>
+<br>
+<img src="../images/urMusLogo.png" alt="urMus"><br>
+<br>
+<font size="4" face="Verdana"> API Documentation </font>
+<br>
+<hr width="350">
+  <ul class="navigation">
+  <li><a href="../documentation.html">Main documentation</a></li>
+  <li><a href="overview.html">urMus API overview</a></li>
+</ul>
+
+</center>
+  <h1>Global API functions</h1>
 
 <p>This page documents functions and variables that can be found in the global name space.</p>
 
@@ -20,8 +46,9 @@ for system errors and should not be used for normal user interactions.</p>
 
 <ul>
 <li>output (String)
-The string to print to the debug console.</li>
+  The string to print to the debug console.</li>
 </ul>
+
 
 <h2>RunScript</h2>
 
@@ -38,8 +65,9 @@ The string to print to the debug console.</li>
 
 <ul>
 <li>script (String)
-The lua code which is to be executed.</li>
+  The lua code which is to be executed.</li>
 </ul>
+
 
 <h1>Timing API</h1>
 
@@ -58,8 +86,9 @@ The lua code which is to be executed.</li>
 
 <ul>
 <li>seconds (Number)
-The current system uptime in seconds. </li>
+  The current system uptime in seconds.</li>
 </ul>
+
 
 <h1>urSound FlowBox API</h1>
 
@@ -101,13 +130,19 @@ instances of flowboxes via <code>_G["FB"..objectname]</code>.</p>
 
 <ul>
 <li>type (String) [unused]
-String identifying the opject type.</li>
+  String identifying the opject type.</li>
 <li>name (String) [unused]
-  User-specified name of the object.</li>
+
+<pre><code>User-specified name of the object.
+</code></pre></li>
 <li>inheritedFlowbox (Flowbox)
-  The parent flowbox to inherit from. If specified, this creates a deep-copy of the 
-parent.</li>
+
+<pre><code>The parent flowbox to inherit from. If specified, this creates a deep-copy of the 
+</code></pre>
+
+<p>  parent.</p></li>
 </ul>
+
 
 <h3>Returns</h3>
 
@@ -115,6 +150,7 @@ parent.</li>
 <li>flowbox (Flowbox)
 A new instance of the given flowbox.</li>
 </ul>
+
 
 <h2>SourceNames</h2>
 
@@ -132,8 +168,11 @@ flowbox variables can be accessed via _G["FB"..object1].</p>
 
 <ul>
 <li>source1, source2, ... (String list)
-  A list of the names describing all urSound sources.</li>
+
+<pre><code>A list of the names describing all urSound sources.
+</code></pre></li>
 </ul>
+
 
 <h2>ManipulatorNames</h2>
 
@@ -151,8 +190,9 @@ Related flowbox variables can be accessed via <code>_G["FB"..manipName]</code>.<
 
 <ul>
 <li>manipName1, manipName2, ... (List<String>)
-A list of names describing all urSound manipulators.</li>
+  A list of names describing all urSound manipulators.</li>
 </ul>
+
 
 <h2>SinkNames</h2>
 
@@ -170,8 +210,9 @@ flowbox variables can be accessed via <code>_G["FB"..sinkName]</code>.</p>
 
 <ul>
 <li>sinkName1, sinkName2, ... (List<String>)
-Names describing all urSound sinks.</li>
+  Names describing all urSound sinks.</li>
 </ul>
+
 
 <h1>File system helper API</h1>
 
@@ -191,15 +232,17 @@ If the file doesn't exist, throws an error.</p>
 
 <ul>
 <li>filename (String)
-Name of the file in the system's Documents folder.</li>
+  Name of the file in the system's Documents folder.</li>
 </ul>
+
 
 <h3>Returns</h3>
 
 <ul>
 <li>documentPath (String)
-Absolute path of the found file.</li>
+  Absolute path of the found file.</li>
 </ul>
+
 
 <h2>SystemPath</h2>
 
@@ -216,15 +259,17 @@ Absolute path of the found file.</li>
 
 <ul>
 <li>filename (String)
-File linked with the urMus project.</li>
+  File linked with the urMus project.</li>
 </ul>
+
 
 <h3>Returns</h3>
 
 <ul>
 <li>systemfilename (String)
-Absolute path of the file in the resources folder.</li>
+  Absolute path of the file in the resources folder.</li>
 </ul>
+
 
 <h1>2D Interface and Interaction API (aka urLook)</h1>
 
@@ -243,8 +288,9 @@ Absolute path of the file in the resources folder.</li>
 
 <ul>
 <li>fps (Number)
-Desired target frames per second.</li>
+  Desired target frames per second.</li>
 </ul>
+
 
 <h2>Page</h2>
 
@@ -261,8 +307,9 @@ Desired target frames per second.</li>
 
 <ul>
 <li>page (Number)
-Index of currently active page.</li>
+  Index of currently active page.</li>
 </ul>
+
 
 <h2>SetPage</h2>
 
@@ -282,8 +329,9 @@ will only work for the currently active page.</p>
 
 <ul>
 <li>pageIndex (Number)
-Index of the page to be made active. Side-effects: Deactivates all other pages.</li>
+  Index of the page to be made active. Side-effects: Deactivates all other pages.</li>
 </ul>
+
 
 <h2>NumMaxPages</h2>
 
@@ -300,14 +348,15 @@ Index of the page to be made active. Side-effects: Deactivates all other pages.<
 
 <ul>
 <li>maxpages (Number)
-Maximum number of pages supported.</li>
+  Maximum number of pages supported.</li>
 </ul>
+
 
 <h2>Region</h2>
 
 <h3>Synopsis</h3>
 
-<pre><code>newFrame = Region("frameType"[, "frameName"[, parentFrame[, "inheritsFrame"]]])
+<pre><code>newRegion = Region(["regionType", "regionName", parentRegion])
 </code></pre>
 
 <h3>Description</h3>
@@ -318,26 +367,22 @@ Maximum number of pages supported.</li>
 
 <ul>
 <li>frameType (String)
-Type of the frame to be created (XML tag name): "Frame", "Button", etc. </li>
+  Type of the region to be created. Currently unused.</li>
 <li>frameName (String)
-Name of the newly created frame. If nil, no frame name is assigned. 
-The function will also set a global variable of this name to point to newly created frame. </li>
-<li>parentFrame (Frame)
-The frame object that will be used as the created Frame's parent
-(cannot be a string!) Does not default to UIParent if given nil.</li>
-<li>inheritsFrame (String)
-A comma-delimited list of names of virtual frames to inherit
-from (the same as in XML). If nil, no frames will be inherited. These
-frames cannot be frames that were created using this function, they must
-be created using XML with virtual="true" in the tag. </li>
+  Name of the newly created frame. If nil, no frame name is assigned. This helps to debug frames by being able to identify them by custom names.</li>
+<li>parentRegion (Region)
+  The region object that will be used as the created Region's parent
+  (cannot be a string!) Does not default to UIParent if given nil.</li>
 </ul>
+
 
 <h3>Returns</h3>
 
 <ul>
-<li>newFrame (Frame)
-A reference to the newly created frame. </li>
+<li>newRegion (Region)
+A reference to the newly created region.</li>
 </ul>
+
 
 <h2>NumRegions</h2>
 
@@ -348,7 +393,7 @@ A reference to the newly created frame. </li>
 
 <h3>Description</h3>
 
-<p>Returns the current number of regions inside of the current page. </p>
+<p>Returns the current number of regions inside of the current page.</p>
 
 <h2>InputFocus</h2>
 
@@ -359,40 +404,42 @@ A reference to the newly created frame. </li>
 
 <h3>Description</h3>
 
-<p>Returns the region that is currently receiving input events. The frame must have EnableInput(true).</p>
+<p>Returns the region that is currently receiving input events. The region must have EnableInput(true).</p>
 
 <h2>HasInput</h2>
 
 <h3>Synopsis</h3>
 
-<pre><code>isOver = HasInput(frame, [topOffset, bottomOffset, leftOffset, rightOffset])
+<pre><code>isOver = HasInput(region, [topOffset, bottomOffset, leftOffset, rightOffset])
 </code></pre>
 
 <h3>Description</h3>
 
-<p>Determines whether or not the input is over the specified region. </p>
+<p>Determines whether or not the input is over the specified region.</p>
 
 <h3>Arguments</h3>
 
 <ul>
-<li>frame (Frame)
-The frame (or frame-derived object such as Buttons, etc) to test with </li>
+<li>region (Region)
+  The region (or region-derived object such as Buttons, etc) to test with</li>
 <li>topOffset (Number, optional)
-The distance from the top to include in calculations </li>
-<li>bottomOffset (Number, optional) 
-The distance from the bottom to include in calculations </li>
-<li>leftOffset (Number, optional) 
-The distance from the left to include in calculations </li>
-<li>rightOffset (Number, optional) 
-The distance from the right to include in calculations.</li>
+  The distance from the top to include in calculations</li>
+<li>bottomOffset (Number, optional)
+  The distance from the bottom to include in calculations</li>
+<li>leftOffset (Number, optional)
+  The distance from the left to include in calculations</li>
+<li>rightOffset (Number, optional)
+  The distance from the right to include in calculations.</li>
 </ul>
+
 
 <h3>Returns</h3>
 
 <ul>
-<li>isOver (Boolean) 
-True if mouse is over the frame (with optional offsets), false otherwise. </li>
+<li>isOver (Boolean)
+  True if mouse is over the region (with optional offsets), false otherwise.</li>
 </ul>
+
 
 <h2>InputPosition</h2>
 
@@ -409,10 +456,11 @@ True if mouse is over the frame (with optional offsets), false otherwise. </li>
 
 <ul>
 <li>x (Number)
-The input device's x-position on the screen. </li>
+  The input device's x-position on the screen.</li>
 <li>y (Number)
-The input device's y-position on the screen. </li>
+  The input device's y-position on the screen.</li>
 </ul>
+
 
 <h2>ScreenHeight</h2>
 
@@ -429,8 +477,9 @@ The input device's y-position on the screen. </li>
 
 <ul>
 <li>screenHeight (Number)
-Height of window in pixels. </li>
+  Height of window in pixels.</li>
 </ul>
+
 
 <h2>ScreenWidth</h2>
 
@@ -447,7 +496,18 @@ Height of window in pixels. </li>
 
 <ul>
 <li>screenWidth (Number)
-Width of window in pixels</li>
+  Width of window in pixels</li>
 </ul>
 
+
 <p><a href="overview.html">urMus API Overview</a></p>
+
+<center>
+  <ul class="navigation">
+  <li><a href="../documentation.html">Main documentation</a></li>
+  <li><a href="overview.html">urMus API overview</a></li>
+</ul>
+
+</center>
+</body>
+</html>

@@ -35,6 +35,16 @@ MachTimer* mytimer;
 @property (nonatomic, retain) EAGLContext *context;
 @property (nonatomic, assign) NSTimer *animationTimer;
 
+@property (nonatomic, retain, readwrite) NSNetService *ownEntry;
+@property (nonatomic, assign, readwrite) BOOL showDisclosureIndicators;
+@property (nonatomic, retain, readwrite) NSMutableArray *services;
+@property (nonatomic, retain, readwrite) NSNetServiceBrowser *netServiceBrowser;
+@property (nonatomic, retain, readwrite) NSNetService *currentResolve;
+@property (nonatomic, retain, readwrite) NSTimer *timer;
+@property (nonatomic, assign, readwrite) BOOL needsActivityIndicator;
+@property (nonatomic, assign, readwrite) BOOL initialWaitOver;
+
+
 - (BOOL) createFramebuffer;
 - (void) destroyFramebuffer;
 
@@ -49,6 +59,16 @@ MachTimer* mytimer;
 
 @synthesize locationManager;
 
+//@synthesize delegate = _delegate;
+@synthesize ownEntry = _ownEntry;
+@synthesize showDisclosureIndicators = _showDisclosureIndicators;
+@synthesize currentResolve = _currentResolve;
+@synthesize netServiceBrowser = _netServiceBrowser;
+@synthesize services = _services;
+@synthesize needsActivityIndicator = _needsActivityIndicator;
+@dynamic timer;
+@synthesize initialWaitOver = _initialWaitOver;
+
 
 // You must implement this method
 + (Class)layerClass {
@@ -62,8 +82,6 @@ static const int LOCATION_SCALE = 256;
 
 // Tracking All touches
 NSMutableArray *ActiveTouches;              ///< Used to keep track of all current touches.
-
-#define MAX_FINGERS 5
 
 struct urDragTouch
 {
@@ -83,7 +101,7 @@ struct urDragTouch
 
 typedef struct urDragTouch urDragTouch_t;
 
-#define MAX_DRAGS 5
+#define MAX_DRAGS 10
 urDragTouch_t dragtouches[MAX_DRAGS];
 
 int FindDragRegion(urAPI_Region_t*region)
@@ -149,11 +167,11 @@ float cursorscrollspeedx[MAX_FINGERS];
 float cursorscrollspeedy[MAX_FINGERS];
 
 // Arrays to pass multi-touch finger to enter/leave handling. This allows smart decisions for enter/leave based on all fingers being considered. Should never be more than 5 and is fixed to avoid problems if MAX_FINGERS should be set to less for some reason.
-int argmoved[5];
-float argcoordx[5];
-float argcoordy[5];
-float arg2coordx[5];
-float arg2coordy[5];
+int argmoved[MAX_FINGERS];
+float argcoordx[MAX_FINGERS];
+float argcoordy[MAX_FINGERS];
+float arg2coordx[MAX_FINGERS];
+float arg2coordy[MAX_FINGERS];
 
 // The lua state
 lua_State* lua;
@@ -203,6 +221,9 @@ Texture2D       *errorStrTex = nil;
         [locationManager startUpdatingHeading];
 		
     }
+	
+	//Create and advertise networking and discover others
+	[self setup];
 	
 	mytimer = [MachTimer alloc];
 	[mytimer start];
@@ -284,8 +305,12 @@ Texture2D       *errorStrTex = nil;
 }
 
 // Hard-wired screen dimension constants. This will soon be system-dependent variable!
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 480
+int SCREEN_WIDTH = 320;
+int SCREEN_HEIGHT = 480;
+int HALF_SCREEN_WIDTH = 160;
+int HALF_SCREEN_HEIGHT = 240;
+//#define SCREEN_WIDTH 320
+//#define SCREEN_HEIGHT 480
 
 // Enables/Disables that error and DPrint texture is rendered. Should always be on really.
 #define RENDERERRORSTRTEXTUREFONT
@@ -376,7 +401,7 @@ void CreateFrameBuffer()
 void drawPointToTexture(urAPI_Texture_t *texture, float x, float y)
 {
 	Texture2D *bgtexture = texture->backgroundTex;
-	y = 480 - y;
+	y = SCREEN_HEIGHT - y;
 
 	// allocate frame buffer
 	if(textureFrameBuffer == -1)
@@ -428,10 +453,10 @@ int prepareBrushedLine(float startx, float starty, float endx, float endy, int v
 void drawQuadToTexture(urAPI_Texture_t *texture, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
 {
 	Texture2D *bgtexture = texture->backgroundTex;
-	y1 = 480 - y1;
-	y2 = 480 - y2;
-	y3 = 480 - y3;
-	y4 = 480 - y4;
+	y1 = SCREEN_HEIGHT - y1;
+	y2 = SCREEN_HEIGHT - y2;
+	y3 = SCREEN_HEIGHT - y3;
+	y4 = SCREEN_HEIGHT - y4;
 	
 	// allocate frame buffer
 	if(textureFrameBuffer == -1)
@@ -444,6 +469,7 @@ void drawQuadToTexture(urAPI_Texture_t *texture, float x1, float y1, float x2, f
 	
 	SetupBrush();
 	
+	glDisable(GL_SCISSOR_TEST);
 	glEnable(GL_LINE_SMOOTH);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glColor4ub(texture->texturebrushcolor[0], texture->texturebrushcolor[1], texture->texturebrushcolor[2], texture->texturebrushcolor[3]);		
@@ -473,7 +499,7 @@ void drawQuadToTexture(urAPI_Texture_t *texture, float x1, float y1, float x2, f
 	{
 		
 		static GLfloat*		vertexBuffer = NULL;
-		static NSUInteger	vertexMax = 577; // Sqrt(480^2+320^2)
+		static NSUInteger	vertexMax = sqrt(SCREEN_HEIGHT*SCREEN_HEIGHT+SCREEN_WIDTH*SCREEN_WIDTH); //577; // Sqrt(480^2+320^2)
 		NSUInteger			vertexCount = 0,
 		count,
 		i;
@@ -502,7 +528,7 @@ void drawQuadToTexture(urAPI_Texture_t *texture, float x1, float y1, float x2, f
 void drawEllipseToTexture(urAPI_Texture_t *texture, float x, float y, float w, float h)
 {
 	Texture2D *bgtexture = texture->backgroundTex;
-	y = 480 - y;
+	y = SCREEN_HEIGHT - y;
 	
 	// allocate frame buffer
 	if(textureFrameBuffer == -1)
@@ -544,7 +570,7 @@ void drawEllipseToTexture(urAPI_Texture_t *texture, float x, float y, float w, f
 	{
 		
 		static GLfloat*		vertexBuffer = NULL;
-		static NSUInteger	vertexMax = 577; // Sqrt(480^2+320^2)
+		static NSUInteger	vertexMax = sqrt(SCREEN_HEIGHT*SCREEN_HEIGHT+SCREEN_WIDTH*SCREEN_WIDTH); //577; // Sqrt(480^2+320^2)
 		NSUInteger			i;
 		
 		GLfloat vertices[720];
@@ -573,8 +599,8 @@ void drawLineToTexture(urAPI_Texture_t *texture, float startx, float starty, flo
 {
 	Texture2D *bgtexture = texture->backgroundTex;
 	
-	starty = 480 - starty;
-	endy = 480 - endy;
+	starty = texture->backgroundTex->_height - starty;
+	endy = texture->backgroundTex->_height - endy;
 	// allocate frame buffer
 	if(textureFrameBuffer == -1)
 		CreateFrameBuffer();
@@ -608,7 +634,7 @@ void drawLineToTexture(urAPI_Texture_t *texture, float startx, float starty, flo
 	{
 
 		static GLfloat*		vertexBuffer = NULL;
-		static NSUInteger	vertexMax = 577; // Sqrt(480^2+320^2)
+		static NSUInteger	vertexMax = sqrt(SCREEN_HEIGHT*SCREEN_HEIGHT+SCREEN_WIDTH*SCREEN_WIDTH); //577; // Sqrt(480^2+320^2)
 		NSUInteger			vertexCount = 0,
 		count,
 		i;
@@ -736,7 +762,7 @@ UILineBreakMode tolinebreakmode(int wrap)
     glMatrixMode(GL_MODELVIEW);
     glRotatef(0.0f, 0.0f, 0.0f, 1.0f);
     
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f); // Background color
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Background color
     glClear(GL_COLOR_BUFFER_BIT);
 	
 	// Render all (visible and unclipped) regions on a given page.
@@ -980,7 +1006,7 @@ UILineBreakMode tolinebreakmode(int wrap)
 	{
 		newerror = false;
 		errorStrTex = [[Texture2D alloc] initWithString:errorstr
-										 dimensions:CGSizeMake(320, 128) alignment:UITextAlignmentCenter
+										 dimensions:CGSizeMake(SCREEN_WIDTH, 128) alignment:UITextAlignmentCenter
 										   fontName:@"Helvetica" fontSize:14 lineBreakMode:UILineBreakModeWordWrap ];
 	}
 	else if(newerror)
@@ -988,7 +1014,7 @@ UILineBreakMode tolinebreakmode(int wrap)
 		[errorStrTex dealloc];
 		newerror = false;
 		errorStrTex = [[Texture2D alloc] initWithString:errorstr
-										 dimensions:CGSizeMake(320, 128) alignment:UITextAlignmentCenter
+										 dimensions:CGSizeMake(SCREEN_WIDTH, 128) alignment:UITextAlignmentCenter
 										   fontName:@"Helvetica" fontSize:14 lineBreakMode:UILineBreakModeWordWrap];
 	}
 	
@@ -1024,7 +1050,15 @@ UILineBreakMode tolinebreakmode(int wrap)
 
 
 - (BOOL)createFramebuffer {
+	
+	CGRect screendimensions = [[UIScreen mainScreen] bounds];
     
+	SCREEN_WIDTH = screendimensions.size.width;
+	SCREEN_HEIGHT = screendimensions.size.height;
+	HALF_SCREEN_WIDTH = SCREEN_WIDTH/2;
+	HALF_SCREEN_HEIGHT = SCREEN_HEIGHT/2;
+	
+	
     glGenFramebuffersOES(1, &viewFramebuffer);
     glGenRenderbuffersOES(1, &viewRenderbuffer);
     
@@ -1099,11 +1133,29 @@ UILineBreakMode tolinebreakmode(int wrap)
     if ([EAGLContext currentContext] == context) {
         [EAGLContext setCurrentContext:nil];
     }
-    
+
+    // Shut down networking
+	[_inStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+	[_inStream release];
+	
+	[_outStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+	[_outStream release];
+	
+	[_server release];
+	
+	[self stopCurrentResolve];
+	self.services = nil;
+	[self.netServiceBrowser stop];
+	self.netServiceBrowser = nil;
+	[_searchingForServicesString release];
+	[_ownName release];
+	[_ownEntry release];
+
     [ActiveTouches release];
     [context release];  
     [super dealloc];
 }
+
 
 #pragma mark -
 #pragma mark === Touch handling  ===
@@ -1150,7 +1202,7 @@ int NumHitMatches(urAPI_Region_t* hitregion[], int max, int idx, int repeat)
 	{
 		UITouch *touch = [[touches allObjects] objectAtIndex:t];
 		CGPoint position = [touch locationInView:self];
-		callAllTouchSources(position.x/160.0-1.0, 1.0-position.y/240.0,t);
+		callAllTouchSources(position.x/(float)HALF_SCREEN_WIDTH-1.0, 1.0-position.y/(float)HALF_SCREEN_HEIGHT,t);
 	}
 	
 	urAPI_Region_t* hitregion[MAX_FINGERS];
@@ -1166,7 +1218,7 @@ int NumHitMatches(urAPI_Region_t* hitregion[], int max, int idx, int repeat)
 		
 		if(phase == UITouchPhaseBegan) // Hope this works ...
 		{
-			hitregion[t] = findRegionHit(position.x, 480-position.y);
+			hitregion[t] = findRegionHit(position.x, SCREEN_HEIGHT-position.y);
 			if(hitregion[t]!=nil)
 			{
 				// A double tap.
@@ -1266,7 +1318,7 @@ void ClampRegion(urAPI_Region_t*region)
 	{
 		UITouch *touch = [[touches allObjects] objectAtIndex:t];
 		CGPoint position = [touch locationInView:self];
-		callAllTouchSources(position.x/160.0-1.0, 1.0-position.y/240.0,t);
+		callAllTouchSources(position.x/(float)HALF_SCREEN_WIDTH-1.0, 1.0-position.y/(float)HALF_SCREEN_HEIGHT,t);
 	}
 
 //	urAPI_Region_t* hitregion[MAX_FINGERS];
@@ -1295,9 +1347,9 @@ void ClampRegion(urAPI_Region_t*region)
 			cursorpositiony[t2] = position.y;
 			argmoved[arg] = t;
 			argcoordx[arg] = position.x;
-			argcoordy[arg] = 480-position.y;
+			argcoordy[arg] = SCREEN_HEIGHT-position.y;
 			arg2coordx[arg] = oldposition.x;
-			arg2coordy[arg] = 480-oldposition.y;
+			arg2coordy[arg] = SCREEN_HEIGHT-oldposition.y;
 			arg++;
 		}
 		else
@@ -1354,12 +1406,12 @@ void ClampRegion(urAPI_Region_t*region)
 		}
 		else 
 		{
-			urAPI_Region_t* scrollregion = findRegionXScrolled(cursorpositionx[t],480-cursorpositiony[t],cursorscrollspeedx[t]);
+			urAPI_Region_t* scrollregion = findRegionXScrolled(cursorpositionx[t],SCREEN_HEIGHT-cursorpositiony[t],cursorscrollspeedx[t]);
 			if(scrollregion != nil)
 			{
 				callScriptWith1Args(scrollregion->OnHorizontalScroll, scrollregion, cursorscrollspeedx[t]);
 			}
-			scrollregion = findRegionYScrolled(cursorpositionx[t],480-cursorpositiony[t],-cursorscrollspeedy[t]);
+			scrollregion = findRegionYScrolled(cursorpositionx[t],SCREEN_HEIGHT-cursorpositiony[t],-cursorscrollspeedy[t]);
 			if(scrollregion != nil)
 			{
 				callScriptWith1Args(scrollregion->OnVerticalScroll, scrollregion, -cursorscrollspeedy[t]);
@@ -1387,7 +1439,7 @@ void ClampRegion(urAPI_Region_t*region)
 	{
 		UITouch *touch = [[touches allObjects] objectAtIndex:t];
 		CGPoint position = [touch locationInView:self];
-		callAllTouchSources(position.x/160.0-1.0, 1.0-position.y/240.0,t);
+		callAllTouchSources(position.x/(float)HALF_SCREEN_WIDTH-1.0, 1.0-position.y/(float)HALF_SCREEN_HEIGHT,t);
 	}
 	
 	int arg = 0;
@@ -1423,19 +1475,19 @@ void ClampRegion(urAPI_Region_t*region)
 			}
 			
 			CGPoint oldposition = [touch previousLocationInView:self];
-			urAPI_Region_t* hitregion = findRegionHit(position.x, 480-position.y);
+			urAPI_Region_t* hitregion = findRegionHit(position.x, SCREEN_HEIGHT-position.y);
 			NSUInteger numTaps = [touch tapCount];
 			if(hitregion)
 			{
 				callScript(hitregion->OnTouchUp, hitregion);
-				callAllOnLeaveRegions(position.x, 480-position.y);
+				callAllOnLeaveRegions(position.x, SCREEN_HEIGHT-position.y);
 			}
 			else
 			{
 				argcoordx[arg] = position.x;
-				argcoordy[arg] = 480-position.y;
+				argcoordy[arg] = SCREEN_HEIGHT-position.y;
 				arg2coordx[arg] = oldposition.x;
-				arg2coordy[arg] = 480-oldposition.y;
+				arg2coordy[arg] = SCREEN_HEIGHT-oldposition.y;
 				arg++;
 				
 			}
@@ -1485,5 +1537,287 @@ void ClampRegion(urAPI_Region_t*region)
 	
 }
 #endif
+
+
+// Networking
+
+// The Bonjour application protocol, which must:
+// 1) be no longer than 14 characters
+// 2) contain only lower-case letters, digits, and hyphens
+// 3) begin and end with lower-case letter or digit
+// It should also be descriptive and human-readable
+// See the following for more information:
+// http://developer.apple.com/networking/bonjour/faq.html
+#define kurNetIdentifier		@"urMus"
+
+- (void) setup {
+	[_server release];
+	_server = nil;
+
+#ifndef USEUDP
+	[_inStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[_inStream release];
+	_inStream = nil;
+	_inReady = NO;
+	
+	[_outStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[_outStream release];
+	_outStream = nil;
+	_outReady = NO;
+#endif
+	
+#ifdef USEUDP
+	_server = [[AsyncUdpSocket alloc] initWithDelegate:self];
+//	binded = [usocketS bindToPort:8080 error:&error];
+//	connected = [usocketS connectToHost:SERVER onPort:8080 error:&error];
+	
+#else
+	_server = [TCPServer new];
+	[_server setDelegate:self];
+	NSError *error;
+	if(_server == nil || ![_server start:&error]) {
+		return;
+	}
+#endif
+	
+	//Start advertising to clients, passing nil for the name to tell Bonjour to pick use default name
+#ifdef USEUDP
+	if(![_server enableBonjourWithDomain:@"local" applicationProtocol:[AsyncUdpSocket bonjourTypeFromIdentifier:kurNetIdentifier] name:nil]) {
+#else
+	if(![_server enableBonjourWithDomain:@"local" applicationProtocol:[TCPServer bonjourTypeFromIdentifier:kurNetIdentifier] name:nil]) {
+#endif
+		return;
+	}
+	
+//	self.gameName = nil;
+	[self setOwnName:nil];
+}
+
+// Holds the string that's displayed in the table view during service discovery.
+- (void)setOwnName:(NSString *)name {
+	if (_ownName != name) {
+		_ownName = [name copy];
+		
+		if (self.ownEntry)
+			[self.services addObject:self.ownEntry];
+		
+		NSNetService* service;
+		
+		for (service in self.services) {
+			if ([service.name isEqual:name]) {
+				self.ownEntry = service;
+				[_services removeObject:service];
+				break;
+			}
+		}
+		
+
+	}
+}
+
+extern EAGLView* g_glView;
+
+void Net_Send(float data)
+{
+	int8_t idata = data*128;
+	[g_glView send:(int8_t)idata];
+}
+
+- (void) send:(const int8_t)message
+{
+	if (_outStream && [_outStream hasSpaceAvailable])
+		if([_outStream write:(const uint8_t *)&message maxLength:sizeof(const uint8_t)] == -1)
+			[self _showAlert:@"Failed sending data to peer"];
+}
+
+- (void) openStreams
+{
+	_inStream.delegate = self;
+	[_inStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[_inStream open];
+	_outStream.delegate = self;
+	[_outStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[_outStream open];
+	
+}
+
+- (void) stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
+{
+	switch(eventCode) {
+		case NSStreamEventOpenCompleted:
+		{
+			[_server release];
+			_server = nil;
+			
+			if (stream == _inStream)
+				_inReady = YES;
+			else
+				_outReady = YES;
+			
+			if (_inReady && _outReady) {
+				// Connection established fully.
+			}
+			break;
+		}
+		case NSStreamEventHasBytesAvailable:
+		{
+			if (stream == _inStream) {
+				uint8_t b;
+				unsigned int len = 0;
+				len = [_inStream read:&b maxLength:sizeof(uint8_t)];
+				if(!len) {
+					if ([stream streamStatus] != NSStreamStatusAtEnd)
+						int a = 0; // NYI error, failed to read data from peer.
+				} else {
+					callAllOnNetIn(((int8_t)b)/128.0);
+					callAllNetSingleTickSources((int8_t)b);
+				}
+			}
+			break;
+		}
+		case NSStreamEventErrorOccurred:
+		{
+			break;
+		}
+			
+		case NSStreamEventEndEncountered:
+		{
+			// Connection ended.
+			
+			break;
+		}
+	}
+}
+
+#ifdef USEUDP
+- (void) serverDidEnableBonjour:(AsyncUdpSocket *)server withName:(NSString *)string
+#else
+- (void) serverDidEnableBonjour:(TCPServer *)server withName:(NSString *)string
+#endif
+{
+	[self setOwnName:string];
+
+#ifdef USEUDP
+	[self searchForServicesOfType:[AsyncUdpSocket bonjourTypeFromIdentifier:kurNetIdentifier] inDomain:@"local"];
+#else
+	[self searchForServicesOfType:[TCPServer bonjourTypeFromIdentifier:kurNetIdentifier] inDomain:@"local"];
+#endif
+}
+
+#ifdef USEUDP
+- (void)didAcceptConnectionForServer:(AsyncUdpSocket *)server inputStream:(NSInputStream *)istr outputStream:(NSOutputStream *)ostr
+#else
+- (void)didAcceptConnectionForServer:(TCPServer *)server inputStream:(NSInputStream *)istr outputStream:(NSOutputStream *)ostr
+#endif
+{
+	if (_inStream || _outStream || server != _server)
+		return;
+	
+	[_server release];
+	_server = nil;
+	
+	_inStream = istr;
+	[_inStream retain];
+	_outStream = ostr;
+	[_outStream retain];
+	
+	[self openStreams];
+	while(not [_outStream hasSpaceAvailable]); // Waiting for the stream to fully establish. Not elegant but alas.
+}
+
+- (void)stopCurrentResolve {
+	
+	self.needsActivityIndicator = NO;
+	
+	[self.currentResolve stop];
+	self.currentResolve = nil;
+}
+
+// Creates an NSNetServiceBrowser that searches for services of a particular type in a particular domain.
+// If a service is currently being resolved, stop resolving it and stop the service browser from
+// discovering other services.
+- (BOOL)searchForServicesOfType:(NSString *)type inDomain:(NSString *)domain {
+	
+	[self stopCurrentResolve];
+	[self.netServiceBrowser stop];
+	[self.services removeAllObjects];
+	
+	NSNetServiceBrowser *aNetServiceBrowser = [[NSNetServiceBrowser alloc] init];
+	if(!aNetServiceBrowser) {
+        // The NSNetServiceBrowser couldn't be allocated and initialized.
+		return NO;
+	}
+	
+	aNetServiceBrowser.delegate = self;
+	self.netServiceBrowser = aNetServiceBrowser;
+	[aNetServiceBrowser release];
+	[self.netServiceBrowser searchForServicesOfType:type inDomain:domain];
+	
+	return YES;
+}
+
+- (NSString *)ownName {
+	return _ownName;
+}
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didRemoveService:(NSNetService *)service moreComing:(BOOL)moreComing {
+	// If a service went away, stop resolving it if it's currently being resolved,
+	// remove it from the list and update the table view if no more events are queued.
+	
+	if (self.currentResolve && [service isEqual:self.currentResolve]) {
+		[self stopCurrentResolve];
+	}
+	[self.services removeObject:service];
+	if (self.ownEntry == service)
+		self.ownEntry = nil;
+	
+	// If moreComing is NO, it means that there are no more messages in the queue from the Bonjour daemon, so we should update the UI.
+	// When moreComing is set, we don't update the UI so that it doesn't 'flash'.
+	if (!moreComing) {
+	}
+}	
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didFindService:(NSNetService *)service moreComing:(BOOL)moreComing {
+	// If a service came online, add it to the list and update the table view if no more events are queued.
+	NSString* temp = [service.name copy];	
+	if ([service.name isEqual:self.ownName])
+		self.ownEntry = service;
+	else if([service.name compare:self.ownName] == NSOrderedAscending)
+	{
+		[self.services addObject:service];
+	
+		
+		
+		if (_inStream || _outStream)
+			return;
+		// note the following method returns _inStream and _outStream with a retain count that the caller must eventually release
+		if (![service getInputStream:&_inStream outputStream:&_outStream]) {
+			[self _showAlert:@"Failed connecting to server"];
+			return;
+		}
+		
+		[self openStreams];
+		while(not [_outStream hasSpaceAvailable]);
+
+	}
+	// If moreComing is NO, it means that there are no more messages in the queue from the Bonjour daemon, so we should update the UI.
+	// When moreComing is set, we don't update the UI so that it doesn't 'flash'.
+	if (!moreComing) {
+	}
+}	
+
+// This should never be called, since we resolve with a timeout of 0.0, which means indefinite
+- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
+	[self stopCurrentResolve];
+}
+
+- (void)netServiceDidResolveAddress:(NSNetService *)service {
+	assert(service == self.currentResolve);
+	
+	[service retain];
+	[self stopCurrentResolve];
+	
+	[service release];
+}
 
 @end

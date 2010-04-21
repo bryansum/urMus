@@ -597,6 +597,15 @@ bool callAllOnAccelerate(float x, float y, float z)
 	return true;
 }
 
+bool callAllOnNetIn(float a)
+{
+	for(urAPI_Region_t* t=firstRegion[currentPage]; t != nil; t=t->next)
+	{
+		if(t->OnNetIn != 0)
+			callScriptWith1Args(t->OnNetIn,t,a);
+	}
+}
+
 #ifdef SANDWICH_SUPPORT
 bool callAllOnPressure(float p)
 {
@@ -850,6 +859,11 @@ int region_Handle(lua_State* lua)
 			luaL_unref(lua, LUA_REGISTRYINDEX, region->OnAccelerate);
 			region->OnAccelerate = 0;
 		}
+		else if(!strcmp(handler, "OnNetIn"))
+		{
+			luaL_unref(lua, LUA_REGISTRYINDEX, region->OnNetIn);
+			region->OnNetIn = 0;
+		}
 #ifdef SANDWICH_SUPPORT
 		else if(!strcmp(handler, "OnPressure"))
 		{
@@ -952,6 +966,8 @@ int region_Handle(lua_State* lua)
 				region->OnDoubleTap = func_ref;
 			else if(!strcmp(handler, "OnAccelerate"))
 				region->OnAccelerate = func_ref;
+			else if(!strcmp(handler, "OnNetIn"))
+				region->OnNetIn = func_ref;
 #ifdef SANDWICH_SUPPORT
 			else if(!strcmp(handler, "OnPressure"))
 				region->OnPressure = func_ref;
@@ -1071,6 +1087,8 @@ int region_EnableResizing(lua_State* lua)
 	return 0;
 }
 
+void ClampRegion(urAPI_Region_t* region);
+
 int region_SetAnchor(lua_State* lua)
 {
 	urAPI_Region_t* region = checkregion(lua,1);
@@ -1135,6 +1153,8 @@ int region_SetAnchor(lua_State* lua)
 	region->ofsy = ofsy;
 	region->update = true;
 	layout(region);
+	if(region->isClamped)
+		ClampRegion(region);
 	return true;
 }
 
@@ -1425,7 +1445,7 @@ int region_Children(lua_State* lua)
 	return childcount;
 }
 
-int region_GetAlpha(lua_State* lua)
+int region_Alpha(lua_State* lua)
 {
 	urAPI_Region_t* region = checkregion(lua,1);
 	lua_pushnumber(lua, region->alpha);
@@ -1544,11 +1564,8 @@ int region_IsVisible(lua_State* lua)
 	return 1;
 }
 
-int region_SetParent(lua_State* lua)
+void setParent(urAPI_Region_t* region, urAPI_Region_t* parent)
 {
-	urAPI_Region_t* region = checkregion(lua,1);
-	urAPI_Region_t* parent = checkregion(lua, 2);
-	
 	if(region!= NULL && parent!= NULL && region != parent)
 	{
 		removeChild(region->parent, region);
@@ -1560,6 +1577,14 @@ int region_SetParent(lua_State* lua)
 			addChild(parent, region);
 		}
 	}
+}
+
+int region_SetParent(lua_State* lua)
+{
+	urAPI_Region_t* region = checkregion(lua,1);
+	urAPI_Region_t* parent = checkregion(lua, 2);
+
+	setParent(region, parent);
 	return 0;
 }
 
@@ -1805,20 +1830,23 @@ int l_HasInput(lua_State* lua)
 	return 1;
 }
 
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
+
 int l_ScreenHeight(lua_State* lua)
 {
-	lua_pushnumber(lua, 480.0);
+	lua_pushnumber(lua, SCREEN_HEIGHT);
 	return 1;
 }
 
 int l_ScreenWidth(lua_State* lua)
 {
-	lua_pushnumber(lua, 320.0);
+	lua_pushnumber(lua, SCREEN_WIDTH);
 	return 1;
 }
 
-extern float cursorpositionx[5];
-extern float cursorpositiony[5];
+extern float cursorpositionx[MAX_FINGERS];
+extern float cursorpositiony[MAX_FINGERS];
 
 // UR: New arg "finger" allows to specify which finger to get position for. nil defaults to 0.
 int l_InputPosition(lua_State* lua)
@@ -1827,7 +1855,7 @@ int l_InputPosition(lua_State* lua)
 	if(lua_gettop(lua) > 0 && !lua_isnil(lua, 1))
 		finger = luaL_checknumber(lua, 1);
 	lua_pushnumber(lua, cursorpositionx[finger]);
-	lua_pushnumber(lua, 480-cursorpositiony[finger]);
+	lua_pushnumber(lua, SCREEN_HEIGHT-cursorpositiony[finger]);
 	return 2;
 }
 
@@ -2712,7 +2740,7 @@ static const struct luaL_reg regionfuncs [] =
 	{"IsVisible", region_IsVisible},
 	{"SetParent", region_SetParent},
 	{"SetAlpha", region_SetAlpha},
-	{"GetAlpha", region_GetAlpha},
+	{"Alpha", region_Alpha},
 	{"Layer", region_Layer},
 	{"Texture", region_Texture},
 	{"TextLabel", region_TextLabel},
@@ -2841,8 +2869,8 @@ static int l_Region(lua_State *lua)
 	
 	myregion->clipleft = 0.0;
 	myregion->clipbottom = 0.0;
-	myregion->clipwidth = 320.0;
-	myregion->clipheight = 480.0;
+	myregion->clipwidth = SCREEN_WIDTH;
+	myregion->clipheight = SCREEN_HEIGHT;
 	
 	myregion->alpha = 1.0;
 	
@@ -2875,6 +2903,7 @@ static int l_Region(lua_State *lua)
 	myregion->OnDoubleTap = 0; // (UR!)
 	// All UR!
 	myregion->OnAccelerate = 0;
+	myregion->OnNetIn = 0;
 #ifdef SANDWICH_SUPPORT
 	myregion->OnPressure = 0;
 #endif
@@ -2910,6 +2939,8 @@ static int l_Region(lua_State *lua)
 	// NEW!!
 	numRegions[currentPage] ++;
 	// ENDNEW!!
+
+	setParent(myregion, parentRegion);
 	
 	return 1;
 }
@@ -2964,7 +2995,10 @@ int flowbox_SetPullLink(lua_State *lua)
 	if(!strcmp(fb->object->name,visobject->name)) // This is hacky and should be done differently. Namely in the sink pulling
 		urActiveVisTickSinkList.AddSink(&target->object->outs[outindex]);
 
-    lua_pushboolean(lua, 1);
+	if(!strcmp(fb->object->name,netobject->name)) // This is hacky and should be done differently. Namely in the sink pulling
+		urActiveNetTickSinkList.AddSink(&target->object->outs[outindex]);
+    
+	lua_pushboolean(lua, 1);
 	return 1;
 }
 
@@ -3052,6 +3086,9 @@ int flowbox_RemovePullLink(lua_State *lua)
 	if(!strcmp(fb->object->name,visobject->name)) // This is hacky and should be done differently. Namely in the sink pulling
 		urActiveVisTickSinkList.RemoveSink(&target->object->outs[outindex]);
 
+	if(!strcmp(fb->object->name,netobject->name)) // This is hacky and should be done differently. Namely in the sink pulling
+		urActiveNetTickSinkList.RemoveSink(&target->object->outs[outindex]);
+	
     lua_pushboolean(lua, 1);
 	return 1;
 }
@@ -3500,6 +3537,10 @@ int l_SetPage(lua_State *lua)
 
 void l_setupAPI(lua_State *lua)
 {
+	CGRect screendimensions = [[UIScreen mainScreen] bounds];
+    
+	SCREEN_WIDTH = screendimensions.size.width;
+	SCREEN_HEIGHT = screendimensions.size.height;
 	// Set global userdata
 	// Create UIParent
 //	luaL_newmetatable(lua, "URAPI.region");
@@ -3519,10 +3560,10 @@ void l_setupAPI(lua_State *lua)
 //	lua_setmetatable(lua, -2);
 	myregion->strata = STRATA_BACKGROUND;
 	myregion->parent = NULL;
-	myregion->top = 480.0;
+	myregion->top = SCREEN_HEIGHT;
 	myregion->bottom = 0;
 	myregion->left = 0;
-	myregion->right = 320.0;
+	myregion->right = SCREEN_WIDTH;
 	myregion->firstchild = NULL;
 	myregion->point = NULL;
 	myregion->relativePoint = NULL;

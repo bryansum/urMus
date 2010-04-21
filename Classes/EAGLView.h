@@ -6,7 +6,6 @@
 //  Copyright Georg Essl 2009. All rights reserved. See LICENSE.txt for license details.
 //
 
-
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
@@ -27,10 +26,28 @@ The view content is basically an EAGL surface you render your OpenGL scene into.
 Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
 */
 
-#ifdef SANDWICH_SUPPORT
-@interface EAGLView : UIView <UIAccelerometerDelegate,CLLocationManagerDelegate,SandwichUpdateDelegate>
+//#define USEUDP
+#ifdef USEUDP
+#import "AsyncUdpSocket.h"
 #else
-@interface EAGLView : UIView <UIAccelerometerDelegate,CLLocationManagerDelegate>
+#import "TCPServer.h"
+#import <Foundation/NSNetServices.h>
+#endif
+
+#define MAX_FINGERS 10
+
+#ifdef SANDWICH_SUPPORT
+#ifdef USEUDP
+@interface EAGLView : UIView <UIAccelerometerDelegate,CLLocationManagerDelegate,SandwichUpdateDelegate, AsyncUdpSocketDelegate>
+#else
+@interface EAGLView : UIView <UIAccelerometerDelegate,CLLocationManagerDelegate,SandwichUpdateDelegate, TCPServerDelegate>
+#endif
+#else
+#ifdef USEUDP
+@interface EAGLView : UIView <UIAccelerometerDelegate,CLLocationManagerDelegate, AsyncUdpSocketDelegate>
+#else
+@interface EAGLView : UIView <UIAccelerometerDelegate,CLLocationManagerDelegate, TCPServerDelegate>
+#endif
 #endif
 {
     
@@ -50,6 +67,29 @@ Note that setting the view non-opaque will only work if the EAGL surface has an 
     NSTimer *animationTimer;
     NSTimeInterval animationInterval;
 	CLLocationManager *locationManager;
+
+#ifdef USEUDP
+	AsyncUdpSocket		*_server;
+#else
+	TCPServer			*_server;
+#endif
+	NSInputStream		*_inStream;
+	NSOutputStream		*_outStream;
+	BOOL				_inReady;
+	BOOL				_outReady;
+	
+@private
+//	id<EAGLViewDelegate> _delegate;
+	NSString *_searchingForServicesString;
+	NSString *_ownName;
+	NSNetService *_ownEntry;
+	BOOL _showDisclosureIndicators;
+	NSMutableArray *_services;
+	NSNetServiceBrowser *_netServiceBrowser;
+	NSNetService *_currentResolve;
+	NSTimer *_timer;
+	BOOL _needsActivityIndicator;
+	BOOL _initialWaitOver;
 }
 
 @property (nonatomic, retain) CLLocationManager *locationManager;

@@ -3,17 +3,17 @@ local random = math.random
 
 local vis = _G["FBVis"]
 
-local lastx = ScreenWidth()/2
-local lasty = ScreenHeight()
+local lastx = 320/2
+local lasty = 480
 
 function Paint(self)
 	local visout = vis:Get()
-	local x = ScreenWidth()/2 + vis:Get()*ScreenWidth()/2
+	local x = 320/2 + vis:Get()*320/2
 --	visgraphbackdropregion.tl:SetLabel(vis:Get())
 	self.texture:SetBrushColor(0,0,0,255)
 	self.texture:Line(lastx, lasty, x, lasty+1)
 	lasty = lasty + 1
-	if lasty > ScreenHeight() then
+	if lasty > 480 then
 		self.texture:Clear(1,1,1)
 		lasty = 0
 	end
