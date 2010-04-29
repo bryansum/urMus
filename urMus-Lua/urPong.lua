@@ -3,6 +3,9 @@
 -- Minor tweaks by Georg Essl
 -- Created 2/11/2010
 
+dofile(SystemPath("urHelpers.lua"))
+Req("urWidget")
+
 local function Shutdown()
 	dac:RemovePullLink(0, upSample, 0)
 	dac:RemovePullLink(0, upSample2, 0)
@@ -14,8 +17,12 @@ local function ReInit(self)
 end
 
 -- Instantiating our pong background
-pongBGRegion = MakeRegion({width:ScreenWidth(), height:ScreenHeight(), layer:"BACKGROUND", 
-  x:0,y:0, img:"PongBG.png"})
+pongBGRegion = MakeRegion({
+  w=ScreenWidth(), 
+  h=ScreenHeight(), 
+  layer='BACKGROUND', 
+  x=0,y=0, img="PongBG.png"
+})
 pongBGRegion:Handle("OnPageEntered", ReInit)
 pongBGRegion:Handle("OnPageLeft", Shutdown)
 
@@ -40,7 +47,7 @@ function FadePopup(self, elapsed)
 end
 
 function ShowPopup(note)
-	popuptextregion.textlabel:SetLabel(note)
+	popuptextregion.tl:SetLabel(note)
 	popuptextregion.staytime = 1.5
 	popuptextregion.fadetime = 2.0
 	popuptextregion.alpha = 1
@@ -50,8 +57,8 @@ function ShowPopup(note)
 	popuptextregion:Show()
 end
 
-popuptextregion = MakeRegion({width:ScreenWidth(), height: 48*2, layer:'TOOLTIP',
-  x:0,y:ScreenHeight()/2-24,label:{color:{0,0,60,190},size: 48}})
+popuptextregion = MakeRegion({width=ScreenWidth(), height=48*2, layer='TOOLTIP',
+  x=0,y=ScreenHeight()/2-24,label={color={0,0,60,190},size=48}})
 popuptextregion:EnableClamping(true)
 popuptextregion:Show()
 
@@ -128,11 +135,7 @@ myScore = MakeScoreLabel(160, 80)
 opponentScore = MakeScoreLabel(160, 400)
 
 function MakePaddle(x, y, OnUpdate)
-    local paddle = Region('Region', 'paddle', UIParent)
-    paddle:SetLayer("MEDIUM")
-    paddle:SetWidth(120)
-    paddle:SetHeight(20)
-    paddle:SetAnchor('BOTTOMLEFT', x, y)
+    local paddle = MakeRegion({layer='MEDIUM',w=120,h=20,x=x,y=y})
     
     function paddle:MoveTo(xCoord, yCoord)
         self:SetAnchor('BOTTOMLEFT', xCoord, yCoord)

@@ -33,7 +33,12 @@ Req('underscore','_')
 -- x,y, img, color, gradient, alpha, rotate
 function SetAttrs(r,opts)
   local set = function(r)
-    for k,fn in pairs({input='EnableInput',layer='SetLayer',w='SetWidth',h='SetHeight'}) do
+    for k,fn in pairs({
+        input='EnableInput',
+        layer='SetLayer',
+        w='SetWidth',h='SetHeight',
+        width='SetWidth',height='SetHeight'
+    }) do
       if opts[k] then r[fn](r,opts[k]) end
     end
   
@@ -45,7 +50,8 @@ function SetAttrs(r,opts)
         opts.x or cur[4] or 0,
         opts.y or cur[5] or 0)
     end
-    if opts['img'] then 
+    if opts['img'] then
+      r.t = r:Texture()
       r.t:SetTexture(opts['img'])
       r.t:SetTexCoord(0,0.63,0.94,0.0)
     end
@@ -54,6 +60,7 @@ function SetAttrs(r,opts)
       local g = {opts['gradient'][1]}
       g[2] = ParseColor(opts['gradient'][2]); g[2][4] = g[2][4] or 255; -- add alpha 
       g[3] = ParseColor(opts['gradient'][3]); g[3][4] = g[3][4] or 255
+      r.t = r:Texture()
       r.t:SetGradientColor(unpack(_.flatten(g)))
     end
     if opts['alpha'] then r:SetAlpha(opts['alpha']) end
@@ -83,8 +90,8 @@ function MakeRegion(opts)
   r:SetParent(parent)
   opts['input'] = opts['input'] or true
   opts['layer'] = opts['layer'] or 'MEDIUM'
-  opts['width'] = opts['width'] or 100
-  opts['height'] = opts['height'] or 100
+  opts['width'] = opts['width'] or opts['w'] or 100
+  opts['height'] = opts['height'] or opts['h'] or 100
   opts['color'] = opts['color'] or 'white'
   r.t = r:Texture()
   r.t:SetBlendMode(opts['blend'] or 'BLEND')

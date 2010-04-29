@@ -142,7 +142,7 @@ function urScrollList:CreatescrollRegion(text1, text2, text3, callback, color, i
 		position = #self.scrollRegions + 1
 	end
 	
-	height = urScrollList.BackdropRegion:Height()
+	local height = urScrollList.BackdropRegion:Height()
 	if height == 1 then
 		height = 0
 	end

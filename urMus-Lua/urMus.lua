@@ -5,7 +5,7 @@
 -- Copyright (c) 2010 Georg Essl. All Rights Reserved. See LICENSE.txt for license conditions.
 
 dofile(SystemPath("urHelpers.lua"))
-req("urWidget")
+Req("urWidget")
 
 local sqrt = math.sqrt
 local PI = math.pi
@@ -22,7 +22,7 @@ pagefile = {
 "urPlayground.lua",
 "urRecorder.lua",
 "urPads.lua",
---"urClouds.lua",
+"urCloud.lua",
 --"urClockSeq.lua",
 "urSleigh.lua",
 "urThumper.lua",

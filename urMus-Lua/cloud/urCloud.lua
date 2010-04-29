@@ -1,8 +1,7 @@
-dofile(SystemPath("helpers.lua"))
+dofile(SystemPath("urHelpers.lua"))
+Req('urAnimate')
 
-req('Animate')
-
-local bg = MakeRegion({w=320,h=480,img='cloud_bg.jpg',layer='BACKGROUND',input=false})
+local bg = MakeRegion({w=320,h=480,img='cloud_bg.jpg',layer='MEDIUM',input=false})
 
 -- where the drops should stop and start, respectively
 local bottom_x = 62
@@ -10,7 +9,7 @@ local top_x = 230
 
 dac = _G["FBDac"]
 
-function make_fb(wav)
+function MakeFB(wav)
   local plick = FlowBox("object","plick", FBSample)
   plick:AddFile(wav..".wav")
 
@@ -29,7 +28,7 @@ function make_fb(wav)
   return pusher
 end
 
-function make_sample(wav, pusher)
+function MakeSample(wav, pusher)
   local plick = FlowBox("object","plick", FBSample)
   plick:AddFile(wav..".wav")
 
@@ -42,9 +41,9 @@ function make_sample(wav, pusher)
   return plick
 end
 
-sound1 = make_fb("Plick")
+sound1 = MakeFB("Plick")
 
-function make_drop(y)
+function MakeDrop(y)
   local r = math.random(3)
   local dim = {{33,27},{34,19},{26,19}} -- dimensions of the three cloud images
   return MakeRegion({w=dim[r][1],h=dim[r][2],img='cloud-drop'..r..'.png',x=top_x,y=y})
@@ -58,11 +57,11 @@ bpmPush:SetPushLink(0,looper,0) -- BPM settings
 nowPush = FlowBox("object","mypush",FBPush)
 nowPush:SetPushLink(0,looper,0) -- BPM settings
 
-sound1 = make_fb("Plick")
+sound1 = MakeFB("Plick")
 
     
 -- for i=1,50 do
---   local d = make_drop(math.random(480))
+--   local d = MakeDrop(math.random(480))
 --   d:SetAlpha(0)
 --   Timer.start(math.random()*25,function()
 --     d:SetAlpha(1)

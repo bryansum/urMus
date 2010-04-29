@@ -5,7 +5,7 @@
 -- Minor modifications by Georg Essl on 4/4/2010
 
 dofile(SystemPath("urHelpers.lua"))
-req("urAnimate")
+Req("urAnimate")
 
 if not Widget then Widget = {} end
 
@@ -29,14 +29,14 @@ Widget.ContextMenu = function(items,opts)
   
   local m = MakeRegion({w=width+(2*border.size), h=height,
                          x=0,y=-height,
-                         color=ParseColor(border.color),
+                         color=border.color,
                          parent=parent})
 
   for i,el in pairs(items) do
     local r = MakeRegion({w=width, h=el_height, 
                            x=rel_x+border.size, y=(#items*(el_height+spacing))-((el_height+spacing)*i)+border.size+rel_y,
                            parent=m,
-                           color=ParseColor(color), 
+                           color=color, 
                            label={text=el[1], size=fs, color=ParseColor(tcolor), shadow={0,0,0,190,2,-3,6}}})
     AddEvent(r,"OnTouchDown",el[2])
     r:EnableInput(false)
