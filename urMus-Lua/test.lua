@@ -8,14 +8,9 @@ require "wsapi.xavante"
 local webDir = SystemPath("")
 
 local simplerules = {
-    { -- URI remapping example
-      match = "^[^%./]*/$",
-      with = xavante.redirecthandler,
-      params = {"hello.lua"}
-    },
     { -- WSAPI application will be mounted under /app
       match = { "%.lua$", "%.lua/" },
-      with = wsapi.xavante.makeGenericHandler(webDir)
+      with = wsapi.xavante.makeHandler("hello","",webDir)
     },
 } 
 

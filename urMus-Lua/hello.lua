@@ -5,6 +5,7 @@ function run(wsapi_env)
   local headers = { ["Content-type"] = "text/html" }
 
   local function hello_text()
+    DPrint('running!')
     coroutine.yield("<html><body>")
     coroutine.yield("<p>Hello Wsapi!</p>")
     coroutine.yield("<p>PATH_INFO: " .. wsapi_env.PATH_INFO .. "</p>")
