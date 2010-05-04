@@ -31,7 +31,7 @@ EAGLView* g_glView;
 
 extern NSString* errorstr;
 extern bool newerror;
-
+extern int luaopen_rings (lua_State *L);
 
 //------------------------------------------------------------------------------
 // Application controls
@@ -43,10 +43,12 @@ extern bool newerror;
 	/* Declare a Lua State, open the Lua State and load the libraries (see above). */
 	lua = lua_open();
 	luaL_openlibs(lua);
-	luaopen_lfs (lua); // Added external luafilesystem, runs under lua's open license
+	luaopen_rings(lua);
+	luaopen_lfs(lua); // Added external luafilesystem, runs under lua's open license	
 	luaopen_socket_core(lua); // Adding luasocket support
 	luaopen_mime_core(lua);
 	l_setupAPI(lua);
+	
 
 //	[[UIApplication] sharedApplication] startTVOut]; // This enables that the video data is send to the AV out for projection (it's a mirror)
 #ifdef PROJECTOR_VIDEO

@@ -6,12 +6,13 @@
 
 -- Add our system path to the package path so requires work properly
 
--- init
+-- add the resources directory to our LUA_PATH
 package.path = SystemPath('?.lua')..';'..package.path;
+-- load up the socket / mime modules from luasocket
 dofile(SystemPath('socket.lua'))
 dofile(SystemPath('mime.lua'))
 
-require('urHelpers')
+require("urHelpers")
 require("urWidget")
 
 local sqrt = math.sqrt
@@ -24,7 +25,7 @@ local ceil = math.ceil
 pagefile = {
 "urMus",
 "urPiano.lua",
-"listener.lua",
+"test.lua",
 "urFlute.lua",
 "urPitcher.lua",
 "urPlayground.lua",
