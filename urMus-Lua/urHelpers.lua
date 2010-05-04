@@ -2,6 +2,7 @@
 -- Set of helper functions and commonly used functions wrapped into single calls
 -- Created by Bryan Summersett on 3/28/2010
 
+
 function table.copy(t)
   local t2 = {}
   for k,v in pairs(t) do
@@ -22,11 +23,11 @@ end
 -- the file's content will be assigned to that global var and not required again. 
 -- req('underscore','_')
 function req(name,var)
-  if not var then return dofile(SystemPath(name..".lua")) end
+  if not var then return require(name) end --dofile(SystemPath(name..".lua")) end
   if not _G[var] then _G[var] = dofile(SystemPath(name..".lua")); return _G[var]; end
 end
 
-req('underscore','_')
+local _ = require('underscore')
 
 function set_attrs(r,opts)
   local set = function(r)

@@ -11,6 +11,8 @@
 #include "urAPI.h"
 #include "RIOAudioUnitLayer.h"
 #include "lfs.h"
+#include "luasocket.h"
+#include "mime.h"
 
 // This enables video projector output. It's not official API hence not safe for app store.
 //#define PROJECTOR_VIDEO
@@ -42,6 +44,8 @@ extern bool newerror;
 	lua = lua_open();
 	luaL_openlibs(lua);
 	luaopen_lfs (lua); // Added external luafilesystem, runs under lua's open license
+	luaopen_socket_core(lua); // Adding luasocket support
+	luaopen_mime_core(lua);
 	l_setupAPI(lua);
 
 //	[[UIApplication] sharedApplication] startTVOut]; // This enables that the video data is send to the AV out for projection (it's a mirror)

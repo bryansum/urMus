@@ -4,8 +4,15 @@
 -- Last modified: 04/04/2010
 -- Copyright (c) 2010 Georg Essl. All Rights Reserved. See LICENSE.txt for license conditions.
 
-dofile(SystemPath("urHelpers.lua"))
-req("urWidget")
+-- Add our system path to the package path so requires work properly
+
+-- init
+package.path = SystemPath('?.lua')..';'..package.path;
+dofile(SystemPath('socket.lua'))
+dofile(SystemPath('mime.lua'))
+
+require('urHelpers')
+require("urWidget")
 
 local sqrt = math.sqrt
 local PI = math.pi
@@ -17,6 +24,7 @@ local ceil = math.ceil
 pagefile = {
 "urMus",
 "urPiano.lua",
+"listener.lua",
 "urFlute.lua",
 "urPitcher.lua",
 "urPlayground.lua",

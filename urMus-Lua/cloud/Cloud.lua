@@ -1,6 +1,6 @@
 dofile(SystemPath("helpers.lua"))
 
-req('Animate')
+require 'urAnimate'
 
 local bg = make_region({w=320,h=480,img='cloud_bg.jpg',layer='BACKGROUND',input=false})
 

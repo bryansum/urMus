@@ -4,8 +4,8 @@
 -- Created by Bryan Summersett on 3/28/2010
 -- Minor modifications by Georg Essl on 4/4/2010
 
-dofile(SystemPath("urHelpers.lua"))
-req("urAnimate")
+require "urHelpers"
+require "urAnimate"
 
 if not Widget then Widget = {} end
 
