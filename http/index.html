@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="style.css" type="text/css" charset="utf-8">
+  </head>
+  <body>
+    <h1>Welcome to urMus code edtior!</h1>
+    <form id="eval_form" method="post" accept-charset="utf-8">
+      <textarea name="code" rows="8" cols="40"></textarea>
+      <p><input type="submit" value="Evaluate &rarr;"></p>
+    </form>
+    <h3>Result:</h3>
+    <code>
+      <pre id="results">
+        
+      </pre>
+    </code>
+    <script src="jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $('#eval_form').submit(function(e) {
+          $("#results").load('/eval.lua',$(this).serialize());
+          
+          e.preventDefault();
+          return false;
+        })
+      });
+    </script>
+  </body>
+</html>
+  

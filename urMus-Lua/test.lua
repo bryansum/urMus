@@ -1,16 +1,29 @@
 
 -- module("test")
-
 require "xavante"
+require "xavante.redirecthandler"
+require "xavante.filehandler"
 require "xavante.cgiluahandler"
 require "wsapi.xavante"
 
-local webDir = SystemPath("")
+package.path = SystemPath('http/?.lua')..';'..package.path;
+
+local webDir = SystemPath("http")
 
 local simplerules = {
-    { -- WSAPI application will be mounted under /app
-      match = { "%.lua$", "%.lua/" },
-      with = wsapi.xavante.makeHandler("hello","",webDir)
+    { -- URI remapping example
+      match = "^[^%./]*/$",
+      with = xavante.redirecthandler,
+      params = {"index.html"}
+    },
+    {
+        match = { "%.lua$", "%.lua/" },
+        with = wsapi.xavante.makeHandler("eval","",webDir)
+    },
+    { -- filehandler example
+        match = ".",
+        with = xavante.filehandler,
+        params = {baseDir = webDir}
     },
 } 
 
@@ -22,9 +35,12 @@ xavante.HTTP {
     },
 }
 
-local el = Region('region', 'test', UIParent)
-el:Handle("OnUpdate",function(el,elapsed) 
-	copas.step(0.1)
+local times = 0
+HTTPServer = Region('region', 'test', UIParent)
+HTTPServer:Handle("OnUpdate",function(el,elapsed) 
+    times = times + 1
+    DPrint(times)
+	copas.step(0.01)
 end)
 
 pagebutton=Region('region', 'pagebutton', UIParent);
@@ -42,3 +58,5 @@ pagebutton.texture:SetBlendMode("BLEND")
 pagebutton.texture:SetTexCoord(0,1.0,0,1.0);
 pagebutton:EnableInput(true);
 pagebutton:Show();
+
+

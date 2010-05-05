@@ -11,6 +11,7 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		2353537011920D9300EB5AA1 /* http in Resources */ = {isa = PBXBuildFile; fileRef = 2353536811920D9300EB5AA1 /* http */; };
 		23553328118F32AB00996C36 /* auxiliar.c in Sources */ = {isa = PBXBuildFile; fileRef = 235532C2118F32AB00996C36 /* auxiliar.c */; };
 		2355332A118F32AB00996C36 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 235532C5118F32AB00996C36 /* buffer.c */; };
 		2355332C118F32AB00996C36 /* except.c in Sources */ = {isa = PBXBuildFile; fileRef = 235532C8118F32AB00996C36 /* except.c */; };
@@ -40,9 +41,7 @@
 		23D9193B118FCD8C00881F2A /* coxpcall.lua in Sources */ = {isa = PBXBuildFile; fileRef = 23D91936118FCD8C00881F2A /* coxpcall.lua */; };
 		23D9194B118FCE0B00881F2A /* xavante in Resources */ = {isa = PBXBuildFile; fileRef = 23D9194A118FCE0B00881F2A /* xavante */; };
 		23D91970118FD08200881F2A /* test.lua in Sources */ = {isa = PBXBuildFile; fileRef = 23D9196F118FD08200881F2A /* test.lua */; };
-		23D91999118FD38F00881F2A /* hello.lua in Sources */ = {isa = PBXBuildFile; fileRef = 23D91998118FD38F00881F2A /* hello.lua */; };
 		23D919BE118FD65E00881F2A /* test.lua in Resources */ = {isa = PBXBuildFile; fileRef = 23D9196F118FD08200881F2A /* test.lua */; };
-		23D919BF118FD65E00881F2A /* hello.lua in Resources */ = {isa = PBXBuildFile; fileRef = 23D91998118FD38F00881F2A /* hello.lua */; };
 		23D919EA118FD86300881F2A /* socket in Resources */ = {isa = PBXBuildFile; fileRef = 23D919E3118FD86300881F2A /* socket */; };
 		23D91A10118FE0EB00881F2A /* stable.lua in Sources */ = {isa = PBXBuildFile; fileRef = 23D91A0F118FE0EB00881F2A /* stable.lua */; };
 		23D91A12118FE0FE00881F2A /* rings.c in Sources */ = {isa = PBXBuildFile; fileRef = 23D91A11118FE0FE00881F2A /* rings.c */; };
@@ -242,6 +241,7 @@
 		1D6058910D05DD3D006BFB54 /* urMus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = urMus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		234BB4F9118FEAB00045B612 /* rings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rings.h; sourceTree = "<group>"; };
+		2353536811920D9300EB5AA1 /* http */ = {isa = PBXFileReference; lastKnownFileType = folder; path = http; sourceTree = "<group>"; };
 		23553291118F32AB00996C36 /* config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config; sourceTree = "<group>"; };
 		23553293118F32AB00996C36 /* dns.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = dns.html; sourceTree = "<group>"; };
 		23553294118F32AB00996C36 /* ftp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ftp.html; sourceTree = "<group>"; };
@@ -338,7 +338,6 @@
 		23D91936118FCD8C00881F2A /* coxpcall.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lua; name = coxpcall.lua; path = "urMus-Lua/lib/coxpcall.lua"; sourceTree = "<group>"; };
 		23D9194A118FCE0B00881F2A /* xavante */ = {isa = PBXFileReference; lastKnownFileType = folder; name = xavante; path = "urMus-Lua/lib/xavante"; sourceTree = "<group>"; };
 		23D9196F118FD08200881F2A /* test.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lua; name = test.lua; path = "urMus-Lua/test.lua"; sourceTree = "<group>"; };
-		23D91998118FD38F00881F2A /* hello.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lua; name = hello.lua; path = "urMus-Lua/hello.lua"; sourceTree = "<group>"; };
 		23D919E3118FD86300881F2A /* socket */ = {isa = PBXFileReference; lastKnownFileType = folder; name = socket; path = "urMus-Lua/lib/socket"; sourceTree = "<group>"; };
 		23D91A0F118FE0EB00881F2A /* stable.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lua; name = stable.lua; path = "urMus-Lua/lib/stable.lua"; sourceTree = "<group>"; };
 		23D91A11118FE0FE00881F2A /* rings.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = rings.c; sourceTree = "<group>"; };
@@ -873,6 +872,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				2353536811920D9300EB5AA1 /* http */,
 				23553290118F32AB00996C36 /* luasocket-2.0.2 */,
 				77B3A84A114F056F0073CCCF /* Networking */,
 				77F043951123BC5100CB8C95 /* Sounds */,
@@ -1214,7 +1214,6 @@
 				77F043811123BC0700CB8C95 /* urVisDemo.lua */,
 				77C054DE11399F3900B81AEC /* urVisGraph.lua */,
 				23D9196F118FD08200881F2A /* test.lua */,
-				23D91998118FD38F00881F2A /* hello.lua */,
 			);
 			name = "urMus-lua";
 			sourceTree = "<group>";
@@ -1331,7 +1330,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				23D919BE118FD65E00881F2A /* test.lua in Resources */,
-				23D919BF118FD65E00881F2A /* hello.lua in Resources */,
 				23553334118F32AB00996C36 /* ltn12.lua in Resources */,
 				23553339118F32AB00996C36 /* mime.lua in Resources */,
 				2355333F118F32AB00996C36 /* socket.lua in Resources */,
@@ -1408,6 +1406,7 @@
 				23D91937118FCD8C00881F2A /* wsapi in Resources */,
 				23D9194B118FCE0B00881F2A /* xavante in Resources */,
 				23D919EA118FD86300881F2A /* socket in Resources */,
+				2353537011920D9300EB5AA1 /* http in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1555,7 +1554,6 @@
 				23D9193A118FCD8C00881F2A /* underscore.lua in Sources */,
 				23D9193B118FCD8C00881F2A /* coxpcall.lua in Sources */,
 				23D91970118FD08200881F2A /* test.lua in Sources */,
-				23D91999118FD38F00881F2A /* hello.lua in Sources */,
 				23D91A10118FE0EB00881F2A /* stable.lua in Sources */,
 				23D91A12118FE0FE00881F2A /* rings.c in Sources */,
 			);
