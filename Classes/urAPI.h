@@ -12,6 +12,7 @@
 #include "lauxlib.h"
 #include "lualib.h"
 #include "urSound.h"
+#include <pthread.h>
 
 #import "Texture2d.h"
 
@@ -37,6 +38,9 @@
 #define WRAP_CLIP 2
 
 extern char TEXTURE_SOLID[];
+
+extern lua_State *lua;
+extern pthread_mutex_t g_lua_mutex; // global lua mutex lock; always wrap state accesses with this
 
 
 // TextLabel user data
@@ -184,7 +188,6 @@ static int l_Region(lua_State *lua);*/
 void l_setupAPI(lua_State *lua);
 void l_setstrataindex(urAPI_Region_t* region , int strataindex);
 bool callScript(int func_ref, urAPI_Region_t* region);
-lua_State* GetLuaState();
 urAPI_Region_t* findRegionDraggable(float x, float y);
 urAPI_Region_t* findRegionHit(float x, float y);
 urAPI_Region_t* findRegionXScrolled(float x, float y, float dx);
