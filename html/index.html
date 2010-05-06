@@ -2,9 +2,38 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  	<title>urMus code generator</title>
+  	<title>urMus Code Editor</title>
+  	<script src="jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
-    <h1>It works!</h1>
+    <h1>urMus Code Editor</h1>
+    <form id="editor" method="post" accept-charset="utf-8">
+      <p>Run arbitrary code in this box:</p>
+      <textarea name="code" rows="8" cols="40"></textarea>
+      <p><input type="submit" value="Evaluate &rarr;"></p>
+    </form>
+    <p id="status"></p>
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        var s = $('#status');
+        $('#editor').submit(function(e) {
+
+          $.ajax({
+            type: 'POST',
+            url: 'eval',
+            data: $(this).serialize(),
+            success: function() {
+              s.html('Success!');
+            },
+            error: function() {
+              s.html('Error!');
+            }
+          });
+
+          e.preventDefault();
+          return false;
+        });        
+      });
+    </script>
   </body>
 </html>

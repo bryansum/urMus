@@ -43,7 +43,7 @@ eval_script(struct mg_connection *conn,
 	char *code = mg_get_var(conn, "code");
 	if (code) {
 		pthread_mutex_lock(&g_lua_mutex);
-		if (!luaL_dostring(lua,code)) {
+		if (luaL_dostring(lua,code)) {
 			status_code = 500; 
 			msg = "Internal Server Error";
 		}
