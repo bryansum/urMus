@@ -47,7 +47,7 @@ open_file(struct mg_connection *conn,
 				  "Parameter 'file' not specified");		
 		return;
 	}
-	
+
 	sprintf(abs_path, "%s/%s", bundle_root, file_name);
 	
 	if (!(fp = fopen(abs_path, "r"))) {
@@ -66,9 +66,11 @@ open_file(struct mg_connection *conn,
 	buf = (char*) malloc (sizeof(char)*size);
 	fread(buf, 1, size, fp);
 	
+	fprintf(stderr, "%ld",size);
+	
 	mg_printf(conn, "HTTP/1.1 200 OK\r\n"
 			  "Content-Type: text/plain\r\n"
-			  "Content-Length: %l\r\n"
+			  "Content-Length: %ld\r\n"
 			  "Connection: close\r\n\r\n", size);
 
 	mg_write(conn, buf, size);

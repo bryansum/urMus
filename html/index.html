@@ -59,15 +59,21 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         var files = $('#files'), s = $('#status'), editor = $('.editor');
-        
+
+		  function msg(type, msg) {
+			s.attr('class',type).html(msg);
+		  }        
+
         $.getJSON('/get_files',function(json) {
           files.html('');
           $.each(json, function(i, ele) {
             // for now, only do lua files
             if (ele.match(/\.lua$/)) {
               var li = $('<li class="file">'+ele+'</li>').click(function() {
-                fname = $(this).html();
-                $('#big_code').html('').load('/open_file',{file:fname});
+				  var fname = $(this).html();
+                $('#big_code').html('').load('/open_file',{file:fname},function() {
+						msg('success',"Loaded "+fname);
+					});
               });
               files.append(li);
             }
@@ -81,18 +87,18 @@
             url: 'eval',
             data: $(this).serialize(),
             success: function() {
-              s.attr('class','success').html('Success!');
-              
+				msg('success',"Success!");
             },
             error: function(xhr, opts) {
-              s.attr('class','error').html(xhr.responseText);
+				msg('error',xhr.responseText);
             }
           });
 
           e.preventDefault();
           return false;
         });        
-      });
+      });	  
+
     </script>
   </body>
 </html>
