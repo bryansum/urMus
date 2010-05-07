@@ -2146,3 +2146,7 @@ Widget.Tooltip("Double-Tap to Clear", {parent=clearbutton})
 Widget.Tooltip("Double-Tap to Load", {parent=loadbutton})
 Widget.Tooltip("Double-Tap to Save", {parent=savebutton})
 Widget.Tooltip("Double-Tap for Faces", {parent=facebutton})
+
+DPrint(HTTPServer())
+local host,port = HTTPServer()
+DPrint("http://"..host..":"..port.."/")

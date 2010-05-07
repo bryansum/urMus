@@ -20,7 +20,6 @@
 #else
 @interface urMusAppDelegate : NSObject <UIApplicationDelegate> {
 #endif
-	lua_State *lua;
     UIWindow *window;
     EAGLView *glView;
 }

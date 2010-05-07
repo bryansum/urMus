@@ -12,6 +12,7 @@
 #import "MachTimer.h"
 #include "RIOAudioUnitLayer.h"
 #include "urSound.h"
+#include "httpServer.h"
 
 // Make EAGLview global so lua interface can grab it without breaking a leg over IMP
 extern EAGLView* g_glView;
@@ -20,7 +21,10 @@ extern NSString * errorstr;
 extern bool newerror;
 
 // Global lua state
-lua_State* g_lua;
+lua_State *lua;
+// use this when accessing the lua state
+pthread_mutex_t g_lua_mutex = PTHREAD_MUTEX_INITIALIZER;
+
 
 // Region based API below, this is inspired by WoW's frame API with many modifications and expansions.
 // Our engine supports paging, region horizontal and vertical scrolling, full multi-touch and more.
@@ -336,7 +340,9 @@ bool layout(urAPI_Region_t* region)
 	else
 	{
 		// Error!!
-		luaL_error(g_lua, "Unknown relativePoint when layouting regions.");
+		pthread_mutex_lock(&g_lua_mutex);
+		luaL_error(lua, "Unknown relativePoint when layouting regions.");
+		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
@@ -391,7 +397,9 @@ bool layout(urAPI_Region_t* region)
 	else
 	{
 		// Error!!
-		luaL_error(g_lua, "Unknown relativePoint when layouting regions.");
+		pthread_mutex_lock(&g_lua_mutex);
+		luaL_error(lua, "Unknown relativePoint when layouting regions.");
+		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
@@ -621,11 +629,13 @@ bool callAllOnPressure(float p)
 
 bool callAllOnMicrophone(SInt32* mic_buffer, UInt32 bufferlen)
 {
-	lua_State* lua = g_lua;
+	pthread_mutex_lock(&g_lua_mutex);
+	
 	lua_getglobal(lua, "urMicData");
 	if(lua_isnil(lua, -1) || !lua_istable(lua,-1)) // Channel doesn't exist or is falsely set up
 	{
 		lua_pop(lua,1);
+		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
@@ -640,15 +650,16 @@ bool callAllOnMicrophone(SInt32* mic_buffer, UInt32 bufferlen)
 	{
 		if(t->OnMicrophone != 0)
 			callScriptWith1Global(t->OnMicrophone, t, "urMicData");
-	}	
+	}
+	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScriptWith4Args(int func_ref, urAPI_Region_t* region, float a, float b, float c, float d)
 {
 	if(func_ref == 0) return false;
-	lua_State* lua = g_lua;
-	
+	pthread_mutex_lock(&g_lua_mutex);
+
 	// Call lua function by stored Reference
 	lua_rawgeti(lua,LUA_REGISTRYINDEX, func_ref);
 	lua_rawgeti(lua,LUA_REGISTRYINDEX, region->tableref);
@@ -662,17 +673,19 @@ bool callScriptWith4Args(int func_ref, urAPI_Region_t* region, float a, float b,
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
+		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
 	// OK!
+	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScriptWith3Args(int func_ref, urAPI_Region_t* region, float a, float b, float c)
 {
 	if(func_ref == 0) return false;
-	lua_State* lua = g_lua;
+	pthread_mutex_lock(&g_lua_mutex);
 	
 	// Call lua function by stored Reference
 	lua_rawgeti(lua,LUA_REGISTRYINDEX, func_ref);
@@ -686,17 +699,19 @@ bool callScriptWith3Args(int func_ref, urAPI_Region_t* region, float a, float b,
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
+		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
 	// OK!
+	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScriptWith2Args(int func_ref, urAPI_Region_t* region, float a, float b)
 {
 	if(func_ref == 0) return false;
-	lua_State* lua = g_lua;
+	pthread_mutex_lock(&g_lua_mutex);
 	
 	// Call lua function by stored Reference
 	lua_rawgeti(lua,LUA_REGISTRYINDEX, func_ref);
@@ -709,17 +724,19 @@ bool callScriptWith2Args(int func_ref, urAPI_Region_t* region, float a, float b)
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
+		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
 	// OK!
+	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScriptWith1Args(int func_ref, urAPI_Region_t* region, float a)
 {
 	if(func_ref == 0) return false;
-	lua_State* lua = g_lua;
+	pthread_mutex_lock(&g_lua_mutex);
 	
 	//		int func_ref = region->OnDragging;
 	// Call lua function by stored Reference
@@ -732,17 +749,19 @@ bool callScriptWith1Args(int func_ref, urAPI_Region_t* region, float a)
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
+		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 		
 	// OK!
+	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScriptWith1Global(int func_ref, urAPI_Region_t* region, const char* globaldata)
 {
 	if(func_ref == 0) return false;
-	lua_State* lua = g_lua;
+	pthread_mutex_lock(&g_lua_mutex);
 	
 	//		int func_ref = region->OnDragging;
 	// Call lua function by stored Reference
@@ -755,18 +774,19 @@ bool callScriptWith1Global(int func_ref, urAPI_Region_t* region, const char* glo
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
-
+		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
 	// OK!
+	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScript(int func_ref, urAPI_Region_t* region)
 {
 	if(func_ref == 0) return false;
-	lua_State* lua = g_lua;
+	pthread_mutex_lock(&g_lua_mutex);
 	
 	// Call lua function by stored Reference
 	lua_rawgeti(lua,LUA_REGISTRYINDEX, func_ref);
@@ -777,11 +797,12 @@ bool callScript(int func_ref, urAPI_Region_t* region)
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
-
+		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 
 	// OK!
+	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
@@ -1871,6 +1892,33 @@ int l_RunScript(lua_State* lua)
 	if(script != NULL)
 		luaL_dostring(lua,script);
 	return 0;
+}
+
+int l_StartHTTPServer(lua_State *lua)
+{
+	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+	// start off http server
+	http_start([[resourcePath stringByAppendingPathComponent:@"html"] UTF8String],
+			   [resourcePath UTF8String]);
+	return 0;
+}
+
+int l_StopHTTPServer(lua_State *lua)
+{
+	http_stop();
+	return 0;
+}
+
+int l_HTTPServer(lua_State *lua)
+{
+	const char *ip = http_ip_address();
+	if (ip) {
+		lua_pushstring(lua, ip);
+		lua_pushstring(lua, http_ip_port());
+		return 2;
+	} else {
+		return 0;
+	}
 }
 
 static int audio_initialized = false;
@@ -3311,12 +3359,13 @@ static int l_FlowBox(lua_State* lua)
 
 void ur_GetSoundBuffer(SInt32* buffer, int channel, int size)
 {
-	lua_State* lua = g_lua;
+	pthread_mutex_lock(&g_lua_mutex);
 	lua_getglobal(lua,"urSoundData");
 	lua_rawgeti(lua, -1, channel);
 	if(lua_isnil(lua, -1) || !lua_istable(lua,-1)) // Channel doesn't exist or is falsely set up
 	{
 		lua_pop(lua,1);
+		pthread_mutex_unlock(&g_lua_mutex);
 		return;
 	}
 	
@@ -3330,6 +3379,7 @@ void ur_GetSoundBuffer(SInt32* buffer, int channel, int size)
 	}
 	
 	lua_pop(lua, 2);
+	pthread_mutex_unlock(&g_lua_mutex);
 }
 
 
@@ -3494,7 +3544,7 @@ int l_DocumentPath(lua_State *lua)
 	}
 	else
 	{
-		luaL_error(g_lua, "Cannot find the Document path.");
+		luaL_error(lua, "Cannot find the Document path.");
 	}
 	return 1;
 }
@@ -3526,7 +3576,7 @@ int l_SetPage(lua_State *lua)
 	else
 	{
 		// Error!!
-		luaL_error(g_lua, "Invalid page number: %d",num);
+		luaL_error(lua, "Invalid page number: %d",num);
 	}
 	return 0;
 }
@@ -3666,6 +3716,15 @@ void l_setupAPI(lua_State *lua)
 	lua_pushcfunction(lua,l_PauseAudio);
 	lua_setglobal(lua,"PauseAudio");
 	
+	// HTTP
+	lua_pushcfunction(lua,l_StartHTTPServer);
+	lua_setglobal(lua,"StartHTTPServer");
+	lua_pushcfunction(lua,l_StopHTTPServer);
+	lua_setglobal(lua,"StopHTTPServer");
+	lua_pushcfunction(lua,l_HTTPServer);
+	lua_setglobal(lua,"HTTPServer");
+
+
 	
 	// UR!
 	lua_pushcfunction(lua, l_setanimspeed);
@@ -3722,11 +3781,4 @@ void l_setupAPI(lua_State *lua)
 #endif
 	systimer = [MachTimer alloc];
 	[systimer start];
-
-	g_lua = lua;
-}
-
-lua_State* GetLuaState()
-{
-	return g_lua;
 }

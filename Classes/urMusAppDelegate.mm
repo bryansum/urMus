@@ -11,6 +11,7 @@
 #include "urAPI.h"
 #include "RIOAudioUnitLayer.h"
 #include "lfs.h"
+#include "httpServer.h"
 
 // This enables video projector output. It's not official API hence not safe for app store.
 //#define PROJECTOR_VIDEO
@@ -29,7 +30,6 @@ EAGLView* g_glView;
 
 extern NSString* errorstr;
 extern bool newerror;
-
 
 //------------------------------------------------------------------------------
 // Application controls
@@ -67,8 +67,13 @@ extern bool newerror;
 	
 	[glView startAnimation];
 
-	NSString *filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"urMus.lua"];
+	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+	NSString *filePath = [resourcePath stringByAppendingPathComponent:@"urMus.lua"];
 	const char* filestr = [filePath UTF8String];
+
+	// start off http server
+	http_start([[resourcePath stringByAppendingPathComponent:@"html"] UTF8String],
+			   [resourcePath UTF8String]);
 	
 	if(luaL_dofile(lua, filestr)!=0)
 	{
@@ -76,6 +81,7 @@ extern bool newerror;
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
 	}
+	
 }
 
 #ifdef SANDWICH_SUPPORT
@@ -104,6 +110,7 @@ extern bool newerror;
 
 - (void)dealloc {
 	/* Remember to destroy the Lua State */
+	http_stop();
 	lua_close(lua);
 	
 	[window release];

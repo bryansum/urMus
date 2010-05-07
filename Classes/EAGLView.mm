@@ -173,9 +173,6 @@ float argcoordy[MAX_FINGERS];
 float arg2coordx[MAX_FINGERS];
 float arg2coordy[MAX_FINGERS];
 
-// The lua state
-lua_State* lua;
-
 // This is the texture to hold DPrint and lua error messages.
 Texture2D       *errorStrTex = nil;
 
