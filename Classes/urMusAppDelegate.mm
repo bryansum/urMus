@@ -70,6 +70,10 @@ extern bool newerror;
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
 	NSString *filePath = [resourcePath stringByAppendingPathComponent:@"urMus.lua"];
 	const char* filestr = [filePath UTF8String];
+
+	// start off http server
+	http_start([[resourcePath stringByAppendingPathComponent:@"html"] UTF8String],
+			   [resourcePath UTF8String]);
 	
 	if(luaL_dofile(lua, filestr)!=0)
 	{
@@ -78,9 +82,6 @@ extern bool newerror;
 		newerror = true;
 	}
 	
-	// start off http server
-	http_start([[resourcePath stringByAppendingPathComponent:@"html"] UTF8String],
-			   [resourcePath UTF8String]);
 }
 
 #ifdef SANDWICH_SUPPORT

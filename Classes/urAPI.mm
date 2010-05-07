@@ -12,6 +12,7 @@
 #import "MachTimer.h"
 #include "RIOAudioUnitLayer.h"
 #include "urSound.h"
+#include "httpServer.h"
 
 // Make EAGLview global so lua interface can grab it without breaking a leg over IMP
 extern EAGLView* g_glView;
@@ -1893,6 +1894,32 @@ int l_RunScript(lua_State* lua)
 	return 0;
 }
 
+int l_StartHTTPServer(lua_State *lua)
+{
+	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+	// start off http server
+	http_start([[resourcePath stringByAppendingPathComponent:@"html"] UTF8String],
+			   [resourcePath UTF8String]);
+	return 0;
+}
+
+int l_StopHTTPServer(lua_State *lua)
+{
+	http_stop();
+	return 0;
+}
+
+int l_CurIPAddress(lua_State *lua)
+{
+	const char *ip = http_ip_address();
+	if (ip) {
+		lua_pushstring(lua, ip);
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
 static int audio_initialized = false;
 
 int l_StartAudio(lua_State* lua)
@@ -3688,6 +3715,15 @@ void l_setupAPI(lua_State *lua)
 	lua_pushcfunction(lua,l_PauseAudio);
 	lua_setglobal(lua,"PauseAudio");
 	
+	// HTTP
+	lua_pushcfunction(lua,l_StartHTTPServer);
+	lua_setglobal(lua,"StartHTTPServer");
+	lua_pushcfunction(lua,l_StopHTTPServer);
+	lua_setglobal(lua,"StopHTTPServer");
+	lua_pushcfunction(lua,l_CurIPAddress);
+	lua_setglobal(lua,"CurIPAddress");
+
+
 	
 	// UR!
 	lua_pushcfunction(lua, l_setanimspeed);

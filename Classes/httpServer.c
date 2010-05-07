@@ -30,7 +30,7 @@ static struct mg_context *ctx = NULL;
 
 static const char *index_page = "/index.html";
 static const char *http_port = "8080";
-static char *bundle_root;
+static char *bundle_root = NULL;
 
 static void
 open_file(struct mg_connection *conn,
@@ -152,6 +152,9 @@ eval_script(struct mg_connection *conn,
 void 
 http_start(const char *web_root, const char *_bundle_root) 
 {
+	if (bundle_root) {
+		free(bundle_root);
+	}
 	bundle_root = strdup(_bundle_root);
 	http_stop();
 	ctx = mg_start();
@@ -178,10 +181,10 @@ http_ip_address(void)
 	gethostname(baseHostName, BUFSIZ);
 	
 	// Adjust for iPhone -- add .local to the host name
-	char hn[BUFSIZ];
-	sprintf(hn, "%s.local", baseHostName);
+//	char hn[BUFSIZ];
+//	sprintf(hn, "%s.local", baseHostName);
 	
-	struct hostent *host = gethostbyname(hn);
+	struct hostent *host = gethostbyname(baseHostName);
     if (host == NULL) {
 		herror("resolv");
 		return NULL;
