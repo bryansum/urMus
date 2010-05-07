@@ -4,29 +4,88 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<title>urMus Code Editor</title>
   	<script src="jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
+  	<style type="text/css" media="screen">
+  	 body {
+  	   font-size: 9pt;
+  	   font-family: Helvetica, Arial, sans-serif;
+  	 }
+  	 #files { font-size: 8pt; padding: 0;}
+  	 #files li { 
+  	   list-style-type: none; 
+  	   cursor: pointer; 
+  	   text-decoration: underline;
+  	   display: inline-block;
+       margin: 5px;
+  	  }
+  	 .code {
+  	   font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+  	   font-size: 10px;
+  	 }
+  	 #small_code {
+  	   width: 300px;
+  	 }
+  	 #big_code { 
+  	   height: 400px;
+  	   margin:0 1em;
+       width:90%;
+  	 }
+  	 #status { margin-left: 2em;}
+  	 #status, #header h1 { display: inline-block; }
+  	 .error, .notice, .success { border:2px solid #DDDDDD; margin-bottom:1em; padding:0.2em; }
+     .error { background:none repeat scroll 0 0 #FBE3E4;border-color:#FBC2C4;color:#D12F19;}
+     .notice { background:none repeat scroll 0 0 #FFF6BF;border-color:#FFD324;color:#817134;}
+     .success { background:none repeat scroll 0 0 #E6EFC2;border-color:#C6D880;color:#529214;}
+     .error a { color:#D12F19;}
+     .notice a { color:#817134;}
+     .success a { color:#529214; }
+     
+  	</style>
   </head>
   <body>
-    <h1>urMus Code Editor</h1>
-    <form id="editor" method="post" accept-charset="utf-8">
-      <p>Run arbitrary code in this box:</p>
-      <textarea name="code" rows="8" cols="40"></textarea>
-      <p><input type="submit" value="Evaluate &rarr;"></p>
+    <span id="header"><h1>urMus Code Editor</h1><div id="status"></div></span>
+    <p>Run a line at a time: </p>
+    
+    <form class="editor" method="post" accept-charset="utf-8">
+      <input type="text" name="code" autocomplete="off" id="small_code" class="code">
+      <input type="submit" value="Run line">
     </form>
-    <p id="status"></p>
+    <p>Or edit an entire file: </p>
+    <ul id="files"></ul>
+    <form class="editor" method="post" accept-charset="utf-8">
+      <p><input type="submit" value="Evaluate Code &rarr;"></p>
+      <textarea spellcheck="false" autocomplete="off" id="big_code" class="code" name="code"></textarea>
+      <p><input type="submit" value="Evaluate Code &rarr;"></p>
+    </form>
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-        var s = $('#status');
-        $('#editor').submit(function(e) {
+        var files = $('#files'), s = $('#status'), editor = $('.editor');
+        
+        $.getJSON('/get_files',function(json) {
+          files.html('');
+          $.each(json, function(i, ele) {
+            // for now, only do lua files
+            if (ele.match(/\.lua$/)) {
+              var li = $('<li class="file">'+ele+'</li>').click(function() {
+                fname = $(this).html();
+                $('#big_code').html('').load('/open_file',{file:fname});
+              });
+              files.append(li);
+            }
+          });
+        });
+        
+        editor.submit(function(e) {
 
           $.ajax({
             type: 'POST',
             url: 'eval',
             data: $(this).serialize(),
             success: function() {
-              s.html('Success!');
+              s.attr('class','success').html('Success!');
+              
             },
-            error: function() {
-              s.html('Error!');
+            error: function(xhr, opts) {
+              s.attr('class','error').html(xhr.responseText);
             }
           });
 

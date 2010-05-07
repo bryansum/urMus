@@ -14,7 +14,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-void http_start(const char *web_root);
+const char *http_ip_address(void);
+void http_start(const char *web_root, const char *bundle_root);
 void http_stop(void);
 	
 #ifdef __cplusplus

@@ -79,7 +79,8 @@ extern bool newerror;
 	}
 	
 	// start off http server
-	http_start([[resourcePath stringByAppendingPathComponent:@"html"] UTF8String]);
+	http_start([[resourcePath stringByAppendingPathComponent:@"html"] UTF8String],
+			   [resourcePath UTF8String]);
 }
 
 #ifdef SANDWICH_SUPPORT
