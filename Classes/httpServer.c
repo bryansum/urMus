@@ -47,11 +47,7 @@ open_file(struct mg_connection *conn,
 				  "Parameter 'file' not specified");		
 		return;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
 	sprintf(abs_path, "%s/%s", bundle_root, file_name);
 	
 	if (!(fp = fopen(abs_path, "r"))) {
@@ -70,17 +66,9 @@ open_file(struct mg_connection *conn,
 	buf = (char*) malloc (sizeof(char)*size);
 	fread(buf, 1, size, fp);
 	
-<<<<<<< HEAD
 	mg_printf(conn, "HTTP/1.1 200 OK\r\n"
 			  "Content-Type: text/plain\r\n"
 			  "Content-Length: %l\r\n"
-=======
-	fprintf(stderr, "%ld",size);
-	
-	mg_printf(conn, "HTTP/1.1 200 OK\r\n"
-			  "Content-Type: text/plain\r\n"
-			  "Content-Length: %ld\r\n"
->>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
 			  "Connection: close\r\n\r\n", size);
 
 	mg_write(conn, buf, size);
@@ -189,7 +177,6 @@ http_stop(void)
 const char* 
 http_ip_address(void) 
 {
-<<<<<<< HEAD
 	char baseHostName[BUFSIZ];// = "localhost";
 	gethostname(baseHostName, BUFSIZ);
 	
@@ -200,16 +187,6 @@ http_ip_address(void)
 	struct hostent *host = gethostbyname(hn);
 	struct hostent *gethostbyaddr(const void *addr, socklen_t len,
 								  int type);
-=======
-	char baseHostName[BUFSIZ];
-	gethostname(baseHostName, BUFSIZ);
-	
-	// Adjust for iPhone -- add .local to the host name
-//	char hn[BUFSIZ];
-//	sprintf(hn, "%s.local", baseHostName);
-	
-	struct hostent *host = gethostbyname(baseHostName);
->>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
     if (host == NULL) {
 		herror("resolv");
 		return NULL;
@@ -219,12 +196,9 @@ http_ip_address(void)
 	}
 	
 	return NULL;
-<<<<<<< HEAD
 }
 
 const char* http_ip_port(void)
 {
 	return http_port;
-=======
->>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
 }

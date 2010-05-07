@@ -1909,21 +1909,13 @@ int l_StopHTTPServer(lua_State *lua)
 	return 0;
 }
 
-<<<<<<< HEAD
 int l_HTTPServer(lua_State *lua)
-=======
-int l_CurIPAddress(lua_State *lua)
->>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
 {
 	const char *ip = http_ip_address();
 	if (ip) {
 		lua_pushstring(lua, ip);
-<<<<<<< HEAD
 		lua_pushstring(lua, http_ip_port());
 		return 2;
-=======
-		return 1;
->>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
 	} else {
 		return 0;
 	}
@@ -3729,13 +3721,8 @@ void l_setupAPI(lua_State *lua)
 	lua_setglobal(lua,"StartHTTPServer");
 	lua_pushcfunction(lua,l_StopHTTPServer);
 	lua_setglobal(lua,"StopHTTPServer");
-<<<<<<< HEAD
 	lua_pushcfunction(lua,l_HTTPServer);
 	lua_setglobal(lua,"HTTPServer");
-=======
-	lua_pushcfunction(lua,l_CurIPAddress);
-	lua_setglobal(lua,"CurIPAddress");
->>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
 
 
 	
