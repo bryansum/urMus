@@ -2147,6 +2147,10 @@ Widget.Tooltip("Double-Tap to Load", {parent=loadbutton})
 Widget.Tooltip("Double-Tap to Save", {parent=savebutton})
 Widget.Tooltip("Double-Tap for Faces", {parent=facebutton})
 
+<<<<<<< HEAD
 DPrint(HTTPServer())
 local host,port = HTTPServer()
 DPrint("http://"..host..":"..port.."/")
+=======
+DPrint(CurIPAddress())
+>>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60

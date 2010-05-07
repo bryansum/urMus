@@ -15,7 +15,10 @@ extern "C" {
 #endif /* __cplusplus */
 
 const char *http_ip_address(void);
+<<<<<<< HEAD
 const char *http_ip_port(void);
+=======
+>>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
 void http_start(const char *web_root, const char *bundle_root);
 void http_stop(void);
 	

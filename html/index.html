@@ -59,15 +59,30 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         var files = $('#files'), s = $('#status'), editor = $('.editor');
+<<<<<<< HEAD
         
+=======
+
+		  function msg(type, msg) {
+			s.attr('class',type).html(msg);
+		  }        
+
+>>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
         $.getJSON('/get_files',function(json) {
           files.html('');
           $.each(json, function(i, ele) {
             // for now, only do lua files
             if (ele.match(/\.lua$/)) {
               var li = $('<li class="file">'+ele+'</li>').click(function() {
+<<<<<<< HEAD
                 fname = $(this).html();
                 $('#big_code').html('').load('/open_file',{file:fname});
+=======
+				  var fname = $(this).html();
+                $('#big_code').html('').load('/open_file',{file:fname},function() {
+						msg('success',"Loaded "+fname);
+					});
+>>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
               });
               files.append(li);
             }
@@ -81,18 +96,30 @@
             url: 'eval',
             data: $(this).serialize(),
             success: function() {
+<<<<<<< HEAD
               s.attr('class','success').html('Success!');
               
             },
             error: function(xhr, opts) {
               s.attr('class','error').html(xhr.responseText);
+=======
+				msg('success',"Success!");
+            },
+            error: function(xhr, opts) {
+				msg('error',xhr.responseText);
+>>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
             }
           });
 
           e.preventDefault();
           return false;
         });        
+<<<<<<< HEAD
       });
+=======
+      });	  
+
+>>>>>>> f3a74e331abf0eb495d10dfc6f8abc170c237f60
     </script>
   </body>
 </html>
