@@ -687,9 +687,9 @@ void clearTexture(Texture2D* texture, float r, float g, float b)
 
 void instantiateTexture(urAPI_Region_t* t)
 {
-//	texturepathstr = [[NSString alloc] initWithUTF8String:t->texture->texturepath];
+	texturepathstr = [[NSString alloc] initWithUTF8String:t->texture->texturepath];
 //	NSString *filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:texturepathstr]; // Leak here, fix.
-	UIImage* textureimage = [UIImage imageNamed:filePath];
+	UIImage* textureimage = [UIImage imageNamed:texturepathstr];
 //	UIImage* textureimage = [UIImage imageWithContentsOfFile:filePath];
 	if(textureimage)
 	{
