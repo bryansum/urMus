@@ -91,24 +91,33 @@ upload_script(struct mg_connection *conn,
 }
 
 /*
- * Uploads a generic file intercepted by a form <input type="file">. This is probably
- * very fragile. 
+ * Uploads a generic file intercepted by a form <input type="file">. This is an
+ * awful hack trying to implement RFC 1867 http://www.ietf.org/rfc/rfc1867.txt
  */ 
 static void
 upload_file(struct mg_connection *conn,
         const struct mg_request_info *request_info,
         void *user_data)
 {
-  char file_name[BUFSIZ], *cur;
-  long header_size, data_size, i;
-
-  cur = strstr(request_info->post_data, "filename=\"") + 10; // find filename=" and move to the val immed. after
+  char file_name[BUFSIZ], post_header[BUFSIZ], *cur, *end;
+  size_t header_size, data_size, i;
+  
+  // extract header
+  cur = strstr(request_info->post_data, "\r\n"); // find first header '---------WebKitFormBoundaryblah\r\n"
+  header_size = cur - request_info->post_data;
+  memcpy(post_header, request_info->post_data, header_size);
+  *(post_header + header_size) = '\0';
+  
+  // extract filename and move to beginning of data
+  cur = strstr(cur, "filename=\"") + 10; // find filename=" and move to the val immed. after
   for(i = 0; i < BUFSIZ && *cur != '"'; i++, cur++) file_name[i] = *cur; // copy file_name
   file_name[i] = '\0';
-  cur = strstr(cur, "\r\n\r\n") + 4; // find the end
+  cur = strstr(cur, "\r\n\r\n") + 4; // find the beginning of data
   
-  header_size = cur - request_info->post_data;
-  data_size = request_info->post_data_len - header_size;
+  // find end of file contents
+  end = strstr(cur, post_header);
+  
+  data_size = end - cur;
   
   (void) write_file(conn, file_name, cur, data_size);
 }

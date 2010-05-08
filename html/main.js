@@ -16,7 +16,7 @@ $(document).ready(function() {
   
   $('#open_file').click(function() {
     var fl = $("#file_list").slideDown();
-    $.getJSON('/get_files',function(json) {
+    $.post('/get_files',{},function(json) {
       files.html('');
       $.each(json, function(i, ele) {
         // for now, only do lua files
@@ -34,7 +34,7 @@ $(document).ready(function() {
           files.append(li);
         }
       });
-    });    
+    },'json');    
   });
   
   function setOpenedFile(fname) {
