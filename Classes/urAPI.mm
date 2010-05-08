@@ -22,9 +22,6 @@ extern bool newerror;
 
 // Global lua state
 lua_State *lua;
-// use this when accessing the lua state
-pthread_mutex_t g_lua_mutex = PTHREAD_MUTEX_INITIALIZER;
-
 
 // Region based API below, this is inspired by WoW's frame API with many modifications and expansions.
 // Our engine supports paging, region horizontal and vertical scrolling, full multi-touch and more.
@@ -340,9 +337,7 @@ bool layout(urAPI_Region_t* region)
 	else
 	{
 		// Error!!
-		pthread_mutex_lock(&g_lua_mutex);
 		luaL_error(lua, "Unknown relativePoint when layouting regions.");
-		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
@@ -397,9 +392,7 @@ bool layout(urAPI_Region_t* region)
 	else
 	{
 		// Error!!
-		pthread_mutex_lock(&g_lua_mutex);
 		luaL_error(lua, "Unknown relativePoint when layouting regions.");
-		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
@@ -629,13 +622,10 @@ bool callAllOnPressure(float p)
 
 bool callAllOnMicrophone(SInt32* mic_buffer, UInt32 bufferlen)
 {
-	pthread_mutex_lock(&g_lua_mutex);
-	
 	lua_getglobal(lua, "urMicData");
 	if(lua_isnil(lua, -1) || !lua_istable(lua,-1)) // Channel doesn't exist or is falsely set up
 	{
 		lua_pop(lua,1);
-		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
@@ -651,14 +641,12 @@ bool callAllOnMicrophone(SInt32* mic_buffer, UInt32 bufferlen)
 		if(t->OnMicrophone != 0)
 			callScriptWith1Global(t->OnMicrophone, t, "urMicData");
 	}
-	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScriptWith4Args(int func_ref, urAPI_Region_t* region, float a, float b, float c, float d)
 {
 	if(func_ref == 0) return false;
-	pthread_mutex_lock(&g_lua_mutex);
 
 	// Call lua function by stored Reference
 	lua_rawgeti(lua,LUA_REGISTRYINDEX, func_ref);
@@ -673,19 +661,16 @@ bool callScriptWith4Args(int func_ref, urAPI_Region_t* region, float a, float b,
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
-		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
 	// OK!
-	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScriptWith3Args(int func_ref, urAPI_Region_t* region, float a, float b, float c)
 {
 	if(func_ref == 0) return false;
-	pthread_mutex_lock(&g_lua_mutex);
 	
 	// Call lua function by stored Reference
 	lua_rawgeti(lua,LUA_REGISTRYINDEX, func_ref);
@@ -699,19 +684,16 @@ bool callScriptWith3Args(int func_ref, urAPI_Region_t* region, float a, float b,
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
-		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
 	// OK!
-	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScriptWith2Args(int func_ref, urAPI_Region_t* region, float a, float b)
 {
 	if(func_ref == 0) return false;
-	pthread_mutex_lock(&g_lua_mutex);
 	
 	// Call lua function by stored Reference
 	lua_rawgeti(lua,LUA_REGISTRYINDEX, func_ref);
@@ -724,19 +706,16 @@ bool callScriptWith2Args(int func_ref, urAPI_Region_t* region, float a, float b)
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
-		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
 	// OK!
-	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScriptWith1Args(int func_ref, urAPI_Region_t* region, float a)
 {
 	if(func_ref == 0) return false;
-	pthread_mutex_lock(&g_lua_mutex);
 	
 	//		int func_ref = region->OnDragging;
 	// Call lua function by stored Reference
@@ -749,19 +728,16 @@ bool callScriptWith1Args(int func_ref, urAPI_Region_t* region, float a)
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
-		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 		
 	// OK!
-	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScriptWith1Global(int func_ref, urAPI_Region_t* region, const char* globaldata)
 {
 	if(func_ref == 0) return false;
-	pthread_mutex_lock(&g_lua_mutex);
 	
 	//		int func_ref = region->OnDragging;
 	// Call lua function by stored Reference
@@ -774,19 +750,16 @@ bool callScriptWith1Global(int func_ref, urAPI_Region_t* region, const char* glo
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
-		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 	
 	// OK!
-	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
 bool callScript(int func_ref, urAPI_Region_t* region)
 {
 	if(func_ref == 0) return false;
-	pthread_mutex_lock(&g_lua_mutex);
 	
 	// Call lua function by stored Reference
 	lua_rawgeti(lua,LUA_REGISTRYINDEX, func_ref);
@@ -797,12 +770,10 @@ bool callScript(int func_ref, urAPI_Region_t* region)
 		const char* error = lua_tostring(lua, -1);
 		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
 		newerror = true;
-		pthread_mutex_unlock(&g_lua_mutex);
 		return false;
 	}
 
 	// OK!
-	pthread_mutex_unlock(&g_lua_mutex);
 	return true;
 }
 
@@ -3359,13 +3330,11 @@ static int l_FlowBox(lua_State* lua)
 
 void ur_GetSoundBuffer(SInt32* buffer, int channel, int size)
 {
-	pthread_mutex_lock(&g_lua_mutex);
 	lua_getglobal(lua,"urSoundData");
 	lua_rawgeti(lua, -1, channel);
 	if(lua_isnil(lua, -1) || !lua_istable(lua,-1)) // Channel doesn't exist or is falsely set up
 	{
 		lua_pop(lua,1);
-		pthread_mutex_unlock(&g_lua_mutex);
 		return;
 	}
 	
@@ -3379,7 +3348,6 @@ void ur_GetSoundBuffer(SInt32* buffer, int channel, int size)
 	}
 	
 	lua_pop(lua, 2);
-	pthread_mutex_unlock(&g_lua_mutex);
 }
 
 

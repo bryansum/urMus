@@ -12,7 +12,6 @@
 #include "lauxlib.h"
 #include "lualib.h"
 #include "urSound.h"
-#include <pthread.h>
 
 #import "Texture2d.h"
 
@@ -40,8 +39,6 @@
 extern char TEXTURE_SOLID[];
 
 extern lua_State *lua;
-extern pthread_mutex_t g_lua_mutex; // global lua mutex lock; always wrap state accesses with this
-
 
 // TextLabel user data
 typedef struct urAPI_TextLabel

@@ -14,6 +14,7 @@
 #import "Texture2d.h"
 #import "MachTimer.h"
 #import "urSound.h"
+#import "httpServer.h"
 
 #ifdef SANDWICH_SUPPORT
 static float pressure[4] = {0,0,0,0};
@@ -718,9 +719,13 @@ UILineBreakMode tolinebreakmode(int wrap)
 }
 
 // Main drawing loop. This does everything but brew coffee.
+extern lua_State *lua;
 
 - (void)drawView {
-
+  
+  // eval http buffer
+  eval_buffer_exec(lua);
+  
 	urs_PullVis(); // update vis data before we call events, this way we have a rate based pulling that is available in all events.
 	// Clock ourselves.
 	float elapsedtime = [mytimer elapsedSec];

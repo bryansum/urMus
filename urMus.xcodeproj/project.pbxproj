@@ -159,31 +159,6 @@
 		77B9FC801194AF12006D5007 /* cloud-larrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B9FC611194AF12006D5007 /* cloud-larrow.png */; };
 		77B9FC811194AF12006D5007 /* cloud-rarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B9FC621194AF12006D5007 /* cloud-rarrow.png */; };
 		77B9FC821194AF12006D5007 /* cloud_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 77B9FC631194AF12006D5007 /* cloud_bg.jpg */; };
-		77B9FC831194AF12006D5007 /* urCloud.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC641194AF12006D5007 /* urCloud.lua */; };
-		77B9FC841194AF12006D5007 /* underscore.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC651194AF12006D5007 /* underscore.lua */; };
-		77B9FC851194AF12006D5007 /* urAnimate.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC661194AF12006D5007 /* urAnimate.lua */; };
-		77B9FC861194AF12006D5007 /* urClockSeq.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC671194AF12006D5007 /* urClockSeq.lua */; };
-		77B9FC871194AF12006D5007 /* urClouds.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC681194AF12006D5007 /* urClouds.lua */; };
-		77B9FC881194AF12006D5007 /* urColors.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC691194AF12006D5007 /* urColors.lua */; };
-		77B9FC891194AF12006D5007 /* urFlute.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC6A1194AF12006D5007 /* urFlute.lua */; };
-		77B9FC8A1194AF12006D5007 /* urHelpers.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC6B1194AF12006D5007 /* urHelpers.lua */; };
-		77B9FC8B1194AF12006D5007 /* urMus.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC6C1194AF12006D5007 /* urMus.lua */; };
-		77B9FC8C1194AF12006D5007 /* urPads.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC6D1194AF12006D5007 /* urPads.lua */; };
-		77B9FC8D1194AF12006D5007 /* urPiano.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC6E1194AF12006D5007 /* urPiano.lua */; };
-		77B9FC8E1194AF12006D5007 /* urPitcher.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC6F1194AF12006D5007 /* urPitcher.lua */; };
-		77B9FC8F1194AF12006D5007 /* urPitchWheel.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC701194AF12006D5007 /* urPitchWheel.lua */; };
-		77B9FC901194AF12006D5007 /* urPlayground.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC711194AF12006D5007 /* urPlayground.lua */; };
-		77B9FC911194AF12006D5007 /* urPong.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC721194AF12006D5007 /* urPong.lua */; };
-		77B9FC921194AF12006D5007 /* urRecorder.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC731194AF12006D5007 /* urRecorder.lua */; };
-		77B9FC931194AF12006D5007 /* urScrollList.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC741194AF12006D5007 /* urScrollList.lua */; };
-		77B9FC941194AF12006D5007 /* urSleigh.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC751194AF12006D5007 /* urSleigh.lua */; };
-		77B9FC951194AF12006D5007 /* urSmudge.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC761194AF12006D5007 /* urSmudge.lua */; };
-		77B9FC961194AF12006D5007 /* urThumper.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC771194AF12006D5007 /* urThumper.lua */; };
-		77B9FC971194AF12006D5007 /* urTicTacToe.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC781194AF12006D5007 /* urTicTacToe.lua */; };
-		77B9FC981194AF12006D5007 /* urTiles.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC791194AF12006D5007 /* urTiles.lua */; };
-		77B9FC991194AF12006D5007 /* urVisDemo.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC7A1194AF12006D5007 /* urVisDemo.lua */; };
-		77B9FC9A1194AF12006D5007 /* urVisGraph.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC7B1194AF12006D5007 /* urVisGraph.lua */; };
-		77B9FC9B1194AF12006D5007 /* urWidget.lua in Sources */ = {isa = PBXBuildFile; fileRef = 77B9FC7C1194AF12006D5007 /* urWidget.lua */; };
 		77B9FC9C1194AF51006D5007 /* underscore.lua in Resources */ = {isa = PBXBuildFile; fileRef = 77B9FC651194AF12006D5007 /* underscore.lua */; };
 		77B9FC9D1194AF51006D5007 /* urAnimate.lua in Resources */ = {isa = PBXBuildFile; fileRef = 77B9FC661194AF12006D5007 /* urAnimate.lua */; };
 		77B9FC9E1194AF51006D5007 /* urClockSeq.lua in Resources */ = {isa = PBXBuildFile; fileRef = 77B9FC671194AF12006D5007 /* urClockSeq.lua */; };
@@ -1322,31 +1297,6 @@
 				77B3A84D114F056F0073CCCF /* TCPServer.mm in Sources */,
 				23C5609A119295E200758BB9 /* mongoose.c in Sources */,
 				23C5612A1192A56900758BB9 /* httpServer.c in Sources */,
-				77B9FC831194AF12006D5007 /* urCloud.lua in Sources */,
-				77B9FC841194AF12006D5007 /* underscore.lua in Sources */,
-				77B9FC851194AF12006D5007 /* urAnimate.lua in Sources */,
-				77B9FC861194AF12006D5007 /* urClockSeq.lua in Sources */,
-				77B9FC871194AF12006D5007 /* urClouds.lua in Sources */,
-				77B9FC881194AF12006D5007 /* urColors.lua in Sources */,
-				77B9FC891194AF12006D5007 /* urFlute.lua in Sources */,
-				77B9FC8A1194AF12006D5007 /* urHelpers.lua in Sources */,
-				77B9FC8B1194AF12006D5007 /* urMus.lua in Sources */,
-				77B9FC8C1194AF12006D5007 /* urPads.lua in Sources */,
-				77B9FC8D1194AF12006D5007 /* urPiano.lua in Sources */,
-				77B9FC8E1194AF12006D5007 /* urPitcher.lua in Sources */,
-				77B9FC8F1194AF12006D5007 /* urPitchWheel.lua in Sources */,
-				77B9FC901194AF12006D5007 /* urPlayground.lua in Sources */,
-				77B9FC911194AF12006D5007 /* urPong.lua in Sources */,
-				77B9FC921194AF12006D5007 /* urRecorder.lua in Sources */,
-				77B9FC931194AF12006D5007 /* urScrollList.lua in Sources */,
-				77B9FC941194AF12006D5007 /* urSleigh.lua in Sources */,
-				77B9FC951194AF12006D5007 /* urSmudge.lua in Sources */,
-				77B9FC961194AF12006D5007 /* urThumper.lua in Sources */,
-				77B9FC971194AF12006D5007 /* urTicTacToe.lua in Sources */,
-				77B9FC981194AF12006D5007 /* urTiles.lua in Sources */,
-				77B9FC991194AF12006D5007 /* urVisDemo.lua in Sources */,
-				77B9FC9A1194AF12006D5007 /* urVisGraph.lua in Sources */,
-				77B9FC9B1194AF12006D5007 /* urWidget.lua in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

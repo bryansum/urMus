@@ -21,9 +21,6 @@
 #include <stdlib.h>
 #include <sys/syslimits.h>
 
-extern lua_State *lua;
-extern pthread_mutex_t g_lua_mutex;
-
 static struct mg_context *ctx = NULL;
 
 static const char *index_page = "/index.html";
@@ -217,17 +214,12 @@ eval_script(struct mg_connection *conn,
 {
   char *code = mg_get_var(conn, "code");
   if (code) {
-    pthread_mutex_lock(&g_lua_mutex);
-    if (luaL_dostring(lua,code)) {
-      const char* error = lua_tostring(lua, -1);      
-      mg_printf(conn, "HTTP/1.1 500 Internal Server Error\r\n"
-            "Content-Type: text/plain\r\n\r\n"
-            "Error: %s",error);
-    } else {
-      mg_printf(conn, "HTTP/1.1 200 OK\r\n"
-            "Content-Type: text/plain\r\n\r\n");
-    }
-    pthread_mutex_unlock(&g_lua_mutex);
+    // thread-safe, blocking eval call
+    eval_buffer_write(code);
+
+    mg_printf(conn, "HTTP/1.1 200 OK\r\n"
+              "Content-Type: text/plain\r\n\r\n");
+
     mg_free(code);
   } else {
     mg_printf(conn, "HTTP/1.1 400 Bad Request\r\n"
@@ -295,4 +287,32 @@ http_ip_address(void)
 const char* http_ip_port(void)
 {
   return http_port;
+}
+
+static pthread_mutex_t eval_buffer_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t eval_buffer_cond = PTHREAD_COND_INITIALIZER;
+static char *eval_buffer = NULL;
+
+void
+eval_buffer_write(const char *buf)
+{
+  pthread_mutex_lock(&eval_buffer_mutex);
+  if (eval_buffer) free(eval_buffer); // overwrite if one's already here. 
+  eval_buffer = strdup(buf);
+  while (eval_buffer) { // should empty out after executing
+    pthread_cond_wait(&eval_buffer_cond, &eval_buffer_mutex);
+  }
+  pthread_mutex_unlock(&eval_buffer_mutex);  
+}
+
+void
+eval_buffer_exec(lua_State *lua)
+{
+  pthread_mutex_lock(&eval_buffer_mutex);
+  if (eval_buffer) {
+    luaL_dostring(lua, eval_buffer);
+    free(eval_buffer); eval_buffer = NULL;
+  }
+  pthread_mutex_unlock(&eval_buffer_mutex);
+  pthread_cond_signal(&eval_buffer_cond);
 }
