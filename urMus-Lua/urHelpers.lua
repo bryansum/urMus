@@ -50,17 +50,23 @@ function SetAttrs(r,opts)
         opts.x or cur[4] or 0,
         opts.y or cur[5] or 0)
     end
+    
+    local make_texture = function(region) if not region.t then r.t = r:Texture() end end
+    
     if opts['img'] then
-      r.t = r:Texture()
+      make_texture(r)
       r.t:SetTexture(opts['img'])
       r.t:SetTexCoord(0,0.63,0.94,0.0)
     end
-    if opts['color'] then r.t:SetTexture(unpack(ParseColor(opts['color']))) end
+    if opts['color'] then 
+      make_texture(r)
+      r.t:SetTexture(unpack(ParseColor(opts['color']))) 
+    end
     if opts['gradient'] then
       local g = {opts['gradient'][1]}
       g[2] = ParseColor(opts['gradient'][2]); g[2][4] = g[2][4] or 255; -- add alpha 
       g[3] = ParseColor(opts['gradient'][3]); g[3][4] = g[3][4] or 255
-      r.t = r:Texture()
+      make_texture(r)
       r.t:SetGradientColor(unpack(_.flatten(g)))
     end
     if opts['alpha'] then r:SetAlpha(opts['alpha']) end

@@ -1972,7 +1972,7 @@ int texture_SetTexture(lua_State* lua)
 		strcpy(t->texturepath, texturename);
 		if(t->backgroundTex != NULL) [t->backgroundTex release]; // Antileak
 		t->backgroundTex = nil;
-//		instantiateTexture(t, backgroundTex.pixelsWide, backgroundTex.pixelsHigh);
+    instantiateTexture(t->region);
 	}
 	
 	return 0;
