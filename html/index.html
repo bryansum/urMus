@@ -2,36 +2,39 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  	<title>urMus Code Editor</title>
-  	<script src="jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
-  	<style type="text/css" media="screen">
-  	 body {
-  	   font-size: 9pt;
-  	   font-family: Helvetica, Arial, sans-serif;
-  	 }
-  	 #files { font-size: 8pt; padding: 0;}
-  	 #files li { 
-  	   list-style-type: none; 
-  	   cursor: pointer; 
-  	   text-decoration: underline;
-  	   display: inline-block;
+    <title>urMus Code Editor</title>
+    <script src="js/codemirror.js" type="text/javascript"></script>
+    <script src="jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="main.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/ajaxupload.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css" media="screen">
+     body {
+       font-size: 10pt;
+       font-family: Helvetica, Arial, sans-serif;
+       padding: 20px;
+     }
+     #files { font-size: 8pt; padding: 0;}
+     #files li { 
+       list-style-type: none; 
+       cursor: pointer; 
+       text-decoration: underline;
+       display: inline-block;
        margin: 5px;
-  	  }
-  	 .code {
-  	   font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
-  	   font-size: 10px;
-  	 }
-  	 #small_code {
-  	   width: 300px;
-  	 }
-  	 #big_code { 
-  	   height: 400px;
-  	   margin:0 1em;
-       width:90%;
-  	 }
-  	 #status { margin-left: 2em;}
-  	 #status, #header h1 { display: inline-block; }
-  	 .error, .notice, .success { border:2px solid #DDDDDD; margin-bottom:1em; padding:0.2em; }
+      }
+     .code {
+       font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+       font-size: 11px;
+     }
+     #small_code {
+       width: 300px;
+     }
+     #big_code { 
+       height: 300px;
+       width:100%;
+     }
+     #status { margin-left: 2em;}
+     #status, #header h2 { display: inline; }
+     .error, .notice, .success { border:2px solid #DDDDDD; margin-bottom:1em; padding:0.2em; }
      .error { background:none repeat scroll 0 0 #FBE3E4;border-color:#FBC2C4;color:#D12F19;}
      .notice { background:none repeat scroll 0 0 #FFF6BF;border-color:#FFD324;color:#817134;}
      .success { background:none repeat scroll 0 0 #E6EFC2;border-color:#C6D880;color:#529214;}
@@ -39,65 +42,51 @@
      .notice a { color:#817134;}
      .success a { color:#529214; }
      
-  	</style>
+     .border {
+       border: 1px solid #AAAAAA;
+       padding: 5px;
+     }
+     .CodeMirror-line-numbers {
+       color: #aaa;
+       font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+       font-size: 11px;
+     }
+     #eval_line, #upload_file {
+       margin: 1em;
+     }
+     .labels {
+       margin: 0 0.5em;
+     }
+     
+    </style>
   </head>
   <body>
-    <span id="header"><h1>urMus Code Editor</h1><div id="status"></div></span>
-    <p>Run a line at a time: </p>
+    <span id="header">
+      <h2>urMus Code Editor</h2>
+      <div id="status"></div>
+    </span>
     
-    <form class="editor" method="post" accept-charset="utf-8">
-      <input type="text" name="code" autocomplete="off" id="small_code" class="code">
-      <input type="submit" value="Run line">
-    </form>
-    <p>Or edit an entire file: </p>
-    <ul id="files"></ul>
-    <form class="editor" method="post" accept-charset="utf-8">
-      <p><input type="submit" value="Evaluate Code &rarr;"></p>
+    <p>      
+      <form id="eval_line" class="editor" method="post" accept-charset="utf-8">
+        <label class="labels" for="code">Run line:</label>
+        <input type="text" name="code" autocomplete="off" id="small_code" class="code">
+        <input type="submit" value="Go">
+      </form>
+      <div id="upload_file">
+        <label class="labels" for="file">Upload a file:</label>
+        <input type="file" autocomplete="off" name="file" id="file_upload">
+      </div>
+    </p>
+    <p>
+      <button type="button" id="open_file">Open file &rarr;</button>
+      <button type="button" id="save_file" disabled="disabled">Save file</button>
+    </p>
+    <div id="file_list" style="display: none">
+      <ul id="files"></ul>      
+    </div>
+    <div class="border">
       <textarea spellcheck="false" autocomplete="off" id="big_code" class="code" name="code"></textarea>
-      <p><input type="submit" value="Evaluate Code &rarr;"></p>
-    </form>
-    <script type="text/javascript" charset="utf-8">
-      $(document).ready(function() {
-        var files = $('#files'), s = $('#status'), editor = $('.editor');
-		  function msg(type, msg) {
-			s.attr('class',type).html(msg);
-		  }        
-
-        $.getJSON('/get_files',function(json) {
-          files.html('');
-          $.each(json, function(i, ele) {
-            // for now, only do lua files
-            if (ele.match(/\.lua$/)) {
-              var li = $('<li class="file">'+ele+'</li>').click(function() {
-				  var fname = $(this).html();
-                $('#big_code').html('').load('/open_file',{file:fname},function() {
-						msg('success',"Loaded "+fname);
-					});
-              });
-              files.append(li);
-            }
-          });
-        });
-        
-        editor.submit(function(e) {
-
-          $.ajax({
-            type: 'POST',
-            url: 'eval',
-            data: $(this).serialize(),
-            success: function() {
-				msg('success',"Success!");
-            },
-            error: function(xhr, opts) {
-				msg('error',xhr.responseText);
-            }
-          });
-
-          e.preventDefault();
-          return false;
-        });        
-      });	  
-
-    </script>
+    </div>
+    
   </body>
 </html>
