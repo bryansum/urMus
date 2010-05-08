@@ -3158,7 +3158,12 @@ int flowbox_Ins(lua_State *lua)
 	
 	int nrins = fb->object->nr_ins;
 	for(int j=0; j< nrins; j++)
-		lua_pushstring(lua, fb->object->ins[j].name);
+//		if(fb->object->ins[j].name!=(void*)0x1)
+			lua_pushstring(lua, fb->object->ins[j].name);
+//		else {
+//			int a=2;
+//		}
+
 	return nrins;
 }
 

@@ -2881,7 +2881,7 @@ void urSTK_Setup()
 	urmanipulatorobjectlist.Append(object);
 #endif
 
-	object = new ursObject("Mod", Modulate_Constructor, Modulate_Destructor,5,1);
+	object = new ursObject("Mod", Modulate_Constructor, Modulate_Destructor,3,1);
 	object->AddOut("WaveForm", "TimeSeries", Modulate_Tick, Modulate_Out, NULL);
 //	object->AddIn("In", "Generic", Modulate_In);
 	object->AddIn("VibRate", "Rate", Modulate_SetVibratoRate);
