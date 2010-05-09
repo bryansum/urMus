@@ -69,11 +69,17 @@ extern bool newerror;
 
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
 	NSString *filePath = [resourcePath stringByAppendingPathComponent:@"urMus.lua"];
+	NSArray *paths;
+	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentPath;
+	if ([paths count] > 0)
+		documentPath = [paths objectAtIndex:0];
+		
 	const char* filestr = [filePath UTF8String];
 
 	// start off http server
 	http_start([[resourcePath stringByAppendingPathComponent:@"html"] UTF8String],
-			   [resourcePath UTF8String]);
+			   [documentPath UTF8String]);
 	
 	if(luaL_dofile(lua, filestr)!=0)
 	{
