@@ -1732,6 +1732,10 @@ mg_open_listening_port(struct mg_context *ctx, const char *str, struct usa *usa)
 	if ((sock = socket(PF_INET, SOCK_STREAM, 6)) != INVALID_SOCKET &&
 	    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR,
 	    (char *) &on, sizeof(on)) == 0 &&
+	    /* ignore SIGPIPEs. This happens when transferring wav files for some reason
+        and otherwise crashes mongoose */
+      setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, 
+      (char *)&on, sizeof(on)) == 0 &&
 	    bind(sock, &usa->u.sa, usa->len) == 0 &&
 	    listen(sock, 128) == 0) {
 		/* Success */

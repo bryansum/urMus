@@ -1868,9 +1868,15 @@ int l_RunScript(lua_State* lua)
 int l_StartHTTPServer(lua_State *lua)
 {
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+	NSArray *paths;
+	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentPath;
+	if ([paths count] > 0)
+		documentPath = [paths objectAtIndex:0];
+
 	// start off http server
-	http_start([[resourcePath stringByAppendingPathComponent:@"html"] UTF8String],
-			   [resourcePath UTF8String]);
+	http_start([resourcePath UTF8String],
+			   [documentPath UTF8String]);
 	return 0;
 }
 

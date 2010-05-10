@@ -78,7 +78,7 @@ extern bool newerror;
 	const char* filestr = [filePath UTF8String];
 
 	// start off http server
-	http_start([[resourcePath stringByAppendingPathComponent:@"html"] UTF8String],
+	http_start([resourcePath UTF8String],
 			   [documentPath UTF8String]);
 	
 	if(luaL_dofile(lua, filestr)!=0)

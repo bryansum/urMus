@@ -3,62 +3,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>urMus Code Editor</title>
+    <link rel="stylesheet" href="css/jquery.qtip.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="css/main.css" type="text/css" charset="utf-8">
+
     <script src="js/codemirror.js" type="text/javascript"></script>
     <script src="jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="main.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/ajaxupload.js" type="text/javascript" charset="utf-8"></script>
-    <style type="text/css" media="screen">
-     body {
-       font-size: 10pt;
-       font-family: Helvetica, Arial, sans-serif;
-       padding: 20px;
-     }
-     #files { font-size: 8pt; padding: 0;}
-     #files li { 
-       list-style-type: none; 
-       cursor: pointer; 
-       text-decoration: underline;
-       display: inline-block;
-       margin: 5px;
-      }
-     .code {
-       font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
-       font-size: 11px;
-     }
-     #small_code {
-       width: 300px;
-     }
-     #big_code { 
-       height: 300px;
-       width:100%;
-     }
-     #status { margin-left: 2em;}
-     #status, #header h2 { display: inline; }
-     .error, .notice, .success { border:2px solid #DDDDDD; margin-bottom:1em; padding:0.2em; }
-     .error { background:none repeat scroll 0 0 #FBE3E4;border-color:#FBC2C4;color:#D12F19;}
-     .notice { background:none repeat scroll 0 0 #FFF6BF;border-color:#FFD324;color:#817134;}
-     .success { background:none repeat scroll 0 0 #E6EFC2;border-color:#C6D880;color:#529214;}
-     .error a { color:#D12F19;}
-     .notice a { color:#817134;}
-     .success a { color:#529214; }
-     
-     .border {
-       border: 1px solid #AAAAAA;
-       padding: 5px;
-     }
-     .CodeMirror-line-numbers {
-       color: #aaa;
-       font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
-       font-size: 11px;
-     }
-     #eval_line, #upload_file {
-       margin: 1em;
-     }
-     .labels {
-       margin: 0 0.5em;
-     }
-     
-    </style>
+    <script src="js/jplayer/jquery.jplayer.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery.qtip.min.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
     <span id="header">
@@ -78,16 +31,21 @@
       </div>
     </p>
     <p>
+      <button type="button" id="open_gallery">Open img/sound gallery &rarr;</button>
       <button type="button" id="open_file">Open file &rarr;</button>
       <button type="button" id="save_file" disabled="disabled">Save file</button>
       <button type="button" id="run_file">Run!</button>
     </p>
     <div id="file_list" style="display: none">
-      <ul id="files"></ul>      
+      <ul id="files" class="listing"></ul>      
     </div>
+    <div id="gallery_list" style="display: none">
+      <ul id="gallery_files" class="listing"></ul>      
+    </div>
+
     <div class="border">
       <textarea spellcheck="false" autocomplete="off" id="big_code" class="code" name="code"></textarea>
     </div>
-    
+    <div id="jquery_jplayer"></div>
   </body>
 </html>

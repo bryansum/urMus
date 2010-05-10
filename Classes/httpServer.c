@@ -23,14 +23,21 @@
 
 static struct mg_context *ctx = NULL;
 
-static const char *index_page = "/index.html";
+static const char *index_page = "html/index.html";
 static const char *http_port = "8080";
 
-static char *bundle_root = NULL;
+static char *doc_root = NULL;
+static char *web_root = NULL;
 
+static void 
+replace_str(char **dest, const char *src)
+{
+  if (*dest) free(*dest);
+  *dest = src ? strdup(src) : NULL;
+}
 
-static char 
-*get_var_or_err(struct mg_connection *conn,
+static char *
+get_var_or_err(struct mg_connection *conn,
 							const char *var)
 {
   char *out = NULL;
@@ -42,6 +49,29 @@ static char
   return out;
 }
 
+/* gets the directory folder specified by the 'dirtype' parameter */
+static char *
+get_abs_dirtype_path(struct mg_connection *conn)
+{
+  char *dir_type, *dir;
+
+  if (!(dir_type = get_var_or_err(conn, "dirtype"))) {
+    return NULL;
+  }
+  if (strcmp(dir_type, "doc") == 0) {
+    dir = doc_root;
+  } else if (strcmp(dir_type, "root") == 0){
+    dir = web_root;
+  } else {
+    mg_printf(conn, "HTTP/1.1 400 Bad Request\r\n"
+          "Content-Type: text/plain\r\n\r\n"
+          "Parameter '%s' not valid", dir_type);
+    mg_free(dir_type);
+    return NULL;
+  }
+  return dir;
+}
+
 static int 
 write_file(struct mg_connection *conn, 
            const char *fname, 
@@ -51,7 +81,7 @@ write_file(struct mg_connection *conn,
   FILE  *fp;
   char abs_path[PATH_MAX];
 
-  sprintf(abs_path, "%s/%s", bundle_root, fname);
+  sprintf(abs_path, "%s/%s", doc_root, fname);
 
   if (!(fp = fopen(abs_path, "wb"))) {
     mg_printf(conn, "HTTP/1.1 500 Internal Server Error\r\n"
@@ -125,14 +155,15 @@ open_file(struct mg_connection *conn,
       void *user_data)
 {
   FILE  *fp;
-  char *file_name, *buf, abs_path[PATH_MAX];
+  char *file_name, *buf, abs_path[PATH_MAX], *dir;
   long size;
   
-  if (!(file_name = get_var_or_err(conn, "file"))) {
+  if (!(file_name = get_var_or_err(conn, "file"))
+      || !(dir = get_abs_dirtype_path(conn))) {
     return;
   }
 
-  sprintf(abs_path, "%s/%s", bundle_root, file_name);
+  sprintf(abs_path, "%s/%s", dir, file_name);
   
   if (!(fp = fopen(abs_path, "r"))) {
     mg_printf(conn, "HTTP/1.1 500 Internal Server Error\r\n"
@@ -168,9 +199,14 @@ get_files(struct mg_connection *conn,
        void *user_data)
 {
   DIR *d;
-   struct dirent *de;
+  struct dirent *de;
+  char *dir;
+  
+  if (!(dir = get_abs_dirtype_path(conn))) {
+    return;
+  }
 
-  if ((d = opendir(bundle_root)) != NULL) {
+  if ((d = opendir(dir)) != NULL) {
     mg_printf(conn, "HTTP/1.1 200 OK\r\n"
           "Content-Type: application/json\r\n\r\n"
           "[");
@@ -192,7 +228,7 @@ get_files(struct mg_connection *conn,
   } else {
     mg_printf(conn, "HTTP/1.1 500 Internal Server Error\r\n"
           "Content-Type: text/plain\r\n\r\n"
-          "Can't open '%s'",bundle_root);
+          "Can't open '%s'",dir);
   }
 }
 
@@ -212,13 +248,20 @@ eval_script(struct mg_connection *conn,
       const struct mg_request_info *request_info,
       void *user_data) 
 {
-  char *code = mg_get_var(conn, "code");
+  char *code = mg_get_var(conn, "code"), *err_str;
   if (code) {
+    
     // thread-safe, blocking eval call
-    eval_buffer_write(code);
-
-    mg_printf(conn, "HTTP/1.1 200 OK\r\n"
-              "Content-Type: text/plain\r\n\r\n");
+    err_str = eval_buffer_write(code);
+    if (err_str) {
+        mg_printf(conn, "HTTP/1.1 500 Internal Server Error\r\n"
+                  "Content-Type: text/plain\r\n\r\n"
+                  "Lua error: %s", err_str);
+        free(err_str);
+    } else {
+        mg_printf(conn, "HTTP/1.1 200 OK\r\n"
+                  "Content-Type: text/plain\r\n\r\n");        
+    }
 
     mg_free(code);
   } else {
@@ -229,12 +272,11 @@ eval_script(struct mg_connection *conn,
 }
 
 void 
-http_start(const char *web_root, const char *_bundle_root) 
+http_start(const char *web_root_, const char *doc_root_) 
 {
-  if (bundle_root) {
-    free(bundle_root);
-  }
-  bundle_root = strdup(_bundle_root);
+  replace_str(&doc_root, doc_root_);
+  replace_str(&web_root, web_root_);
+    
   http_stop();
   ctx = mg_start();
   mg_set_option(ctx, "root", web_root);
@@ -292,17 +334,25 @@ const char* http_ip_port(void)
 static pthread_mutex_t eval_buffer_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t eval_buffer_cond = PTHREAD_COND_INITIALIZER;
 static char *eval_buffer = NULL;
+/* if there's an error from evaluating the buffer, put it here */
+static char *err_str = NULL;
 
-void
+char *
 eval_buffer_write(const char *buf)
 {
+  char *new_error = NULL;
+
   pthread_mutex_lock(&eval_buffer_mutex);
   if (eval_buffer) free(eval_buffer); // overwrite if one's already here. 
   eval_buffer = strdup(buf);
   while (eval_buffer) { // should empty out after executing
     pthread_cond_wait(&eval_buffer_cond, &eval_buffer_mutex);
   }
-  pthread_mutex_unlock(&eval_buffer_mutex);  
+  if (err_str) {
+    new_error = strdup(err_str);
+  }
+  pthread_mutex_unlock(&eval_buffer_mutex);
+  return new_error;
 }
 
 void
@@ -310,8 +360,13 @@ eval_buffer_exec(lua_State *lua)
 {
   pthread_mutex_lock(&eval_buffer_mutex);
   if (eval_buffer) {
-    luaL_dostring(lua, eval_buffer);
-    free(eval_buffer); eval_buffer = NULL;
+    /* returns > 0 if error */
+    if (luaL_dostring(lua, eval_buffer)) {
+      replace_str(&err_str, lua_tostring(lua, -1));
+    } else {
+      replace_str(&err_str, NULL);
+    }
+    replace_str(&eval_buffer, NULL);
   }
   pthread_mutex_unlock(&eval_buffer_mutex);
   pthread_cond_signal(&eval_buffer_cond);

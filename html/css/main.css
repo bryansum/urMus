@@ -1,0 +1,53 @@
+html,body { height: 100%;}
+body {
+  font-size: 10pt;
+  font-family: Helvetica, Arial, sans-serif;
+  padding: 20px;
+}
+.listing { font-size: 8pt; padding: 0;}
+.listing li { 
+  list-style-type: none; 
+  cursor: pointer; 
+  text-decoration: underline;
+  display: inline-block;
+  margin: 5px;
+ }
+.code {
+  font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+  font-size: 11px;
+}
+#small_code {
+  width: 300px;
+}
+#big_code { 
+  height: 300px;
+  width:100%;
+}
+#status { margin-left: 2em;}
+#status, #header h2 { display: inline; }
+.error, .notice, .success { border:2px solid #DDDDDD; margin-bottom:1em; padding:0.2em; }
+.error { background:none repeat scroll 0 0 #FBE3E4;border-color:#FBC2C4;color:#D12F19;}
+.notice { background:none repeat scroll 0 0 #FFF6BF;border-color:#FFD324;color:#817134;}
+.success { background:none repeat scroll 0 0 #E6EFC2;border-color:#C6D880;color:#529214;}
+.error a { color:#D12F19;}
+.notice a { color:#817134;}
+.success a { color:#529214; }
+.header {
+  font-weight: bold;
+ font-size: 10pt;
+}
+.border {
+  border: 1px solid #AAAAAA;
+  padding: 5px;
+}
+.CodeMirror-line-numbers {
+  color: #aaa;
+  font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+  font-size: 11px;
+}
+#eval_line, #upload_file {
+  margin: 1em;
+}
+.labels {
+  margin: 0 0.5em;
+}
