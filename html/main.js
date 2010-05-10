@@ -76,6 +76,16 @@ $(document).ready(function() {
     });
   });
   
+  $('#run_file').click(function() {
+	$.ajax({
+		   type: 'POST',
+		   url: 'eval',
+		   data: {code: cm.getCode()},
+		   success: function() { msg('success',"Ran!"); },
+		   error: function() { msg('error',"Couldn't run."); }
+		   });
+	});
+				  
   new AjaxUpload('file_upload', {
     action: '/upload_file',
     name: 'file',
