@@ -37,7 +37,8 @@ function SetAttrs(r,opts)
         input='EnableInput',
         layer='SetLayer',
         w='SetWidth',h='SetHeight',
-        width='SetWidth',height='SetHeight'
+        width='SetWidth',height='SetHeight',
+        alpha='SetAlpha'
     }) do
       if opts[k] then r[fn](r,opts[k]) end
     end
@@ -51,26 +52,43 @@ function SetAttrs(r,opts)
         opts.y or cur[5] or 0)
     end
     
-    local make_texture = function(region) if not region.t then r.t = r:Texture() end end
+    local make_texture = function(r) if not r.t then r.t = r:Texture() end end
     
-    if opts['img'] then
+    if opts.img then
+      local next_power_two = function(n) 
+        if n == 0 then return 0 end
+        local i = 0
+        repeat i=i+1 until 2^i >= n
+        return 2^i
+      end
+      local w_tex = next_power_two(opts.width)
+      local h_tex = next_power_two(opts.height)
       make_texture(r)
-      r.t:SetTexture(opts['img'])
-      r.t:SetTexCoord(0,0.63,0.94,0.0)
+      -- urMus textures are openGL textures, so they're resized to the nearest 
+      -- power of 2. We need to set the texCoords to compensate
+      r.t:SetTexture(opts.img)
+      r.t:SetTexCoord(0,opts.width/w_tex,opts.height/h_tex,0.0)
+      r.tc = {r.t:TexCoord()}
     end
-    if opts['color'] then 
+    if opts.color then 
       make_texture(r)
       r.t:SetTexture(unpack(ParseColor(opts['color']))) 
     end
-    if opts['gradient'] then
-      local g = {opts['gradient'][1]}
-      g[2] = ParseColor(opts['gradient'][2]); g[2][4] = g[2][4] or 255; -- add alpha 
-      g[3] = ParseColor(opts['gradient'][3]); g[3][4] = g[3][4] or 255
+    if opts.gradient then
+      local g = {opts.gradient[1]}
+      g[2] = ParseColor(opts.gradient[2]); g[2][4] = g[2][4] or 255; -- add alpha 
+      g[3] = ParseColor(opts.gradient[3]); g[3][4] = g[3][4] or 255
       make_texture(r)
       r.t:SetGradientColor(unpack(_.flatten(g)))
     end
-    if opts['alpha'] then r:SetAlpha(opts['alpha']) end
-    if opts['rotate'] then r.t:SetRotation(opts['rotate']) end
+    
+    -- texture attributes
+    for k,fn in pairs({
+      rotate='SetRotation',
+      blend='SetBlendMode'
+    }) do
+      if opts[k] then r.t[fn](r.t,opts[k]) end
+    end
   end
 
   if r.Parent then
@@ -99,8 +117,7 @@ function MakeRegion(opts)
   opts['width'] = opts['width'] or opts['w'] or 100
   opts['height'] = opts['height'] or opts['h'] or 100
   opts['color'] = opts['color'] or 'white'
-  r.t = r:Texture()
-  r.t:SetBlendMode(opts['blend'] or 'BLEND')
+  opts['blend'] = opts['blend'] or 'BLEND'
   -- do a bunch of attribute setting
   SetAttrs(r,opts)
 
@@ -138,7 +155,7 @@ function MakeRegion(opts)
     
     -- if the width isn't specified for this region and we have a label,
     -- set its width to be the width of the text label's width
-    if not opts['w'] then 
+    if not opts.width then 
       r:SetWidth(string.len(text)*(fsize/2)) 
     end
   end

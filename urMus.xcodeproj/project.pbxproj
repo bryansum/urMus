@@ -14,6 +14,7 @@
 		23C56097119295D200758BB9 /* html in Resources */ = {isa = PBXBuildFile; fileRef = 23C56095119295D200758BB9 /* html */; };
 		23C5609A119295E200758BB9 /* mongoose.c in Sources */ = {isa = PBXBuildFile; fileRef = 23C56099119295E200758BB9 /* mongoose.c */; };
 		23C5612A1192A56900758BB9 /* httpServer.c in Sources */ = {isa = PBXBuildFile; fileRef = 23C561291192A56900758BB9 /* httpServer.c */; };
+		23D069FA1198FF330031847C /* urBlank.lua in Resources */ = {isa = PBXBuildFile; fileRef = 23D069EC1198FEEB0031847C /* urBlank.lua */; };
 		28FD14FE0DC6FC130079059D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FD14FD0DC6FC130079059D /* EAGLView.mm */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		7700BFCD104AF4120025D43A /* connectarrow2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7700BFCC104AF4120025D43A /* connectarrow2.png */; };
@@ -227,6 +228,7 @@
 		23C56099119295E200758BB9 /* mongoose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mongoose.c; sourceTree = "<group>"; };
 		23C561281192A56900758BB9 /* httpServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = httpServer.h; sourceTree = "<group>"; };
 		23C561291192A56900758BB9 /* httpServer.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = httpServer.c; sourceTree = "<group>"; };
+		23D069EC1198FEEB0031847C /* urBlank.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lua; name = urBlank.lua; path = "urMus-Lua/urBlank.lua"; sourceTree = "<group>"; };
 		28FD14FC0DC6FC130079059D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		28FD14FD0DC6FC130079059D /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -931,6 +933,7 @@
 		77B9FC5C1194AEF9006D5007 /* urMus-lua */ = {
 			isa = PBXGroup;
 			children = (
+				23D069EC1198FEEB0031847C /* urBlank.lua */,
 				77B9FC5D1194AF12006D5007 /* cloud */,
 				77B9FC651194AF12006D5007 /* underscore.lua */,
 				77B9FC661194AF12006D5007 /* urAnimate.lua */,
@@ -1088,6 +1091,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23D069FA1198FF330031847C /* urBlank.lua in Resources */,
 				77B9FC9C1194AF51006D5007 /* underscore.lua in Resources */,
 				77B9FC9D1194AF51006D5007 /* urAnimate.lua in Resources */,
 				77B9FC9E1194AF51006D5007 /* urClockSeq.lua in Resources */,

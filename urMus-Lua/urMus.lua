@@ -19,6 +19,7 @@ pagefile = {
 "urPiano.lua",
 "urFlute.lua",
 "urPitcher.lua",
+"urBlank.lua",
 "urPlayground.lua",
 "urRecorder.lua",
 "urPads.lua",
@@ -2039,7 +2040,7 @@ clearbutton:SetHeight(24)
 clearbutton:SetLayer("TOOLTIP")
 clearbutton:SetAnchor('BOTTOMLEFT',0,ScreenHeight()-24) 
 clearbutton:EnableClamping(true)
-clearbutton:Handle("OnDoubleTap", ClearSetup)
+clearbutton:Handle("OnTouchUp", ClearSetup)
 clearbutton.texture = clearbutton:Texture("button.png")
 clearbutton.texture:SetGradientColor("TOP",128,128,128,255,128,128,128,255)
 clearbutton.texture:SetGradientColor("BOTTOM",128,128,128,255,128,128,128,255)
@@ -2062,7 +2063,7 @@ loadbutton:SetHeight(24)
 loadbutton:SetLayer("TOOLTIP")
 loadbutton:SetAnchor('BOTTOMLEFT',ScreenWidth()/4,ScreenHeight()-24) 
 loadbutton:EnableClamping(true)
-loadbutton:Handle("OnDoubleTap", LoadSettings)
+loadbutton:Handle("OnTouchUp", LoadSettings)
 loadbutton.texture = loadbutton:Texture("button.png")
 loadbutton.texture:SetGradientColor("TOP",128,128,128,255,128,128,128,255)
 loadbutton.texture:SetGradientColor("BOTTOM",128,128,128,255,128,128,128,255)
@@ -2085,7 +2086,7 @@ savebutton:SetHeight(24)
 savebutton:SetLayer("TOOLTIP")
 savebutton:SetAnchor('BOTTOMLEFT',2*ScreenWidth()/4,ScreenHeight()-24) 
 savebutton:EnableClamping(true)
-savebutton:Handle("OnDoubleTap", SaveSettings)
+savebutton:Handle("OnTouchUp", SaveSettings)
 savebutton.texture = savebutton:Texture("button.png")
 savebutton.texture:SetGradientColor("TOP",128,128,128,255,128,128,128,255)
 savebutton.texture:SetGradientColor("BOTTOM",128,128,128,255,128,128,128,255)
@@ -2108,7 +2109,7 @@ facebutton:SetHeight(24)
 facebutton:SetLayer("TOOLTIP")
 facebutton:SetAnchor('BOTTOMLEFT',3*ScreenWidth()/4,ScreenHeight()-24) 
 facebutton:EnableClamping(true)
-facebutton:Handle("OnDoubleTap", FlipPage)
+facebutton:Handle("OnTouchUp", FlipPage)
 facebutton.texture = facebutton:Texture("button.png")
 facebutton.texture:SetGradientColor("TOP",128,128,128,255,128,128,128,255)
 facebutton.texture:SetGradientColor("BOTTOM",128,128,128,255,128,128,128,255)

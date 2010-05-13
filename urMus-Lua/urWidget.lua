@@ -82,9 +82,12 @@ Widget.Tooltip= function(text, opts)
   local tt = MakeRegion({h=height, w=180,
                           color=opts['bg_color'] or 'white',
                           alpha=0,
-                          label={text=text,color=opts['text_color'] or 'grey'}}) 
-  tt:SetLayer("TOOLTIP")
-  tt.tl:SetHorizontalAlign("CENTER")
+                          layer="TOOLTIP",
+                          label={align="CENTER",
+                                 text=text,
+                                 color=opts['text_color'] or 'grey'
+                                 }
+                        }) 
   local anim = nil
   local enterFn = function(self) 
       -- get mouse input position and set anchor at

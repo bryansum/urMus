@@ -7,22 +7,23 @@ dofile(SystemPath("urHelpers.lua"))
 Req("urWidget")
 
 local function Shutdown()
-	dac:RemovePullLink(0, upSample, 0)
-	dac:RemovePullLink(0, upSample2, 0)
+    dac:RemovePullLink(0, upSample, 0)
+    dac:RemovePullLink(0, upSample2, 0)
 end
 
 local function ReInit(self)
-	dac:SetPullLink(0, upSample, 0)
-	dac:SetPullLink(0, upSample2, 0)
+    dac:SetPullLink(0, upSample, 0)
+    dac:SetPullLink(0, upSample2, 0)
 end
 
 -- Instantiating our pong background
 pongBGRegion = MakeRegion({
-  w=ScreenWidth(), 
-  h=ScreenHeight(), 
-  layer='BACKGROUND', 
-  x=0,y=0, img="PongBG.png"
+    w=ScreenWidth(), 
+    h=ScreenHeight(), 
+    layer='BACKGROUND', 
+    x=0,y=0, img="PongBG.png"
 })
+-- SetAttrs(pongBGRegion, {w=514,h=514,x=0,y=-31})
 pongBGRegion:Handle("OnPageEntered", ReInit)
 pongBGRegion:Handle("OnPageLeft", Shutdown)
 
@@ -32,45 +33,51 @@ DEFAULT_VELOCITY = 3
 -- Notification Information Overlay
 
 function FadePopup(self, elapsed)
-	if self.staytime > 0 then
-		self.staytime = self.staytime - elapsed
-		return
-	end
-	if self.fadetime > 0 then
-		self.fadetime = self.fadetime - elapsed
-		self.alpha = self.alpha - self.alphaslope * elapsed
-		self:SetAlpha(self.alpha)
-	else
-		self:Hide()
-		self:Handle("OnUpdate", nil)
-	end
+    if self.staytime > 0 then
+        self.staytime = self.staytime - elapsed
+        return
+    end
+    if self.fadetime > 0 then
+        self.fadetime = self.fadetime - elapsed
+        self.alpha = self.alpha - self.alphaslope * elapsed
+        self:SetAlpha(self.alpha)
+    else
+        self:Hide()
+        self:Handle("OnUpdate", nil)
+    end
 end
 
 function ShowPopup(note)
-	popuptextregion.tl:SetLabel(note)
-	popuptextregion.staytime = 1.5
-	popuptextregion.fadetime = 2.0
-	popuptextregion.alpha = 1
-	popuptextregion.alphaslope = 2
-	popuptextregion:Handle("OnUpdate", FadePopup)
-	popuptextregion:SetAlpha(1.0)
-	popuptextregion:Show()
+    popuptextregion.tl:SetLabel(note)
+    popuptextregion.staytime = 1.5
+    popuptextregion.fadetime = 2.0
+    popuptextregion.alpha = 1
+    popuptextregion.alphaslope = 2
+    popuptextregion:Handle("OnUpdate", FadePopup)
+    popuptextregion:SetAlpha(1.0)
+    popuptextregion:Show()
 end
 
-popuptextregion = MakeRegion({width=ScreenWidth(), height=48*2, layer='TOOLTIP',
-  x=0,y=ScreenHeight()/2-24,label={color={0,0,60,190},size=48}})
+popuptextregion = MakeRegion({
+    w=ScreenWidth(), 
+    h=48*2, 
+    layer='TOOLTIP',
+    x=0,
+    y=ScreenHeight()/2-24,
+    label={color={0,0,60,190},size=48}
+})
 popuptextregion:EnableClamping(true)
 popuptextregion:Show()
 
 ShowPopup("urPong!")
 
 function FlashNumber(self,elapsed)
-	self.flashtime = self.flashtime + elapsed
-	if self.flashtime > self.holdtime then
-		self.flashtime = 0
-		self:Handle("OnUpdate",nil)
-		self.textlabel:SetColor(255,0,0,255)
-	end
+    self.flashtime = self.flashtime + elapsed
+    if self.flashtime > self.holdtime then
+        self.flashtime = 0
+        self:Handle("OnUpdate",nil)
+        self.textlabel:SetColor(255,0,0,255)
+    end
 end
 
 function MakeScoreLabel(x, y)
@@ -86,33 +93,33 @@ function MakeScoreLabel(x, y)
     score.textlabel:SetLabel("0")
     score.textlabel:SetLabelHeight(40)
     score.textlabel:SetColor(255,0,0,255)
-	score.textlabel:SetShadowColor(255,190,190,190)
-	score.textlabel:SetShadowOffset(2,-3)
-	score.textlabel:SetShadowBlur(4.0)
+    score.textlabel:SetShadowColor(255,190,190,190)
+    score.textlabel:SetShadowOffset(2,-3)
+    score.textlabel:SetShadowBlur(4.0)
     score.score = 0
 
     function score:IncrementScore()
-		score.textlabel:SetColor(255,255,255,255)
-		score.flashtime = 0
-		score.holdtime = 1
-		score:Handle("OnUpdate", FlashNumber)
+        score.textlabel:SetColor(255,255,255,255)
+        score.flashtime = 0
+        score.holdtime = 1
+        score:Handle("OnUpdate", FlashNumber)
         self.score = self.score + 1
         self:SetLabel()
         
         if self.score == MAXSCORE then -- finished, someone won
             myScore:Reset()
             opponentScore:Reset()
-			if self == myScore then
-				ShowPopup("You Win!!!")
-			else
-				ShowPopup("You lose...") -- This line has the potential to inflict severe mental anguish and suffering
-			end
-		else
-			if self == myScore then
-				ShowPopup("You Score!!")
-			else
-				ShowPopup("Missed it.")
-			end	
+            if self == myScore then
+                ShowPopup("You Win!!!")
+            else
+                ShowPopup("You lose...") -- This line has the potential to inflict severe mental anguish and suffering
+            end
+        else
+            if self == myScore then
+                ShowPopup("You Score!!")
+            else
+                ShowPopup("Missed it.")
+            end 
         end
 
         ball:Reset()
@@ -135,16 +142,13 @@ myScore = MakeScoreLabel(160, 80)
 opponentScore = MakeScoreLabel(160, 400)
 
 function MakePaddle(x, y, OnUpdate)
-    local paddle = MakeRegion({layer='MEDIUM',w=120,h=20,x=x,y=y})
+    local paddle = MakeRegion({layer='MEDIUM',w=120,h=20,x=x,y=y,img="paddle.png"})
     
     function paddle:MoveTo(xCoord, yCoord)
         self:SetAnchor('BOTTOMLEFT', xCoord, yCoord)
     end
 
     paddle:Handle("OnUpdate",OnUpdate)
-    paddle.texture = paddle:Texture("paddle.png")
-    paddle.texture:SetBlendMode("BLEND")
-    paddle:Show()
     return paddle
 end
 
@@ -165,7 +169,7 @@ end
 local tiltspeed = 40.0
 
 function UserTilt(self,x,y,z)
-	self:MoveTo(Clamp(self:Left()+tiltspeed*x),10)
+    self:MoveTo(Clamp(self:Left()+tiltspeed*x),10)
 end
 
 function AIUpdatePosition(self)
@@ -186,14 +190,14 @@ opponentPaddle.velocity = 3
 local accelerate
 
 function ToggleControl(self)
-	accelerate = not accelerate
-	if accelerate then
-		myPaddle:Handle("OnAccelerate", UserTilt)
-		myPaddle:Handle("OnUpdate",nil)
-	else
-		myPaddle:Handle("OnAccelerate", nil)
-		myPaddle:Handle("OnUpdate",UserInputUpdatePosition)
-	end
+    accelerate = not accelerate
+    if accelerate then
+            myPaddle:Handle("OnAccelerate", UserTilt)
+            myPaddle:Handle("OnUpdate",nil)
+    else
+            myPaddle:Handle("OnAccelerate", nil)
+            myPaddle:Handle("OnUpdate",UserInputUpdatePosition)
+    end
 end
 
 pongBGRegion:Handle("OnDoubleTap", ToggleControl)
@@ -223,10 +227,10 @@ function ball:UpdateBallPosition()
     -- side detection
     if self.x <= 0 then
         self.directionX = 1
-		upPush:Push(0.0); -- Play
+        upPush:Push(0.0); -- Play
     elseif self.x >= 300 then
         self.directionX = -1
-		upPush:Push(0.0); -- Play
+        upPush:Push(0.0); -- Play
     end
     
     -- paddle detection
@@ -235,14 +239,14 @@ function ball:UpdateBallPosition()
         self.x <= myPaddle:Right() then
             self.directionY = 1 -- go up
             self.velocity = self.velocity + 0.5
-			upPush:Push(0.0); -- Play
+            upPush:Push(0.0); -- Play
     end    
     if opponentPaddle:Bottom() <= self.y and 
         self.x >= (opponentPaddle:Left() - self:Width()) and 
         self.x <= opponentPaddle:Right() then
             self.directionY = -1 -- go down
             self.velocity = self.velocity + 0.5
-			upPush:Push(0.0); -- Play
+            upPush:Push(0.0); -- Play
     end
     
     
@@ -265,20 +269,14 @@ ball:Reset()
 ball:Handle("OnUpdate",ball.UpdateBallPosition)
 ball:Show()
 
-pagebutton = Region('Region', 'pagebutton', UIParent)
-pagebutton:SetWidth(24)
-pagebutton:SetHeight(24)
-pagebutton:SetLayer("TOOLTIP")
-pagebutton:SetAnchor('BOTTOMLEFT', ScreenWidth() - 28, ScreenHeight() - 28)
+pagebutton = MakeRegion({w=16,h=16,
+    layer='TOOLTIP',
+    x=ScreenWidth()-28, y=ScreenHeight()-28,
+    img="circlebutton-16.png",
+    input=true
+})
 pagebutton:EnableClamping(true)
 pagebutton:Handle("OnTouchDown", FlipPage)
-pagebutton.texture = pagebutton:Texture("circlebutton-16.png")
-pagebutton.texture:SetGradientColor("TOP",255,255,255,255,255,255,255,255)
-pagebutton.texture:SetGradientColor("BOTTOM",255,255,255,255,255,255,255,255)
-pagebutton.texture:SetBlendMode("BLEND")
-pagebutton.texture:SetTexCoord(0,1.0,0,1.0)
-pagebutton:EnableInput(true)
-pagebutton:Show()
 
 upSample = FlowBox("object","mysample", FBSample)
 upSample:AddFile("Blue-Mono.wav")
