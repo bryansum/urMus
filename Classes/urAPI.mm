@@ -1616,6 +1616,27 @@ int region_Raise(lua_State* lua)
 	return 0;
 }
 
+int l_FreeAllRegions(lua_State* lua)
+{
+	for(urAPI_Region_t* t=firstRegion[currentPage]; t != nil; t=t->next)
+	{
+		t->isVisible = false;
+		t->isShown = false;
+		t->isMovable = false;
+		t->isResizable = false;
+		t->isTouchEnabled = false;
+		t->isScrollXEnabled = false;
+		t->isScrollYEnabled = false;
+		t->isVisible = false;
+		t->isShown = false;
+		t->isDragged = false;
+		t->isResized = false;
+		t->isClamped = false;
+		t->isClipping = false;
+	}
+	return 0;
+}
+
 int region_IsToplevel(lua_State* lua)
 {
 	urAPI_Region_t* region = checkregion(lua,1);
@@ -3742,6 +3763,8 @@ void l_setupAPI(lua_State *lua)
 	lua_pushcfunction(lua, l_SetPage);
 	lua_setglobal(lua, "SetPage");
 	
+	lua_pushcfunction(lua, l_FreeAllRegions);
+	lua_setglobal(lua, "FreeAllRegions");
 	
 	// Initialize the global mic buffer table
 #ifdef MIC_ARRAY
