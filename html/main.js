@@ -147,7 +147,7 @@ $(document).ready(function() {
       url: '/eval',
       data: {code: cm.getCode()},
       success: function() { msg('success',"Ran "+opened_file); },
-      error: function() { msg('error',xhr.responseText); }
+      error: function(xhr, opts) { msg('error',xhr.responseText); }
     });
   });
           
