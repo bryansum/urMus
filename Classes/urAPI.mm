@@ -2756,6 +2756,13 @@ static const struct luaL_reg texturefuncs [] =
 	{NULL, NULL}
 };
 
+int region_gc(lua_State* lua)
+{
+	urAPI_Region_t* region = checkregion(lua,1);
+	int a = 0;
+	return 0;
+}
+
 static const struct luaL_reg regionfuncs [] = 
 {
 	{"EnableMoving", region_EnableMoving},
@@ -2802,8 +2809,18 @@ static const struct luaL_reg regionfuncs [] =
 	{"EnableClipping", region_EnableClipping},
 	{"SetClipRegion", region_SetClipRegion},
 	{"ClipRegion", region_ClipRegion},
+	{"__gc",       region_gc},
 	{NULL, NULL}
 };
+
+
+
+static const luaL_reg regionmetas[] = {
+	{"__gc",       region_gc},
+	{0, 0}
+};
+
+
 
 void addChild(urAPI_Region_t *parent, urAPI_Region_t *child)
 {
@@ -2880,9 +2897,14 @@ static int l_Region(lua_State *lua)
 	//	urAPI_Region_t *myregion = (urAPI_Region_t*)lua_newuserdata(lua, sizeof(urAPI_Region_t)); // User data is our value
 	urAPI_Region_t *myregion = (urAPI_Region_t*)malloc(sizeof(urAPI_Region_t)); // User data is our value
 	lua_pushlightuserdata(lua, myregion);
+//	luaL_register(lua, NULL, regionmetas);
+//	luaL_openlib(lua, 0, regionmetas, 0);  /* fill metatable */
 	lua_rawseti(lua, -2, 0); // Set this to index 0
 	myregion->tableref = luaL_ref(lua, LUA_REGISTRYINDEX);
 	lua_rawgeti(lua, LUA_REGISTRYINDEX, myregion->tableref);
+    lua_pushliteral(lua, "__gc");  /* mutex destructor */
+    lua_pushcfunction(lua, region_gc);
+    lua_rawset(lua, -3);
 	
 	// ENDNEW!!
 //	luaL_getmetatable(lua, "URAPI.region");

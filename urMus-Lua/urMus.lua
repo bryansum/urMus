@@ -675,7 +675,7 @@ function CreateButton(x,y,col,fbtype,label,flowbox,inidx, instance)
 		returnbutton:SetHeight(protocellheight)
 		returnbutton:SetLayer("DIALOG")
 		returnbutton:SetAnchor('BOTTOMLEFT',switchbackdrop,'BOTTOMLEFT',x,y) 
-		returnbutton:EnableClamping(true)
+--		returnbutton:EnableClamping(true)
 		returnbutton.lockposx = x
 		returnbutton.lockposy = y
 		returnbutton.column = col
