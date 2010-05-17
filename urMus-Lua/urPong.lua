@@ -66,6 +66,8 @@ popuptextregion = MakeRegion({
     y=ScreenHeight()/2-24,
     label={color={0,0,60,190},size=48}
 })
+popuptextregion.tl:SetHorizontalAlign("CENTER")
+popuptextregion.tl:SetVerticalAlign("TOP")
 popuptextregion:EnableClamping(true)
 popuptextregion:Show()
 
@@ -269,12 +271,13 @@ ball:Reset()
 ball:Handle("OnUpdate",ball.UpdateBallPosition)
 ball:Show()
 
-pagebutton = MakeRegion({w=16,h=16,
+pagebutton = MakeRegion({w=24,h=24,
     layer='TOOLTIP',
     x=ScreenWidth()-28, y=ScreenHeight()-28,
     img="circlebutton-16.png",
     input=true
 })
+pagebutton.t:SetTexCoord(0,1.0,0,1.0)
 pagebutton:EnableClamping(true)
 pagebutton:Handle("OnTouchDown", FlipPage)
 
