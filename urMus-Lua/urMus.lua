@@ -55,6 +55,7 @@ pagersize = 32
 dofile(SystemPath("urScrollList.lua"))
 
 local titlebar = 28
+local menubottonheight = titlebar
 local selectorheight = 122
 local editheightmargins = titlebar + selectorheight
 local editwidthmargins = 0
@@ -2036,9 +2037,9 @@ sinktitlelabel:EnableClipping(true)
 
 clearbutton=Region('region', 'clearbutton', UIParent)
 clearbutton:SetWidth(ScreenWidth()/4)
-clearbutton:SetHeight(24)
+clearbutton:SetHeight(menubottonheight)
 clearbutton:SetLayer("TOOLTIP")
-clearbutton:SetAnchor('BOTTOMLEFT',0,ScreenHeight()-24) 
+clearbutton:SetAnchor('BOTTOMLEFT',0,ScreenHeight()-menubottonheight) 
 clearbutton:EnableClamping(true)
 clearbutton:Handle("OnTouchUp", ClearSetup)
 clearbutton.texture = clearbutton:Texture("button.png")
@@ -2059,9 +2060,9 @@ clearbutton.textlabel:SetShadowBlur(2.0)
 
 loadbutton=Region('region', 'loadbutton', UIParent)
 loadbutton:SetWidth(ScreenWidth()/4)
-loadbutton:SetHeight(24)
+loadbutton:SetHeight(menubottonheight)
 loadbutton:SetLayer("TOOLTIP")
-loadbutton:SetAnchor('BOTTOMLEFT',ScreenWidth()/4,ScreenHeight()-24) 
+loadbutton:SetAnchor('BOTTOMLEFT',ScreenWidth()/4,ScreenHeight()-menubottonheight) 
 loadbutton:EnableClamping(true)
 loadbutton:Handle("OnTouchUp", LoadSettings)
 loadbutton.texture = loadbutton:Texture("button.png")
@@ -2082,9 +2083,9 @@ loadbutton.textlabel:SetShadowBlur(2.0)
 
 savebutton=Region('region', 'savebutton', UIParent)
 savebutton:SetWidth(ScreenWidth()/4)
-savebutton:SetHeight(24)
+savebutton:SetHeight(menubottonheight)
 savebutton:SetLayer("TOOLTIP")
-savebutton:SetAnchor('BOTTOMLEFT',2*ScreenWidth()/4,ScreenHeight()-24) 
+savebutton:SetAnchor('BOTTOMLEFT',2*ScreenWidth()/4,ScreenHeight()-menubottonheight) 
 savebutton:EnableClamping(true)
 savebutton:Handle("OnTouchUp", SaveSettings)
 savebutton.texture = savebutton:Texture("button.png")
@@ -2105,9 +2106,9 @@ savebutton.textlabel:SetShadowBlur(2.0)
 
 facebutton=Region('region', 'facebutton', UIParent)
 facebutton:SetWidth(ScreenWidth()/4)
-facebutton:SetHeight(24)
+facebutton:SetHeight(menubottonheight)
 facebutton:SetLayer("TOOLTIP")
-facebutton:SetAnchor('BOTTOMLEFT',3*ScreenWidth()/4,ScreenHeight()-24) 
+facebutton:SetAnchor('BOTTOMLEFT',3*ScreenWidth()/4,ScreenHeight()-menubottonheight) 
 facebutton:EnableClamping(true)
 facebutton:Handle("OnTouchUp", FlipPage)
 facebutton.texture = facebutton:Texture("button.png")
@@ -2144,10 +2145,10 @@ notificationregion.textlabel:SetColor(255,255,255,190)
 StartAudio()
 ShowNotification("urMus") -- Shame on me, pointless eye candy.
 
-Widget.Tooltip("Double-Tap to Clear", {parent=clearbutton})
-Widget.Tooltip("Double-Tap to Load", {parent=loadbutton})
-Widget.Tooltip("Double-Tap to Save", {parent=savebutton})
-Widget.Tooltip("Double-Tap for Faces", {parent=facebutton})
+--Widget.Tooltip("Double-Tap to Clear", {parent=clearbutton})
+--Widget.Tooltip("Double-Tap to Load", {parent=loadbutton})
+--Widget.Tooltip("Double-Tap to Save", {parent=savebutton})
+--Widget.Tooltip("Double-Tap for Faces", {parent=facebutton})
 
 local host,port = HTTPServer()
 DPrint("http://"..host..":"..port.."/")
