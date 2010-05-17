@@ -2907,7 +2907,7 @@ void urSTK_Setup()
 	object->SetCouple(0,0);
 	urmanipulatorobjectlist.Append(object);
 	
-	object = new ursObject("OnePole", OnePole_Constructor, OnePole_Destructor,3,1);
+	object = new ursObject("OnePole", OnePole_Constructor, OnePole_Destructor,2,1);
 	object->AddOut("WaveForm", "TimeSeries", OnePole_Tick, OnePole_Out, NULL);
 	object->AddIn("In", "Generic", OnePole_In);
 	object->AddIn("Reson", "Frequency", OnePole_SetResonance);
@@ -2915,7 +2915,7 @@ void urSTK_Setup()
 	object->SetCouple(0,0);
 	urmanipulatorobjectlist.Append(object);
 	
-	object = new ursObject("OneZero", OneZero_Constructor, OneZero_Destructor,3,1);
+	object = new ursObject("OneZero", OneZero_Constructor, OneZero_Destructor,2,1);
 	object->AddOut("WaveForm", "TimeSeries", OneZero_Tick, OneZero_Out, NULL);
 	object->AddIn("In", "Generic", OneZero_In);
 	object->AddIn("Notch", "Frequency", OneZero_SetNotch);
@@ -3004,7 +3004,7 @@ void urSTK_Setup()
 
 	// NYI SingWave: Sample based
 	
-	object = new ursObject("Sitar", Sitar_Constructor, Sitar_Destructor,3,1);
+	object = new ursObject("Sitar", Sitar_Constructor, Sitar_Destructor,2,1);
 	object->AddOut("WaveForm", "TimeSeries", Sitar_Tick, Sitar_Out, NULL);
 	object->AddIn("In", "Generic", Sitar_In);
 	object->AddIn("Freq", "Frequency", Sitar_SetFrequency);

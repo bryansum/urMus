@@ -3205,7 +3205,7 @@ int flowbox_Ins(lua_State *lua)
 {
 	ursAPI_FlowBox_t* fb = checkflowbox(lua, 1);
 	
-	int nrins = fb->object->nr_ins;
+	int nrins = fb->object->lastin;
 	for(int j=0; j< nrins; j++)
 //		if(fb->object->ins[j].name!=(void*)0x1)
 			lua_pushstring(lua, fb->object->ins[j].name);
@@ -3219,8 +3219,8 @@ int flowbox_Ins(lua_State *lua)
 int flowbox_Outs(lua_State *lua)
 {
 	ursAPI_FlowBox_t* fb = checkflowbox(lua, 1);
-	
-	int nrouts = fb->object->nr_outs;
+
+	int nrouts = fb->object->lastout;
 	for(int j=0; j< nrouts; j++)
 		lua_pushstring(lua, fb->object->outs[j].name);
 	return nrouts;
