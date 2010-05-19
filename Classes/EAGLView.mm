@@ -1481,7 +1481,7 @@ void ClampRegion(urAPI_Region_t*region)
 			CGPoint oldposition = [touch previousLocationInView:self];
 			urAPI_Region_t* hitregion = findRegionHit(position.x, SCREEN_HEIGHT-position.y);
 			NSUInteger numTaps = [touch tapCount];
-			if(hitregion && numTaps == 1)
+			if(hitregion && numTaps <= 1)
 			{
 				callScript(hitregion->OnTouchUp, hitregion);
 				callAllOnLeaveRegions(position.x, SCREEN_HEIGHT-position.y);
