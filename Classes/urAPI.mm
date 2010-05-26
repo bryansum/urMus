@@ -1123,12 +1123,19 @@ int region_SetAnchor(lua_State* lua)
 			
 	}
 	
+	if(relativeRegion == region)
+	{
+		luaL_error(lua, "Cannot anchor a region to itself.");
+		return 0;
+	}	
+
 	if(region->point != NULL)
 		free(region->point);
 	region->point = (char*)malloc(strlen(point)+1);
 	strcpy(region->point, point);
 	region->relativeRegion = relativeRegion;
 
+	
 	if(relativeRegion != region->parent)
 	{
 		removeChild(region->parent, region);

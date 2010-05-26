@@ -15,6 +15,11 @@
 
 // This enables video projector output. It's not official API hence not safe for app store.
 //#define PROJECTOR_VIDEO
+//#define NEW_PROJECTOR_VIDEO
+
+#ifdef NEW_PROJECTOR_VIDEO
+#import "UIApplication+ScreenMirroring.h"
+#endif
 
 #ifdef SANDWICH_SUPPORT
 #import "SandwichUpdateListener.h"
@@ -47,6 +52,11 @@ extern bool newerror;
 //	[[UIApplication] sharedApplication] startTVOut]; // This enables that the video data is send to the AV out for projection (it's a mirror)
 #ifdef PROJECTOR_VIDEO
 	[application startTVOut]; // This enables that the video data is send to the AV out for projection (it's a mirror)
+#endif
+
+#ifdef NEW_PROJECTOR_VIDEO
+//	[[UIApplication sharedApplication] setupScreenMirroringOfMainWindow:mainWindow framesPerSecond:20];
+	[application setupScreenMirroringOfMainWindow:window framesPerSecond:20];
 #endif
 	
 #ifdef SANDWICH_SUPPORT
