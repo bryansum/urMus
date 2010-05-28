@@ -22,6 +22,8 @@
 		7700C06C104B2DA70025D43A /* rightarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7700C06A104B2DA70025D43A /* rightarrow.png */; };
 		7706EBAD1044E0E200E7D656 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7706EBAC1044E0E200E7D656 /* CoreLocation.framework */; };
 		770FD84B10AB51CF004B0967 /* flatbutton-64.png in Resources */ = {isa = PBXBuildFile; fileRef = 770FD84A10AB51CF004B0967 /* flatbutton-64.png */; };
+		771DC9B411B051BB00880F72 /* urBounce.lua in Sources */ = {isa = PBXBuildFile; fileRef = 771DC9B311B051BB00880F72 /* urBounce.lua */; };
+		771DC9DC11B0523E00880F72 /* urBounce.lua in Resources */ = {isa = PBXBuildFile; fileRef = 771DC9B311B051BB00880F72 /* urBounce.lua */; };
 		771F1C3C109B7E10005069EC /* urSoundAtoms.mm in Sources */ = {isa = PBXBuildFile; fileRef = 771F1C3B109B7E10005069EC /* urSoundAtoms.mm */; };
 		772030E1108E479B001BE7A1 /* piano.png in Resources */ = {isa = PBXBuildFile; fileRef = 772030E0108E479B001BE7A1 /* piano.png */; };
 		772CCAD1111F92C700E932EE /* Ornament1.png in Resources */ = {isa = PBXBuildFile; fileRef = 772CCAD0111F92C700E932EE /* Ornament1.png */; };
@@ -239,6 +241,7 @@
 		7700C06A104B2DA70025D43A /* rightarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rightarrow.png; path = Textures/rightarrow.png; sourceTree = "<group>"; };
 		7706EBAC1044E0E200E7D656 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		770FD84A10AB51CF004B0967 /* flatbutton-64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "flatbutton-64.png"; path = "Textures/flatbutton-64.png"; sourceTree = "<group>"; };
+		771DC9B311B051BB00880F72 /* urBounce.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lua; name = urBounce.lua; path = "urMus-Lua/urBounce.lua"; sourceTree = "<group>"; };
 		771F1C3A109B7E10005069EC /* urSoundAtoms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = urSoundAtoms.h; sourceTree = "<group>"; };
 		771F1C3B109B7E10005069EC /* urSoundAtoms.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = urSoundAtoms.mm; sourceTree = "<group>"; };
 		772030E0108E479B001BE7A1 /* piano.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = piano.png; path = Textures/piano.png; sourceTree = "<group>"; };
@@ -959,6 +962,7 @@
 				77B9FC7A1194AF12006D5007 /* urVisDemo.lua */,
 				77B9FC7B1194AF12006D5007 /* urVisGraph.lua */,
 				77B9FC7C1194AF12006D5007 /* urWidget.lua */,
+				771DC9B311B051BB00880F72 /* urBounce.lua */,
 			);
 			name = "urMus-lua";
 			sourceTree = "<group>";
@@ -1091,6 +1095,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				771DC9DC11B0523E00880F72 /* urBounce.lua in Resources */,
 				23D069FA1198FF330031847C /* urBlank.lua in Resources */,
 				77B9FC9C1194AF51006D5007 /* underscore.lua in Resources */,
 				77B9FC9D1194AF51006D5007 /* urAnimate.lua in Resources */,
@@ -1301,6 +1306,7 @@
 				23C5609A119295E200758BB9 /* mongoose.c in Sources */,
 				23C5612A1192A56900758BB9 /* httpServer.c in Sources */,
 				77D9689E11A79AB900BD4F2D /* UIApplication+TVOut.m in Sources */,
+				771DC9B411B051BB00880F72 /* urBounce.lua in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
