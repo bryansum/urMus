@@ -594,7 +594,8 @@ function FreeButton(button)
 	local instances = bflowbox.instances
 	
 	if instances and not instances[button.flowbox:InstanceNumber()] then
-		table.insert(instances,button.flowbox)
+--		table.insert(instances,button.flowbox)
+		instances[button.flowbox:InstanceNumber()] = button.flowbox
 		instances[button.flowbox:InstanceNumber()].let = {}
 	end
 	if instances then
@@ -622,9 +623,11 @@ end
 
 function FindFreeInstance(flowbox, inidx)
 
-	for k,v in ipairs(_G["FB"..flowbox:Name()].instances) do
+	for k,v in pairs(_G["FB"..flowbox:Name()].instances) do
 		if not v.let[inidx] then return k end
 	end
+	
+	DPrint(k.." ".._G["FB"..flowbox:Name()]:NumberInstances());
 	
 	return _G["FB"..flowbox:Name()]:NumberInstances()+1
 end
