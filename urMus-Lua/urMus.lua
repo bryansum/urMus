@@ -2156,7 +2156,7 @@ ShowNotification("urMus") -- Shame on me, pointless eye candy.
 --Widget.Tooltip("Double-Tap to Save", {parent=savebutton})
 --Widget.Tooltip("Double-Tap for Faces", {parent=facebutton})
 
---local host,port = HTTPServer()
---if host and port then -- Only advertise the web server if it is launched
---	DPrint("http://"..host..":"..port.."/")
---end
+local host,port = HTTPServer()
+if host and port then -- Only advertise the web server if it is launched
+	DPrint("http://"..host..":"..port.."/")
+end
