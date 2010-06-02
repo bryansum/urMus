@@ -16,6 +16,10 @@ function Paint(self)
 	y = y*480.0/ScreenHeight()
 	if x ~= fingerposx or y ~= fingerposy then
 		brush1.t:SetBrushSize(32)
+		y = y + 32
+--		brush1.t:SetBrushSize(16)
+--		self.texture:SetBrushColor(255,127,0,60)
+--		self.texture:Point(x, y)
 		self.texture:SetBrushColor(255,127,0,30)
 		self.texture:Line(fingerposx, fingerposy, x, y)
 		fingerposx, fingerposy = x,y
@@ -65,7 +69,7 @@ smudgebackdropregion.texture:SetBrushColor(255,0,0,90)
 smudgebackdropregion.texture:Rect(40,40,100,100)
 smudgebackdropregion.texture:SetFill(false)
 smudgebackdropregion.texture:SetBrushColor(0,255,0,60)
-smudgebackdropregion.texture:Quad(ScreenWidth()-20,ScreenHeight()-20,ScreenWidth()-300,ScreenHeight()-40,ScreenWidth()-40,ScreenHeight()-400,ScreenWidth()-290,ScreenHeight()-390)
+smudgebackdropregion.texture:Quad(320-20,480-20,320-300,480-40,320-40,480-400,320-290,480-390)
 
 brush1=Region('region','brush',UIParent)
 brush1.t=brush1:Texture()
@@ -74,11 +78,11 @@ brush1.t:SetSolidColor(127,0,0,15)
 brush1:UseAsBrush();
 
 smudgebackdropregion.texture:SetBrushColor(0,0,255,30)
-smudgebackdropregion.texture:Ellipse(ScreenWidth()-160, ScreenHeight()-240, 120, 80)
+smudgebackdropregion.texture:Ellipse(320-160, 480-240, 120, 80)
 smudgebackdropregion.texture:SetBrushColor(0,255,0,60)
 smudgebackdropregion.texture:Quad(20,20,300,40,40,400,290,390)
 smudgebackdropregion.texture:SetBrushColor(255,0,0,90)
-smudgebackdropregion.texture:Rect(ScreenWidth()-40-100,ScreenHeight()-40-100,100,100)
+smudgebackdropregion.texture:Rect(320-40-100,480-40-100,100,100)
 
 smudgebackdropregion.texture:SetBrushColor(255,127,0,30)
 

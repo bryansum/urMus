@@ -177,6 +177,13 @@ float arg2coordy[MAX_FINGERS];
 // This is the texture to hold DPrint and lua error messages.
 Texture2D       *errorStrTex = nil;
 
+NSString *errorstr = @"";
+bool newerror = true;
+
+//#define LATE_LAUNCH
+// Main drawing loop. This does everything but brew coffee.
+extern lua_State *lua;
+
 - (void)awakeFromNib
 {
 	// Hide top navigation bar
@@ -225,6 +232,29 @@ Texture2D       *errorStrTex = nil;
 	
 	mytimer = [MachTimer alloc];
 	[mytimer start];
+	
+#ifdef LATE_LAUNCH
+	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+	NSString *filePath = [resourcePath stringByAppendingPathComponent:@"urMus.lua"];
+	NSArray *paths;
+	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentPath;
+	if ([paths count] > 0)
+		documentPath = [paths objectAtIndex:0];
+	
+	// start off http server
+	http_start([resourcePath UTF8String],
+			   [documentPath UTF8String]);
+	
+	const char* filestr = [filePath UTF8String];
+	
+	if(luaL_dofile(lua, filestr)!=0)
+	{
+		const char* error = lua_tostring(lua, -1);
+		errorstr = [[NSString alloc] initWithCString:error ]; // DPrinting errors for now
+		newerror = true;
+	}
+#endif
 }
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
@@ -315,13 +345,10 @@ int HALF_SCREEN_HEIGHT = 240;
 // Enables/Disables debug output for multi-touch debugging. Should be always off now.
 #undef DEBUG_TOUCH
 
-	
 // Various texture font strongs
-NSString *errorstr = @"";
 NSString *textlabelstr = @"";
 NSString *fontname = @"";
 NSString *texturepathstr; // = @"Ship.png";
-bool newerror = true;
 
 // Below is modeled after GLPaint
 
@@ -399,7 +426,7 @@ void CreateFrameBuffer()
 void drawPointToTexture(urAPI_Texture_t *texture, float x, float y)
 {
 	Texture2D *bgtexture = texture->backgroundTex;
-	y = SCREEN_HEIGHT - y;
+	y = texture->backgroundTex->_height - y;
 
 	// allocate frame buffer
 	if(textureFrameBuffer == -1)
@@ -417,8 +444,8 @@ void drawPointToTexture(urAPI_Texture_t *texture, float x, float y)
 
 	static GLfloat		vertexBuffer[2];
 	
-	vertexBuffer[0] = x;
-	vertexBuffer[1] = y;
+	vertexBuffer[0] = (int)x;
+	vertexBuffer[1] = (int)y;
 	
 	//Render the vertex array
 	glVertexPointer(2, GL_FLOAT, 0, vertexBuffer);
@@ -451,10 +478,10 @@ int prepareBrushedLine(float startx, float starty, float endx, float endy, int v
 void drawQuadToTexture(urAPI_Texture_t *texture, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
 {
 	Texture2D *bgtexture = texture->backgroundTex;
-	y1 = SCREEN_HEIGHT - y1;
-	y2 = SCREEN_HEIGHT - y2;
-	y3 = SCREEN_HEIGHT - y3;
-	y4 = SCREEN_HEIGHT - y4;
+	y1 = texture->backgroundTex->_height - y1;
+	y2 = texture->backgroundTex->_height - y2;
+	y3 = texture->backgroundTex->_height - y3;
+	y4 = texture->backgroundTex->_height - y4;
 	
 	// allocate frame buffer
 	if(textureFrameBuffer == -1)
@@ -526,7 +553,7 @@ void drawQuadToTexture(urAPI_Texture_t *texture, float x1, float y1, float x2, f
 void drawEllipseToTexture(urAPI_Texture_t *texture, float x, float y, float w, float h)
 {
 	Texture2D *bgtexture = texture->backgroundTex;
-	y = SCREEN_HEIGHT - y;
+	y = texture->backgroundTex->_height - y;
 	
 	// allocate frame buffer
 	if(textureFrameBuffer == -1)
@@ -717,9 +744,6 @@ UILineBreakMode tolinebreakmode(int wrap)
 	}
 	return UILineBreakModeWordWrap;
 }
-
-// Main drawing loop. This does everything but brew coffee.
-extern lua_State *lua;
 
 - (void)drawView {
   
