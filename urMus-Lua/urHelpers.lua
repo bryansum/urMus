@@ -26,7 +26,7 @@ function Req(name,var)
   if not _G[var] then _G[var] = dofile(SystemPath(name..".lua")); return _G[var]; end
 end
 
-Req('underscore','_')
+Req('underscore','us')
 
 -- use shorthand notation to set a number of attributes in the urMus api. 
 -- supported attributes include: input, layer, width, height,
@@ -79,7 +79,7 @@ function SetAttrs(r,opts)
       g[2] = ParseColor(opts.gradient[2]); g[2][4] = g[2][4] or 255; -- add alpha 
       g[3] = ParseColor(opts.gradient[3]); g[3][4] = g[3][4] or 255
       make_texture(r)
-      r.t:SetGradientColor(unpack(_.flatten(g)))
+      r.t:SetGradientColor(unpack(us.flatten(g)))
     end
     
     -- texture attributes
@@ -149,8 +149,8 @@ function MakeRegion(opts)
     if l['shadow'] then
       for i,v in pairs(l['shadow']) do shadow[i] = v end -- copy our shadow params over
     end
-    r.tl:SetShadowColor(unpack(_.first(shadow,4)))
-    r.tl:SetShadowOffset(unpack(_.first(shadow,5)))
+    r.tl:SetShadowColor(unpack(us.first(shadow,4)))
+    r.tl:SetShadowOffset(unpack(us.first(shadow,5)))
     r.tl:SetShadowBlur(shadow[7])
     
     -- if the width isn't specified for this region and we have a label,
