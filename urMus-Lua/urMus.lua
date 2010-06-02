@@ -331,9 +331,11 @@ function ActivateSettings()
 		AddRow(row)
 	end
 
-	maxrow = #settingdata.grid
+	if maxrow < #settingdata.grid then
+		maxrow = #settingdata.grid
+	end
 
-	for row = 1, maxrow do
+	for row = 1, #settingdata.grid do
 		for col = 4,#settingdata.grid[row] do
 			SplitArrow(fbconnect[row][2])
 		end
@@ -386,7 +388,7 @@ function ActivateSettings()
 		end
 	end
 
-	for row = 1, maxrow do
+	for row = 1, #settingdata.grid do
 		for col, v in pairs(settingdata.grid[row]) do
 			if v then
 				local thisregion = rowregions[row][col]
@@ -627,7 +629,7 @@ function FindFreeInstance(flowbox, inidx)
 		if not v.let[inidx] then return k end
 	end
 	
-	DPrint(k.." ".._G["FB"..flowbox:Name()]:NumberInstances());
+--	DPrint(k.." ".._G["FB"..flowbox:Name()]:NumberInstances());
 	
 	return _G["FB"..flowbox:Name()]:NumberInstances()+1
 end
@@ -1337,14 +1339,14 @@ function RemoveRow(row)
 	
 	backdropanchor[row]:Hide()
 	backdropanchor[row]:EnableInput(false)
-	for col=1,mincol do
-		celllock[row][col]:Hide()
-		celllock[row][col]:EnableInput(false)
-		cellbackdrop[row][col]:Hide()
-		cellbackdrop[row][col]:EnableInput(false)
-	end
+--	for col=1,mincol do
+--		celllock[row][col]:Hide()
+--		celllock[row][col]:EnableInput(false)
+--		cellbackdrop[row][col]:Hide()
+--		cellbackdrop[row][col]:EnableInput(false)
+--	end
 
-	for col = mincol,1,-1 do
+	for col = backdropanchor[row].count,1,-1 do
 		RecycleCell(row, col)
 	end
 
@@ -2155,4 +2157,7 @@ ShowNotification("urMus") -- Shame on me, pointless eye candy.
 --Widget.Tooltip("Double-Tap for Faces", {parent=facebutton})
 
 local host,port = HTTPServer()
-DPrint("http://"..host..":"..port.."/")
+if host and port then -- Only advertise the web server if it is launched
+
+	DPrint("http://"..host..":"..port.."/")
+end
