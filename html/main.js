@@ -157,7 +157,7 @@ $(document).ready(function() {
   
   $('#extend_box').click(function() {
     var box=$(".CodeMirror-wrapping")
-    box[0].style.pixelHeight+=100;
+    box[0].style.height=(parseInt(box[0].style.height)+100)+"px";
   });
           
   new AjaxUpload('file_upload', {

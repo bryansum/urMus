@@ -297,6 +297,41 @@ http_stop(void)
   }
 }
 
+#if 1
+#include <ifaddrs.h>
+const char*
+http_ip_address(void)
+{
+	struct ifaddrs *interfaces = NULL;
+	struct ifaddrs *temp_addr = NULL;
+	int success = 0;
+	
+	// retrieve the current interfaces - returns 0 on success
+	success = getifaddrs(&interfaces);
+	if (success != 0) return NULL;
+	
+	// Loop through linked list of interfaces
+	temp_addr = interfaces;
+	while(temp_addr != NULL)
+	{
+		if(temp_addr->ifa_addr->sa_family == AF_INET)
+		{
+			// Check if interface is en0 which is the wifi connection on the iPhone
+			if(!strcmp(temp_addr->ifa_name,"en0"))
+			{
+				freeifaddrs(interfaces);
+				return inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr);
+			}
+		}
+		
+		temp_addr = temp_addr->ifa_next;
+	}
+	
+	// Free memory
+	freeifaddrs(interfaces);	
+	return NULL;
+}
+#else 
 const char* 
 http_ip_address(void) 
 {
@@ -325,6 +360,7 @@ http_ip_address(void)
   
   return NULL;
 }
+#endif
 
 const char* http_ip_port(void)
 {
