@@ -156,7 +156,7 @@ $(document).ready(function() {
   });
   
   $('#extend_box').click(function() {
-    var box=document.getElementsByClassName("CodeMirror-wrapping")
+    var box=$(".CodeMirror-wrapping")
     box[0].style.pixelHeight+=100;
   });
           
